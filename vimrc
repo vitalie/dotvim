@@ -128,7 +128,7 @@ set ttimeout
 set ttimeoutlen=50
 set incsearch
 set hlsearch
-set ignorecase
+" set ignorecase
 set smartcase
 set laststatus=2
 set encoding=utf-8
