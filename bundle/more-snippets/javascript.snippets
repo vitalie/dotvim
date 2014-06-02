@@ -1,0 +1,114 @@
+snippet tse "test strict equal"
+test.strictEqual(${1:test}, ${2:expectation});
+endsnippet
+
+snippet tt "test throws"
+test.throws(${1:expected throw});
+endsnippet
+
+snippet tde "test deep equal"
+test.deepEqual(${1:test}, ${2:expectation});
+endsnippet
+
+snippet tok "test ok"
+test.ok(${1:test});
+endsnippet
+
+snippet nu "nodeunit"
+exports.${1:functionName} = function(test) {
+	${2:tests...}
+	test.done();
+};
+endsnippet
+
+snippet cl "console log" !i
+console.log($1);
+endsnippet
+
+snippet fn "function (fn)"
+function ${1:functionName}(${2:argument}) {
+  $3
+}
+endsnippet
+
+snippet tbc "test block comment"
+/** Test $1 **/
+endsnippet
+
+snippet bc "block comment"
+/**
+ * ${1:description}
+ *
+ * @param {${2:type}} ${3:name}
+ * @return {${4:type}} ${5:name}
+ */
+endsnippet
+
+snippet afn "anonymous function (fn)" i
+function(${1:argument}) {
+	$2
+}
+endsnippet
+
+snippet req "nodejs require" !
+${1:name} = require('$2'),
+endsnippet
+
+snippet for "for loop" i
+    len = $1.length,
+    i;
+
+for (i = 0; i < len; i++) {
+  $2
+}
+endsnippet
+
+snippet us "use strict"
+'use strict';
+
+endsnippet
+
+snippet th "promise: then" i
+.then($1)
+endsnippet
+
+snippet np "new promise" i
+new Promise(function(resolve, reject) {
+	$1
+});
+endsnippet
+
+snippet r "return"
+return $1;
+endsnippet
+
+snippet v "var"
+var $1
+endsnippet
+
+snippet /// "divider"
+// ============================================================================
+// $1
+endsnippet
+
+snippet 1 "test point" !i
+console.log(1);
+endsnippet
+
+snippet 2 "test point" !i
+console.log(2);
+endsnippet
+
+snippet 3 "test point" !i
+console.log(3);
+endsnippet
+
+snippet 4 "test point" !i
+console.log(4);
+endsnippet
+
+snippet 5 "test point" !i
+console.log(5);
+endsnippet
+
+# vim:ft=snippets:

@@ -1,0 +1,50 @@
+snippet ;;; "line"
+;; ============================================================================
+;; $1
+
+endsnippet
+
+snippet prn "println"
+(println $1)
+endsnippet
+
+snippet ns "namespace"
+(ns ${1:name}
+  ${2})
+endsnippet
+
+snippet req "require"
+(:require [$1])
+endsnippet
+
+snippet defn "defn"
+(defn ${1:name} [${2:args...}]
+  (${3:body}))
+endsnippet
+
+snippet l "let"
+(let [${1:binding} ${2:bind-to}]
+	(${3:body}))
+endsnippet
+
+snippet defm "defmacro"
+(defmacro ${1:name}
+  "${2:docstring}"
+  [${3:args...}]
+  (${4:body}))
+endsnippet
+
+snippet deft "deftemplate"
+(html/deftemplate ${1:fn-name} "${2:template.html}" [${3:params}]
+  [${4:selector}] (${5:transformations}))
+endsnippet
+
+snippet defs "defsnippet"
+(html/defsnippet ${1:fn-name} "${2:template.html}" [${3:selector}]
+  [${4:params}]
+  [${5:selector}] (${6:transformations}))
+endsnippet
+
+snippet cl "console log"
+(.log js/console ${1:item})
+endsnippet
