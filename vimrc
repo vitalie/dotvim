@@ -43,6 +43,7 @@ Bundle 'christoomey/vim-tmux-navigator'
 " Bundle 'Valloric/YouCompleteMe'
 Bundle 'mattn/emmet-vim'
 Bundle '29decibel/vim-stringify'
+Bundle 'Absolight/vim-bind'
 
 " =============================================================================
 " Color schemes
@@ -244,6 +245,10 @@ autocmd BufNewFile,BufReadPost *.cljx set filetype=clojure
 
 " Markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
+" Bind
+au BufNewFile,BufReadPost *.bind set filetype=bindzone
+
 
 " =============================================================================
 " Keybindings - General
