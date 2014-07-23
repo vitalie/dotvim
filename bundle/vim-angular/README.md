@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/burnettk/vim-angular.svg)](https://travis-ci.org/burnettk/vim-angular)
 
-Some niceties for using Vim with the AngularJS framework.
+Some niceties for using Vim with the AngularJS framework. See the [screencast][screencast].
 
 The [canonical "what editor should I use for Angular?" post][editorchoice]
 pretty squarely lands on Webstorm/IntelliJ as the peoples' choice 
@@ -21,7 +21,7 @@ also make your life easier when working with angular projects:
 
  * [pangloss/vim-javascript][vim-javascript] - "Vastly improved Javascript indentation and syntax support in Vim."
  * [othree/javascript-libraries-syntax.vim][javascript-libraries-syntax.vim] - "Syntax for JavaScript libraries," including Angular. This is the hotness you want to autocomplete ng-repeat et al. in your html.
- * [matthewsimo/angular-vim-snippets][angular-vim-snippets] - "repo for UltiSnips & Snipmate for angular to be included as a submodule for use in your .vim directory." `ngc<tab>` ftw.
+ * [matthewsimo/angular-vim-snippets][angular-vim-snippets] - "repo for UltiSnips & Snipmate for angular to be included as a submodule for use in your .vim directory." `ngfor<tab>` ftw. The [honza/vim-snippets][vim-snippets] plugin is one library you can use to make this and other library-specific snippets work.
  * [claco/jasmine.vim][jasmine.vim] - "Jasmine Plugin for Vim," making your unit testing experience more excellent
  * [scrooloose/syntastic.git][syntastic] - "Syntax checking hacks for vim": excellent syntax checking for everything, including javascript and html. Install jshint globally (`npm install -g jshint`) and syntastic will get to work checking your javascript the right way (if your project already has a .jshintrc for use with grunt, it will even use that).
 
@@ -66,6 +66,12 @@ from a template path is the "app" directory (which is a common value for
 of these two things don't work for your use case, file a ticket, figure
 out why and file a pull request, or [use ctags][ctags].
 
+Results can be filtered by specifying exclusions in your .vimrc like this:
+
+```
+let g:angular_find_ignore = ['build/', 'dist/']
+```
+
 ### Run the current spec
 
 If you're writing jasmine unit tests for your angular app, they look like
@@ -94,7 +100,7 @@ or the "run spec" mapping:
     <leader>rs
     
 will toggle the spec between "it" and "iit." This works especially well if
-you have a karma watch going. See the [screencast][screencast] (soon come).
+you have a karma watch going, as shown in the [screencast][screencast].
 
 ### Syntastic syntax checker ignores
 
@@ -142,10 +148,11 @@ See `:help license`.
 [vim-javascript]: https://github.com/pangloss/vim-javascript
 [javascript-libraries-syntax.vim]: https://github.com/othree/javascript-libraries-syntax.vim
 [angular-vim-snippets]: https://github.com/matthewsimo/angular-vim-snippets
+[vim-snippets]: https://github.com/honza/vim-snippets
 [jasmine.vim]: https://github.com/claco/jasmine.vim
 [syntastic]: https://github.com/scrooloose/syntastic
 [ctags]: http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
-[screencast]: http://notkeepingitreal.com
+[screencast]: http://youtu.be/-tEaY7HsTn8
 [pathogen]: https://github.com/tpope/vim-pathogen
 [vundle]: https://github.com/gmarik/vundle
 [project]: https://github.com/burnettk/vim-angular
