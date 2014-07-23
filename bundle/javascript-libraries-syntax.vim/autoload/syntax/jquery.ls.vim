@@ -8,7 +8,7 @@
 
 setlocal iskeyword+=$
 
-syntax keyword lsjQuery          containedin=ALLBUT,lsComment,lsLineComment,lsString jQuery $
+syntax keyword lsjQuery jQuery $ containedin=ALLBUT,lsComment,lsLineComment,lsString,lsTemplate,lsTemplateSubstitution
 " syntax match   lsjQuerydot       contained /\./ nextgroup=@lsQGlobals
 " syntax match   lsjQuerydot       contained /([^)]*)\./ nextgroup=@lsQFunctions
 
@@ -57,8 +57,9 @@ syntax keyword lsQTraversing     contained children closest find next nextAll ne
 
 
 " selector
-syntax region  lsString           start=+"+  skip=+\\\\\|\\"+  end=+"\|$+  contains=lsSpecial,@htmlPreproc,@jSelectors
-syntax region  lsString           start=+'+  skip=+\\\\\|\\'+  end=+'\|$+  contains=lsSpecial,@htmlPreproc,@jSelectors
+syntax match   lsASCII                 contained /\\\d\d\d/
+syntax region  lsString                start=/"/  skip=/\\\\\|\\"/  end=/"\|$/ contains=lsASCII,@jSelectors
+syntax region  lsString                start=/'/  skip=/\\\\\|\\'/  end=/'\|$/ contains=lsASCII,@jSelectors
 
 syntax cluster jSelectors      contains=jId,jClass,jOperators,jBasicFilters,jContentFilters,jVisibility,jChildFilters,jForms,jFormFilters
 syntax match   jId             contained /#[0-9A-Za-z_\-]\+/
