@@ -252,6 +252,8 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 " Bind
 au BufNewFile,BufReadPost *.bind set filetype=bindzone
 
+" Cfg
+au BufNewFile,BufReadPost *.cfg set filetype=config
 
 " =============================================================================
 " Keybindings - General
