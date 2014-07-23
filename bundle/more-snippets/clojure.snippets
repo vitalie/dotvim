@@ -48,3 +48,14 @@ endsnippet
 snippet cl "console log"
 (.log js/console ${1:item})
 endsnippet
+
+snippet defc "om component"
+(defn ${1:name} [data owner]
+	(reify
+		om/IDisplayName
+		(display-name [_] ${2:name})
+
+		om/IRender
+		(render [_]
+			(html ${3:body}))))
+endsnippet

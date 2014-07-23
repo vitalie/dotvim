@@ -17,6 +17,8 @@
 Execute (Clean up test environment):
   nmap ; <Plug>SneakNext
   nmap \ <Plug>SneakPrevious
+  omap \ <Plug>SneakPrevious
+  xmap \ <Plug>SneakPrevious
   silent! unmap f
   silent! unmap t
   let mapleader = ','
@@ -67,6 +69,16 @@ Execute (hl#get() returns text definition of highlight group):
 Execute (hl#get() returns empty if highlight group is 'cleared'):
   hi clear Cursor
   Assert "" == sneak#hl#get('Cursor')
+
+Execute (sneak#is_sneaking() returns 1 when activated):
+  norm sab
+  Assert sneak#is_sneaking()
+
+Execute (sneak#cancel() cancels sneak#is_sneaking()):
+  norm sab
+  Assert sneak#is_sneaking()
+  call sneak#cancel()
+  Assert !sneak#is_sneaking()
 
 Execute (streak#sanitize_target_labels()):
   call sneak#streak#init()
@@ -872,7 +884,7 @@ Execute (deactivate language keymap):
   set keymap=
 
 ###########################################################
-# test 1-char inclusive map Sneak_f
+# test Sneak_f map (1 char, f-like)
 
 Execute (map to Sneak_f):
   silent! unmap f

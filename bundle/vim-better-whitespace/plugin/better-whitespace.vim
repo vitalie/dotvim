@@ -2,7 +2,7 @@
 " Repository: https://github.com/ntpeters/vim-better-whitespace
 
 " Prevent loading the plugin multiple times
-if exists( 'g:loaded_better_whitespace_plugin' )
+if exists('g:loaded_better_whitespace_plugin')
     finish
 endif
 let g:loaded_better_whitespace_plugin = 1
@@ -11,7 +11,7 @@ let g:loaded_better_whitespace_plugin = 1
 " initialized if it does not exist prior.
 function! s:InitVariable(var, value)
   if !exists(a:var)
-    execute 'let ' . a:var . ' = ' . a:value
+    execute 'let ' . a:var . ' = ' . string(a:value)
   endif
 endfunction
 
@@ -31,6 +31,9 @@ call s:InitVariable('g:current_line_whitespace_disabled_soft', 0)
 
 " Set this to enable stripping whitespace on file save
 call s:InitVariable('g:strip_whitespace_on_save', 0)
+
+" Set this to blacklist specific filetypes
+call s:InitVariable('g:better_whitespace_filetypes_blacklist', [])
 
 " Only init once
 let s:better_whitespace_initialized = 0
@@ -159,6 +162,11 @@ function! <SID>SetupAutoCommands()
     " Auto commands group
     augroup better_whitespace
         autocmd!
+
+        if index(g:better_whitespace_filetypes_blacklist, &ft) >= 0
+            silent! call clearmatches()
+            return
+        endif
 
         if g:better_whitespace_enabled == 1
             if s:better_whitespace_initialized == 0

@@ -108,13 +108,11 @@ then [repeat.vim](https://github.com/tpope/vim-repeat) is required.
 
 #### Why not use `/`?
 
-For the same reason that Vim has [motions](http://vimdoc.sourceforge.net/htmldoc/motion.html#left-right-motions).
+For the same reason that Vim has [motions](http://vimdoc.sourceforge.net/htmldoc/motion.html#left-right-motions)
+like `f` and `t`: common operations should use as few keystrokes as possible.
 
 * `/ab<cr>` requires 33% more keystrokes than `sab`
-  * `f` and `t` exist for a similar reason
-  * common operations should use as few keystrokes as possible
-* Sneak remembers *only* the initial position in the Vim jumplist
-  * Explore a trail of matches via `;`, then return to the start with a single `ctrl-o` or ``` `` ```
+* Sneak remembers *only* the initial position in the Vim jumplist—so you can explore a trail of matches via `;`, then return to the start with a single `ctrl-o` or ``` `` ```
 * Sneak doesn't clutter your search history
 * Sneak is always literal (no need to escape special characters)
 * Sneak has smarter, subtler highlighting
@@ -129,6 +127,7 @@ For the same reason that Vim has [motions](http://vimdoc.sourceforge.net/htmldoc
 #### How dare you remap `s`?
 
 You can specify any mapping for Sneak (see [`:help sneak`](doc/sneak.txt)).
+By the way: `cl` is equivalent to `s`, and `cc` is equivalent to `S`.
 
 #### How can I replace `f` with Sneak?
 
@@ -143,18 +142,17 @@ You can specify any mapping for Sneak (see [`:help sneak`](doc/sneak.txt)).
 
 #### How can I replace `f` and/or `t` with *one-character* Sneak?
 
-Sneak provides `<Plug>` convenience-mappings for "inclusive" (`f`)
-and "exclusive" (`t`) 1-character-sneak.
+Sneak provides `<Plug>` convenience-mappings for `f` and `t` 1-character-sneak.
 These mappings do *not* invoke streak-mode, even if you have it enabled.
 ```
-    "replace 'f' with inclusive 1-char Sneak
+    "replace 'f' with 1-char Sneak
     nmap f <Plug>Sneak_f
     nmap F <Plug>Sneak_F
     xmap f <Plug>Sneak_f
     xmap F <Plug>Sneak_F
     omap f <Plug>Sneak_f
     omap F <Plug>Sneak_F
-    "replace 't' with exclusive 1-char Sneak
+    "replace 't' with 1-char Sneak
     nmap t <Plug>Sneak_t
     nmap T <Plug>Sneak_T
     xmap t <Plug>Sneak_t
