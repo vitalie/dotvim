@@ -91,7 +91,7 @@ Bundle 'tpope/vim-leiningen'
 Bundle 'hdima/python-syntax'
 
 " Less
-Bundle 'KohPoll/vim-less'
+Bundle 'groenewege/vim-less'
 
 " Sass
 Bundle 'cakebaker/scss-syntax.vim'

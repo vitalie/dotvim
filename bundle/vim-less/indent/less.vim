@@ -1,12 +1,10 @@
-" Vim indent fle
-" Language: Less
-" Author: Kohpoll (http://www.cnblogs.com/kohpoll/)
-" Licensed under MIT.
-" Last Modified: 2012-08-03
+" Vim indent file
+" Language:            LessCSS
+" Maintainer:        Leonard Ehrenfried <leonard.ehrenfried@web.de>
+" Last Change:        2011 Sep 26
 
 if exists("b:did_indent")
   finish
 endif
 
-" use css indent is enough
 runtime! indent/css.vim
