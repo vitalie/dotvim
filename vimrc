@@ -79,14 +79,6 @@ Bundle 'fatih/vim-go'
 " Rust
 Bundle 'wting/rust.vim'
 
-" Clojure
-Bundle 'tpope/vim-classpath'
-Bundle 'guns/vim-clojure-static'
-Bundle 'guns/vim-sexp'
-Bundle 'tpope/vim-sexp-mappings-for-regular-people'
-Bundle 'tpope/vim-fireplace'
-Bundle 'tpope/vim-leiningen'
-
 " Python
 Bundle 'hdima/python-syntax'
 
@@ -241,11 +233,6 @@ au BufNewFile,BufRead *.go set filetype=go
 au FileType go setlocal ai ts=4 sw=4 sts=4 noexpandtab
 let g:go_auto_type_info = 1
 
-" Clojure
-au Filetype clojure let b:AutoPairs = {'(':')', '[':']', '{':'}','"':'"'}
-let g:sexp_enable_insert_mode_mappings = 0
-autocmd BufNewFile,BufReadPost *.cljx set filetype=clojure
-
 " Markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
@@ -288,10 +275,6 @@ nnoremap <Leader>ga :Git add -p %<CR>
 
 " =============================================================================
 " Keybindings - Languages
-
-" Clojure
-au FileType clojure vnoremap <C-E> :Eval<CR>
-au FileType clojure nnoremap <C-E> :Eval<CR>
 
 " Go
 au FileType go nmap K <Plug>(go-doc)
