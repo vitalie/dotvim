@@ -33,7 +33,7 @@ if v:version < 704
   syn match cssBoxProp contained "\<rotation\(-point\)\=\>"
 endif
 
-syn region scssDefinition matchgroup=cssBraces start='{' end='}' contains=cssComment,cssInclude,scssAtRootStatement,scssComment,scssDefinition,scssProperty,scssSelector,scssVariable,scssImport,scssExtend,scssInclude,@scssControl,scssWarn containedin=cssMediaBlock
+syn region scssDefinition matchgroup=cssBraces start='{' end='}' contains=cssComment,cssInclude,scssAtRootStatement,scssComment,scssDefinition,scssProperty,scssSelector,scssVariable,scssImport,scssExtend,scssInclude,@scssControl,scssWarn,scssError containedin=cssMediaBlock
 
 syn match scssSelector "^\zs\([^:@]\|:[^ ]\)\+{\@=" contained contains=@scssSelectors
 syn match scssSelector "^\s*\zs\([^:@{]\|:[^ ]\)\+\_$" contained contains=@scssSelectors
@@ -115,8 +115,9 @@ syn match scssParameterList ".*" contained containedin=cssFunction,scssFunction 
 
 syn match scssVariable "$[[:alnum:]_-]\+" containedin=cssFunction,scssFunction,cssMediaType nextgroup=scssVariableAssignment skipwhite
 syn match scssVariableAssignment ":" contained nextgroup=scssVariableValue skipwhite
-syn match scssVariableValue "[^;)]\+[;)]\@=" contained contains=css.*Attr,cssValue.*,cssColor,cssFunction,cssString.*,cssURL,scssDefault,scssFunction,scssInterpolation,scssNull,scssVariable,scssMap
-syn keyword scssNull null contained;
+syn match scssVariableValue "[^;)]\+[;)]\@=" contained contains=css.*Attr,cssValue.*,cssColor,cssFunction,cssString.*,cssURL,scssDefault,scssFunction,scssInterpolation,scssNull,scssVariable,scssMap,scssGlobal,scssAmpersand
+syn match scssGlobal "!global" contained
+syn keyword scssNull null contained
 
 syn match scssMixin "^@mixin" nextgroup=scssMixinName skipwhite
 syn match scssMixinName "[[:alnum:]_-]\+" contained nextgroup=scssDefinition,scssMixinParams
@@ -142,11 +143,12 @@ syn match scssAmpersand "&" nextgroup=cssPseudoClass,scssSelectorName containedi
 
 syn match scssDebug "@debug" nextgroup=scssOutput
 syn match scssWarn "@warn" nextgroup=scssOutput
+syn match scssError "@error" nextgroup=scssOutput
 syn match scssOutput "[^;]\+" contained contains=cssValue.*,cssString.*,scssFunction,scssVariable
 syn match scssDefault "!default" contained
 
 syn match scssIf "@\=if" nextgroup=scssCondition
-syn match scssCondition "[^{]\+" contained contains=cssValue.*,cssString.*,scssFunction,scssNull,scssVariable
+syn match scssCondition "[^{]\+" contained contains=cssValue.*,cssString.*,scssFunction,scssNull,scssVariable,scssAmpersand
 syn match scssElse "@else" nextgroup=scssIf
 syn match scssElse "@else\(\s*\({\|$\)\)\@="
 syn match scssWhile "@while" nextgroup=scssCondition
@@ -168,6 +170,7 @@ syn keyword scssTodo TODO FIXME NOTE OPTIMIZE XXX contained containedin=cssComme
 
 hi def link scssNestedProperty cssProp
 hi def link scssVariable  Identifier
+hi def link scssGlobal    Special
 hi def link scssNull      Constant
 hi def link scssMixin     PreProc
 hi def link scssMixinName Function
@@ -184,6 +187,7 @@ hi def link scssSelectorName Identifier
 hi def link scssAmpersand Character
 hi def link scssDebug     Debug
 hi def link scssWarn      Debug
+hi def link scssError     Debug
 hi def link scssDefault   Special
 hi def link scssIf        Conditional
 hi def link scssElse      Conditional

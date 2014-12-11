@@ -50,6 +50,7 @@ func! sneak#cancel()
   if maparg('<esc>', 'n') =~# 'sneak#cancel' "teardown temporary <esc> mapping
     silent! unmap <esc>
   endif
+  return ''
 endf
 
 " convenience wrapper for key bindings/mappings
@@ -134,7 +135,7 @@ func! sneak#to(op, input, inputlen, count, repeatmotion, reverse, inclusive, str
     call s:ft_hook()
   endif
 
-  if is_op && 2 != a:inclusive
+  if is_op && 2 != a:inclusive && !a:reverse
     norm! v
   endif
 
@@ -192,7 +193,9 @@ func! sneak#to(op, input, inputlen, count, repeatmotion, reverse, inclusive, str
         \ (s.prefix).(s.match_pattern).(s.search).'\|'.curln_pattern.(s.search))
 
   "let user deactivate with <esc>
-  if maparg('<esc>', 'n') ==# ""|nmap <silent> <esc> :<c-u>call sneak#cancel()<cr><esc>|endif
+  "  - use <expr> map to avoid remapping of e.g. ':', but return <esc>, which
+  "    needs to get remapped (for e.g. `<Home>`).
+  if maparg('<esc>', 'n') ==# ""|nmap <expr> <silent> <esc> sneak#cancel() . "\<esc>"|endif
 
   "enter streak-mode iff there are >=2 _additional_ on-screen matches.
   let target = (2 == a:streak || (a:streak && g:sneak#opt.streak)) && !max(bounds) && s.hasmatches(2)
@@ -369,16 +372,17 @@ xmap <Plug>VSneakPrevious <Plug>SneakPrevious
 
 if g:sneak#opt.map_netrw && -1 != stridx(maparg("s", "n"), "Sneak")
   func! s:map_netrw_key(key)
-    if -1 != stridx(maparg(a:key,"n"), "_Net")
-      exec 'nnoremap <buffer> <silent> <leader>'.a:key.' '.maparg(a:key,'n')
-      "unmap netrw's buffer-local mapping to allow Sneak's global mapping.
+    let expanded_map = maparg(a:key,'n')
+    if !strlen(expanded_map) || expanded_map =~# '_Net\|FileBeagle'
+      exec (expanded_map =~# '<Plug>' ? 'nmap' : 'nnoremap').' <buffer> <silent> <leader>'.a:key.' '.expanded_map
+      "unmap the default buffer-local mapping to allow Sneak's global mapping.
       silent! exe 'nunmap <buffer> '.a:key
     endif
   endf
 
   augroup SneakPluginNetrw
     autocmd!
-    autocmd FileType netrw autocmd SneakPluginNetrw CursorMoved <buffer>
+    autocmd FileType netrw,filebeagle autocmd SneakPluginNetrw CursorMoved <buffer>
           \ call <sid>map_netrw_key('s') | call <sid>map_netrw_key('S') | autocmd! SneakPluginNetrw * <buffer>
   augroup END
 endif

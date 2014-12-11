@@ -61,7 +61,7 @@ function! s:Find(...) abort
   let l:num=strlen(substitute(l:list, "[^\n]", "", "g"))
 
   if l:num < 1
-    echo "'".query."' not found"
+    echo "angular.vim says: '".query."' not found"
     return
   endif
 
@@ -102,7 +102,6 @@ function! s:dashcase(word) abort
   return word
 endfunction
 
-
 function! s:FindFileBasedOnAngularServiceUnderCursor(cmd) abort
   let l:fileundercursor = expand('<cfile>')
 
@@ -123,46 +122,75 @@ function! s:FindFileBasedOnAngularServiceUnderCursor(cmd) abort
 
   let l:wordundercursor = expand('<cword>')
   let l:dashcased = s:dashcase(l:wordundercursor)
-  let l:filethatmayexist = l:dashcased . ".js"
+  let l:filethatmayexist = l:dashcased . '.js'
 
-  call <SID>Find(l:filethatmayexist, a:cmd)
+  if exists('g:angular_filename_convention') && (g:angular_filename_convention == 'camelcased' || g:angular_filename_convention == 'titlecased')
+    call <SID>Find(l:wordundercursor . '.js', a:cmd)
+  else
+    call <SID>Find(l:filethatmayexist, a:cmd)
+  endif
 endfunction
 
+function! s:SubStr(originalstring, pattern, replacement) abort
+  return substitute(a:originalstring, a:pattern, a:replacement, "")
+endfunction
+
+function! s:GenerateTestPaths(currentpath, appbasepath, testbasepath) abort
+  let l:samefilename = s:SubStr(a:currentpath, a:appbasepath, a:testbasepath)
+  let l:withcamelcasedspecsuffix = s:SubStr(s:SubStr(a:currentpath, a:appbasepath, a:testbasepath), ".js", "Spec.js")
+  let l:withdotspecsuffix = s:SubStr(s:SubStr(a:currentpath, a:appbasepath, a:testbasepath), ".js", ".spec.js")
+  return [l:samefilename, l:withcamelcasedspecsuffix, l:withdotspecsuffix]
+endfunction
+
+function! s:GenerateSrcPaths(currentpath, appbasepath, testbasepath) abort
+  return [s:SubStr(s:SubStr(a:currentpath, a:testbasepath, a:appbasepath), "Spec.js", ".js"),
+        \ s:SubStr(s:SubStr(a:currentpath, a:testbasepath, a:appbasepath), ".spec.js", ".js")]
+endfunction
 
 function! s:Alternate(cmd) abort
   let l:currentpath = expand('%')
-  let l:newpaths = []
+  let l:possiblepathsforalternatefile = []
+  for possiblenewpath in [s:SubStr(l:currentpath, ".js", "_test.js"), s:SubStr(l:currentpath, "_test.js", ".js")]
+    if possiblenewpath != l:currentpath
+      let l:possiblepathsforalternatefile = [possiblenewpath]
+    endif
+  endfor
 
-  if l:currentpath =~ "test/unit"
-    let l:newpaths = [
-    \ substitute(l:currentpath, "test/unit", "app/js", ""),
-    \ substitute(l:currentpath, "test/unit", "app/src", ""),
-    \ substitute(substitute(l:currentpath, "test/unit", "app/js", ""), "Spec.js", ".js", ""),
-    \ substitute(substitute(l:currentpath, "test/unit", "app/src", ""), "Spec.js", ".js", "")
-    \ ]
-  elseif l:currentpath =~ "test/karma/unit"
-    let l:newpaths = [substitute(substitute(l:currentpath, "test/karma/unit", "public/js", ""), ".spec.js", ".js", "")]
-  elseif l:currentpath =~ "test/spec"
-    let l:newpaths = [substitute(l:currentpath, "test/spec", "app/scripts", "")]
-  elseif l:currentpath =~ "app/scripts"
-    let l:newpaths = [substitute(l:currentpath, "app/scripts", "test/spec", "")]
-  elseif l:currentpath =~ "app/src"
-    let l:newpaths = [substitute(l:currentpath, "app/src", "test/unit", ""), substitute(substitute(l:currentpath, "app/src", "test/unit", ""), ".js", "Spec.js", "")]
-  elseif l:currentpath =~ "app/js"
-    let l:newpaths = [substitute(l:currentpath, "app/js", "test/unit", ""), substitute(substitute(l:currentpath, "app/js", "test/unit", ""), ".js", "Spec.js", "")]
-  elseif l:currentpath =~ "public/js"
-    let l:newpaths = [substitute(l:currentpath, "public/js", "test/karma/unit", ""), substitute(substitute(l:currentpath, "public/js", "test/karma/unit", ""), ".js", ".spec.js", "")]
+  if exists('g:angular_source_directory')
+    let l:possiblesrcpaths = [g:angular_source_directory]
+  else
+    let l:possiblesrcpaths = ['app/src', 'app/js', 'app/scripts', 'public/js', 'frontend/src']
   endif
 
-  if l:newpaths != []
-    for path in l:newpaths
-      if filereadable(path)
-        return a:cmd . ' ' . fnameescape(path)
-      endif
-    endfor
+  if exists('g:angular_test_directory')
+    let l:possibletestpaths = [g:angular_test_directory]
+  else
+    let l:possibletestpaths = ['test/unit', 'test/spec', 'test/karma/unit', 'tests/frontend']
   endif
 
-  return 'echoerr '.string("Couldn't find alternate file")
+  for srcpath in l:possiblesrcpaths
+    if l:currentpath =~ srcpath
+      for testpath in l:possibletestpaths
+        let l:possiblepathsforalternatefile = l:possiblepathsforalternatefile + s:GenerateTestPaths(l:currentpath, srcpath, testpath)
+      endfor
+    endif
+  endfor
+
+  for testpath in l:possibletestpaths
+    if l:currentpath =~ testpath
+      for srcpath in l:possiblesrcpaths
+        let l:possiblepathsforalternatefile = l:possiblepathsforalternatefile + s:GenerateSrcPaths(l:currentpath, srcpath, testpath)
+      endfor
+    endif
+  endfor
+
+  for path in l:possiblepathsforalternatefile
+    if filereadable(path)
+      return a:cmd . ' ' . fnameescape(path)
+    endif
+  endfor
+
+  return 'echoerr '.string("angular.vim says: Couldn't find alternate file")
 endfunction
 
 
@@ -173,29 +201,36 @@ function! s:SearchUpForPattern(pattern) abort
   execute 'silent normal! ' . '$?' . a:pattern . "\r"
 endfunction
 
+function! s:FirstLetterOf(sourcestring) abort
+  return strpart(a:sourcestring, 0, 1)
+endfunction
 
-function! s:AngularRunSpec() abort
+function! s:AngularRunSpecOrBlock(jasminekeyword) abort
   " save cursor position so we can go back
   let b:angular_pos = getpos('.')
 
-  cal s:SearchUpForPattern('it(')
+  cal s:SearchUpForPattern(a:jasminekeyword . '(')
 
   let l:wordundercursor = expand('<cword>')
+  let l:firstletter = s:FirstLetterOf(a:jasminekeyword)
 
-  if l:wordundercursor == "it"
+  if l:wordundercursor == a:jasminekeyword
     " if there was a spec (anywhere in the file) highlighted with "iit" before, revert it to "it"
     let l:positionofspectorun = getpos('.')
 
     " this can move the cursor, hence setting the cursor back
+    %s/ddescribe/describe/ge
     %s/iit/it/ge
 
     " move cursor back to the spec we want to run
     call setpos('.', l:positionofspectorun)
 
-    " change the current spec to "iit"
-    execute 'silent normal! cwiit'
-  elseif l:wordundercursor == "iit"
-    " delete the second i in "iit"
+    " either change the current spec to "iit" or
+    " the current block to "ddescribe"
+    execute 'silent normal! cw' . l:firstletter . a:jasminekeyword
+  elseif l:wordundercursor == l:firstletter . a:jasminekeyword
+    " either delete the second i in "iit" or
+    " the second d in "ddescribe"
     execute 'silent normal! x'
   endif
 
@@ -203,6 +238,14 @@ function! s:AngularRunSpec() abort
 
   " Reset cursor to previous position.
   call setpos('.', b:angular_pos)
+endfunction
+
+function! s:AngularRunSpecBlock() abort
+  cal s:AngularRunSpecOrBlock('describe')
+endfunction
+
+function! s:AngularRunSpec() abort
+  cal s:AngularRunSpecOrBlock('it')
 endfunction
 
 
@@ -230,5 +273,7 @@ augroup END
 augroup angular_run_spec
   autocmd!
   autocmd FileType javascript command! -buffer AngularRunSpec :call s:AngularRunSpec()
+  autocmd FileType javascript command! -buffer AngularRunSpecBlock :call s:AngularRunSpecBlock()
   autocmd FileType javascript nnoremap <silent><buffer> <Leader>rs  :AngularRunSpec<CR>
+  autocmd FileType javascript nnoremap <silent><buffer> <Leader>rb  :AngularRunSpecBlock<CR>
 augroup END

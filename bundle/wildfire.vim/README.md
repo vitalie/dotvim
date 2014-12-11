@@ -50,24 +50,39 @@ let g:wildfire_objects = {
 One problem with the solution above is that with `html` and `xml` files we loose the ability to select the text objects `i'`, `i"`, `i)`, `i]` and `i}`. To solve this problem, Wildfire allows you to use different mappings for different text object candidates:
 
 ```vim
-vmap <BS> <Plug>(wildfire-water)
-
 map <SPACE> <Plug>(wildfire-fuel)
 let g:wildfire_objects = {
     \ "*" : ["i'", 'i"', "i)", "i]", "i}"]
 \ }
 
-" As you can see, to add additional mappings we have to follow a simple convention
-map <ENTER> <Plug>(wildfire-fuel:tags)
-let g:wildfire_objects_tags = {
+cal wildfire#triggers#Add("<ENTER>", {
     \ "html,xml" : ["at", "it"],
-\ }
+\ })
 ```
 
-### Quick selection (experimental)
+### Quick selection
+
+A visual explanation often works far better than plain old words.
+
+![Preview](_assets/quickselect.gif "Quick selection.")
+
+Wildfire does not set a default mapping for *quick selection*. Be sure to put something like the following line in your `.vimrc`:
 
 ```vim
 nmap <leader>s <Plug>(wildfire-quick-select)
 ```
 
-![Preview](_assets/quickselect.gif "Quick select.")
+By default, *quick selection* use text objects in `g:wildfire_objects` to set "selection marks". Have a look at the example below if you want to use different text object without having to change `g:wildfire_objects`.
+
+```vim
+cal wildfire#triggers#AddQs("<leader>s", {
+    \ "*" : ["i)", "i]"],
+\ })
+```
+
+### Similar plugins
+
+Wildfire is not the only plugin who can smartly select text object. Be sure to have a look at the following plugins if Wildfire doesn't suit your needs:
+
+- [vim-expand-region](https://github.com/terryma/vim-expand-region)
+- [vim-textobj-anyblock](https://github.com/rhysd/vim-textobj-anyblock)

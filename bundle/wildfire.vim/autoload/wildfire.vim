@@ -17,8 +17,8 @@ set cpo&vim
 let s:cannot_be_nested = {"iw" : 1, "aw" : 1, "iW" : 1, "aW": 1}
 
 let s:vim_text_objects = {}
-for char in split("(){}[]<>'`\"bBwWpst", "\\zs")
-    let s:vim_text_objects = extend(s:vim_text_objects, {"a".char : 1, "i".char : 1})
+for s:char in split("(){}[]<>'`\"bBwWpst", "\\zs")
+    let s:vim_text_objects = extend(s:vim_text_objects, {"a".s:char : 1, "i".s:char : 1})
 endfor
 
 let s:counts = {}
@@ -382,7 +382,7 @@ fu s:get_char()
     elseif match(char, 'kd') > 0 | return "<DOWN>"
     elseif match(char, 'kl') > 0 | return "<LEFT>"
     elseif match(char, 'kr') > 0 | return "<RIGHT>"
-    elseif match(char, 'k\\d\\+') > 0 | return "<F" . match(char, '\\d\\+', 4)] . ">"
+    elseif match(char, 'k\\d\\+') > 0 | return "<F" . match(char, '\\d\\+', 4) . ">"
     end
 endfu
 

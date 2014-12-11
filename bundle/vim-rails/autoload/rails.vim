@@ -351,7 +351,7 @@ function! s:readable_controller_name(...) dict abort
   if f =~ '\<app/views/layouts/'
     return s:sub(f,'.*<app/views/layouts/(.{-})\..*','\1')
   elseif f =~ '\<app/views/'
-    return s:sub(f,'.*<app/views/(.{-})/\k+\.\k+%(\.\k+)=$','\1')
+    return s:sub(f,'.*<app/views/(.{-})/\w+%(\.[[:alnum:]_+]+)=\.\w+$','\1')
   elseif f =~ '\<app/helpers/.*_helper\.rb$'
     return s:sub(f,'.*<app/helpers/(.{-})_helper\.rb$','\1')
   elseif f =~ '\<app/controllers/.*\.rb$'
@@ -564,7 +564,7 @@ function! rails#pluralize(word)
   endif
   let word = s:sub(word,'[aeio]@<!y$','ie')
   let word = s:sub(word,'%(nd|rt)@<=ex$','ice')
-  let word = s:sub(word,'%([osxz]|[cs]h)$','&e')
+  let word = s:sub(word,'%([sxz]|[cs]h)$','&e')
   let word = s:sub(word,'f@<!f$','ve')
   let word .= 's'
   let word = s:sub(word,'ersons$','eople')
@@ -586,7 +586,6 @@ endfunction
 
 function! rails#buffer(...)
   return extend(extend({'#': bufnr(a:0 ? a:1 : '%')},s:buffer_prototype,'keep'),s:readable_prototype,'keep')
-  endif
 endfunction
 
 function! s:buffer_app() dict abort
@@ -731,7 +730,7 @@ function! s:readable_calculate_file_type() dict abort
     else
       let r = "model"
     endif
-  elseif f =~ '\<app/views/.*/_\k\+\.\k\+\%(\.\k\+\)\=$'
+  elseif f =~ '\<app/views/.*/_\w\+\%(\.[[:alnum:]_+]\+\)\=\.\w\+$'
     let r = "view-partial-" . e
   elseif f =~ '\<app/views/layouts\>.*\.'
     let r = "view-layout-" . e
@@ -899,12 +898,12 @@ endfunction
 function! s:app_prepare_rails_command(cmd) dict abort
   if self.has_path('.zeus.sock') && a:cmd =~# '^\%(console\|dbconsole\|destroy\|generate\|server\|runner\)\>'
     return 'zeus '.a:cmd
+  elseif self.has_path('bin/rails')
+    let cmd = 'bin/rails '.a:cmd
   elseif self.has_path('script/rails')
     let cmd = 'script/rails '.a:cmd
   elseif self.has_path('script/' . matchstr(a:cmd, '\w\+'))
     let cmd = 'script/'.a:cmd
-  elseif self.has_path('bin/rails')
-    let cmd = 'bin/rails '.a:cmd
   elseif self.has('bundler')
     return 'bundle exec rails ' . a:cmd
   else
@@ -1016,15 +1015,15 @@ function! s:BufCommands()
 endfunction
 
 function! s:Log(bang,arg)
-  let lf = 'log/' . (empty(a:arg) ? s:environment() : a:arg) . '.log'
+  let lf = rails#app().path('log/' . (empty(a:arg) ? s:environment() : a:arg) . '.log')
   if a:bang
-    exe "cgetfile ".lf
+    exe 'cgetfile' s:fnameescape(lf)
     clast
   else
     if exists(":Tail") == 2
-      Tail  `=rails#app().path(lf)`
+      exe 'Tail'  s:fnameescape(lf)
     else
-      pedit `=rails#app().path(lf)`
+      exe 'pedit' s:fnameescape(lf)
     endif
   endif
 endfunction
@@ -1048,7 +1047,7 @@ function! rails#new_app_command(bang,...) abort
   let temp = tempname()
   try
     if &shellpipe =~# '%s'
-      let pipe = s:sub(&shellpipe, '%s', temp, 'g')
+      let pipe = s:sub(&shellpipe, '\%s', temp)
     else
       let pipe = &shellpipe . ' ' . temp
     endif
@@ -1173,13 +1172,16 @@ call s:add_methods('app', ['rake_tasks'])
 let g:rails#rake_errorformat = '%D(in\ %f),'
       \.'%\\s%#from\ %f:%l:%m,'
       \.'%\\s%#from\ %f:%l:,'
-      \.'%\\s#{RAILS_ROOT}/%f:%l:\ %#%m,'
       \.'%\\s%##\ %f:%l:%m,'
       \.'%\\s%##\ %f:%l,'
       \.'%\\s%#[%f:%l:\ %#%m,'
       \.'%\\s%#%f:%l:\ %#%m,'
       \.'%\\s%#%f:%l:,'
-      \.'%m\ [%f:%l]:'
+      \.'%m\ [%f:%l]:,'
+      \.'%+Erake\ aborted!,'
+      \.'%+EDon''t\ know\ how\ to\ build\ task\ %.%#,'
+      \.'%+Einvalid\ option:%.%#,'
+      \.'%+Irake\ %\\S%\\+%\\s%\\+#\ %.%#'
 
 function! s:make(bang, args, ...)
   if exists(':Make') == 2
@@ -1201,8 +1203,13 @@ function! s:Rake(bang,lnum,arg)
   try
     call s:push_chdir(1)
     let b:current_compiler = 'rake'
+    if !empty(findfile('compiler/rake.vim', escape(&rtp, ' ')))
+      compiler rake
+    else
+      let &l:errorformat = g:rails#rake_errorformat
+      let b:current_compiler = 'rake'
+    endif
     let &l:makeprg = rails#app().rake_command()
-    let &l:errorformat = g:rails#rake_errorformat
     let arg = a:arg
     if &filetype =~# '^ruby\>' && arg == ''
       let mnum = s:lastmethodline(lnum)
@@ -1365,10 +1372,8 @@ function! s:readable_default_rake_task(...) dict abort
         return "db:migrate:down VERSION=".ver
       elseif method == "up" || lnum == line('$')
         return "db:migrate:up VERSION=".ver
-      elseif lnum > 0
-        return "db:migrate:down db:migrate:up VERSION=".ver
       else
-        return "db:migrate VERSION=".ver
+        return "db:migrate:down db:migrate:up VERSION=".ver
       endif
     else
       return 'db:migrate'
@@ -1610,7 +1615,7 @@ endfunction
 " Script Wrappers {{{1
 
 function! s:BufScriptWrappers()
-  command! -buffer -bang -bar -nargs=* -complete=customlist,s:Complete_script   Rscript       :execute empty(<q-args>) ? rails#app().script_command(<bang>0, 'console') ? rails#app().script_command(<bang>0,<f-args>)
+  command! -buffer -bang -bar -nargs=* -complete=customlist,s:Complete_script   Rscript       :execute empty(<q-args>) ? rails#app().script_command(<bang>0, 'console') : rails#app().script_command(<bang>0,<f-args>)
   command! -buffer -bang -bar -nargs=* -complete=customlist,s:Complete_environments Console   :Rails<bang> console <args>
   command! -buffer -bang -bar -nargs=* -complete=customlist,s:Complete_script   Rails         :execute rails#app().script_command(<bang>0,<f-args>)
   command! -buffer -bang -bar -nargs=* -complete=customlist,s:Complete_generate Rgenerate     :execute rails#app().generator_command(<bang>0,'generate',<f-args>)
@@ -1827,7 +1832,7 @@ let s:efm_generate =
       \ s:color_efm('%-G', 'create', ' ') .
       \ s:color_efm('%-G', 'exist', ' ') .
       \ s:color_efm('Overwrite%.%#', '%m', '%f') .
-      \ s:color_efm('', '%m', '   %f') .
+      \ s:color_efm('', '%m', ' %f') .
       \ s:color_efm('', '%m', '%f') .
       \ '%-G%.%#'
 
@@ -2819,13 +2824,18 @@ function! s:readable_resolve_view(name, ...) dict abort
   let pre = 'app/views/'
   if name !~# '/'
     let controller = self.controller_name(1)
+    let found = ''
     if controller != ''
-      let name = controller.'/'.name
+      let found = call(self.resolve_view, [controller.'/'.name] + a:000, self)
     endif
+    if empty(found)
+      let found = call(self.resolve_view, ['application/'.name] + a:000, self)
+    endif
+    return found
   endif
   if name =~# '/' && !self.app().has_path(fnamemodify('app/views/'.name, ':h'))
     return ''
-  elseif name =~# '\.\w\+\.\w\+$' || name =~# '\.\%('.join(s:view_types,'\|').'\)$'
+  elseif name =~# '\.[[:alnum:]_+]\+\.\w\+$' || name =~# '\.\%('.join(s:view_types,'\|').'\)$'
     return pre.name
   else
     for format in ['.'.self.format(a:0 ? a:1 : 0), '']
@@ -3066,7 +3076,7 @@ function! s:readable_open_command(cmd, argument, name, projections) dict abort
       let file = ''
     endif
     if !empty(file) && self.app().has_path(file)
-      let file = self.app().path(file)
+      let file = fnamemodify(self.app().path(file), ':.')
       return cmd . ' ' . s:fnameescape(file) . '|exe ' . s:sid . 'djump('.string(djump) . ')'
     endif
   endfor
@@ -3106,7 +3116,8 @@ function! s:readable_open_command(cmd, argument, name, projections) dict abort
         let template = s:split(get(projected, 0, ''))
       endif
       call map(template, 's:gsub(v:val, "\t", "  ")')
-      return cmd . ' ' . s:fnameescape(simplify(file)) . '|call setline(1, '.string(template).')' . '|set nomod'
+      let file = fnamemodify(simplify(file), ':.')
+      return cmd . ' ' . s:fnameescape(file) . '|call setline(1, '.string(template).')' . '|set nomod'
     endif
   endfor
   return 'echoerr '.string("Couldn't find destination directory for ".a:name.' '.a:argument)
@@ -3343,7 +3354,7 @@ endfunction
 function! s:readable_alternate(...) dict abort
   let candidates = self.alternate_candidates(a:0 ? a:1 : 0)
   for file in candidates
-    if self.app().has_path(file)
+    if self.app().has_path(s:sub(file, '#.*', ''))
       return file
     endif
   endfor
@@ -3791,7 +3802,7 @@ function! rails#buffer_syntax()
           syn keyword rubyRailsTestControllerMethod assert_response assert_redirected_to assert_template assert_recognizes assert_generates assert_routing assert_dom_equal assert_dom_not_equal assert_select assert_select_rjs assert_select_encoded assert_select_email assert_tag assert_no_tag
         endif
       elseif buffer.type_name('spec')
-        syn keyword rubyRailsTestMethod describe context it its specify shared_context shared_examples_for it_should_behave_like it_behaves_like before after around subject fixtures controller_name helper_name scenario feature background
+        syn keyword rubyRailsTestMethod describe context it its specify shared_context shared_examples shared_examples_for shared_context include_examples include_context it_should_behave_like it_behaves_like before after around subject fixtures controller_name helper_name scenario feature background
         syn match rubyRailsTestMethod '\<let\>!\='
         syn keyword rubyRailsTestMethod violated pending expect allow double instance_double mock mock_model stub_model
         syn match rubyRailsTestMethod '\.\@<!\<stub\>!\@!'
@@ -3800,6 +3811,9 @@ function! rails#buffer_syntax()
           syn keyword rubyRailsTestControllerMethod  integrate_views render_views
           syn keyword rubyRailsMethod params request response session flash
           syn keyword rubyRailsMethod polymorphic_path polymorphic_url
+          if buffer.type_name('spec-view')
+            syn keyword rubyRailsTestViewMethod render rendered assign
+          endif
         endif
       endif
       if buffer.type_name('task')
@@ -3882,6 +3896,7 @@ function! s:HiDefaults()
   hi def link rubyRailsControllerMethod       rubyRailsMethod
   hi def link rubyRailsFilterMethod           rubyRailsMethod
   hi def link rubyRailsTestControllerMethod   rubyRailsTestMethod
+  hi def link rubyRailsTestViewMethod         rubyRailsTestMethod
   hi def link rubyRailsTestMethod             rubyRailsMethod
   hi def link rubyRailsRakeMethod             rubyRailsMethod
   hi def link rubyRailsMethod                 railsMethod
@@ -4556,7 +4571,7 @@ function! s:SetBasePath() abort
 
   let path += ['app/*', 'app/views']
   if self.controller_name() != ''
-    let path += ['app/views/'.self.controller_name(), 'public']
+    let path += ['app/views/'.self.controller_name(), 'app/views/application', 'public']
   endif
   if self.app().has('test')
     let path += ['test', 'test/unit', 'test/functional', 'test/integration', 'test/controllers', 'test/helpers', 'test/mailers', 'test/models']
