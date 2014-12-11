@@ -37,7 +37,6 @@ Bundle 'justinmk/vim-sneak'
 Bundle 'scrooloose/syntastic'
 Bundle 'mileszs/ack.vim'
 Bundle 'SirVer/ultisnips'
-Bundle 'bcarrell/more-snippets'
 Bundle 'ntpeters/vim-better-whitespace'
 Bundle 'christoomey/vim-tmux-navigator'
 " Bundle 'Valloric/YouCompleteMe'
@@ -99,6 +98,9 @@ Bundle 'wavded/vim-stylus'
 
 " Jade
 Bundle 'digitaltoad/vim-jade'
+
+" Slim
+Bundle 'slim-template/vim-slim'
 
 " JSON
 Bundle 'elzr/vim-json'
