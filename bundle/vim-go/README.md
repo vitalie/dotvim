@@ -1,14 +1,13 @@
 # vim-go
 
-Full featured Go (golang) support for Vim. vim-go installs automatically all
-necessary binaries for providing seamless Vim integration . It comes with
-pre-defined sensible settings (like auto gofmt on save), has autocomplete,
-snippet support, improved syntax highlighting, go toolchain commands, etc...
-It's highly customizable and has settings for disabling/enabling features
-easily. Do not use it with other Go plugins.
+Go (golang) support for Vim. It comes with pre-defined sensible settings (like
+auto gofmt on save), has autocomplete, snippet support, improved syntax
+highlighting, go toolchain commands, etc...  If needed vim-go installs all
+necessary binaries for providing seamless Vim integration with current
+commands. It's highly customizable and each individual feature can be
+disabled/enabled easily.
 
-
-![vim-go](https://dl.dropboxusercontent.com/u/174404/vim-go.png)
+![vim-go](https://dl.dropboxusercontent.com/u/174404/vim-go-2.png)
 
 ## Features
 
@@ -22,9 +21,12 @@ easily. Do not use it with other Go plugins.
 * Compile and `go build` your package, install it with `go install`
 * `go run` quickly your current file/files
 * Run `go test` and see any errors in quickfix window
+* Create a coverage profile and display annotated source code in browser to see
+  which functions are covered.
 * Lint your code with `golint`
-* Run your code trough `go vet` to catch static errors.
+* Run your code through `go vet` to catch static errors.
 * Advanced source analysis tool with `oracle`
+* Precise type-safe renaming of identifiers with `gorename`
 * List all source files and dependencies
 * Checking with `errcheck` for unchecked errors.
 * Integrated and improved snippets. Supports `ultisnips` or `neosnippet`
@@ -34,8 +36,8 @@ easily. Do not use it with other Go plugins.
 
 ## Install
 
-
-If you use pathogen, just clone it into your bundle directory:
+First of all, do not use it with other Go plugins. If you use pathogen, just
+clone it into your bundle directory:
 
 ```bash
 $ cd ~/.vim/bundle
@@ -47,12 +49,13 @@ For Vundle add this line to your vimrc:
 ```vimrc
 Plugin 'fatih/vim-go'
 ```
-and execute `:PluginInstall`
+and execute `:PluginInstall` (or `:BundleInstall` for older versions of Vundle)
 
-
-For the first Vim start it will try to download and install all necessary go
-binaries. It requires `git` and `hg` for fetching the individual Go packages.
-This can take some time. To disable this behaviour add `let g:go_disable_autoinstall = 1`
+Please be sure all necessary binaries are installed (such as `gocode`, `godef`,
+`goimports`, etc..). You can easily install them with the included
+`:GoInstallBinaries`. Those binaries will be automatically downloaded and
+installed to your `$GOBIN` environment (if not set it will use `$GOPATH/bin`).
+It requires `git` and `hg` for fetching the individual Go packages.
 
 ### Optional
 
@@ -75,11 +78,17 @@ the help page to see all commands:
 
     :help vim-go
 
-
 ## Mappings
 
 vim-go has several `<Plug>` mappings which can be used to create custom
 mappings. Below are some examples you might find useful:
+
+Show a list of interfaces which is implemented by the type under your cursor
+with `<leader>s` 
+
+```vim
+au FileType go nmap <Leader>s <Plug>(go-implements)
+```
 
 Show type info for the word under your cursor with `<leader>i` (useful if you
 have disabled auto showing type info via `g:go_auto_type_info`)
@@ -102,28 +111,32 @@ Or open the Godoc in browser
 au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
 ```
 
-Run commands, such as  `go run` with `<leader>r` for the current file or `go build` and `go test` for
-the current package with `<leader>b` and `<leader>t`.
+Run commands, such as  `go run` with `<leader>r` for the current file or `go
+build` and `go test` for the current package with `<leader>b` and `<leader>t`.
+Display a beautiful annotated source code to see which functions are covered
+with `<leader>c`.
 
 ```vim
 au FileType go nmap <leader>r <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <leader>c <Plug>(go-coverage)
 ```
 
-Replace `gd` (Goto Declaration) for the word under your cursor (replaces current buffer):
-
-```vim
-au FileType go nmap gd <Plug>(go-def)
-```
-
-Or open the definition/declaration in a new vertical, horizontal or tab for the
-word under your cursor:
+By default the mapping `gd` is enabled which opens the target identifier in
+current buffer. You can also open the definition/declaration in a new vertical,
+horizontal or tab for the word under your cursor:
 
 ```vim
 au FileType go nmap <Leader>ds <Plug>(go-def-split)
 au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
 au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+```
+
+Rename the identifier under the cursor to a new name
+
+```vim
+au FileType go nmap <Leader>e <Plug>(go-rename)
 ```
 
 More `<Plug>` mappings can be seen with `:he go-mappings`. Also these are just
@@ -145,41 +158,31 @@ By default vim-go shows errors for the fmt command, to disable it:
 let g:go_fmt_fail_silently = 1
 ```
 
+Enable goimports to automatically insert import paths instead of gofmt:
+
+```vim
+let g:go_fmt_command = "goimports"
+```
+
 Disable auto fmt on save:
 
 ```vim
 let g:go_fmt_autosave = 0
 ```
 
-Disable goimports and use gofmt for the fmt command:
+By default binaries are installed to `$GOBIN` or `$GOPATH/bin`. To change it:
 
 ```vim
-let g:go_fmt_command = "gofmt"
-```
-
-By default binaries are installed to `$HOME/.vim-go/`. To change it:
-
-```vim
-let g:go_bin_path = expand("~/.mypath")
+let g:go_bin_path = expand("~/.gotools")
 let g:go_bin_path = "/home/fatih/.mypath"      "or give absolute path
 ```
 
-Change individual binary paths, if the binary doesn't exist vim-go will
-download and install it to `g:go_bin_path`
-
+By default syntax-highlighting for Functions, Methods and Structs is disabled.
+To change it:
 ```vim
-let g:go_gocode_bin="~/your/custom/gocode/path"
-let g:go_goimports_bin="~/your/custom/goimports/path"
-let g:go_godef_bin="~/your/custom/godef/path"
-let g:go_oracle_bin="~/your/custom/godef/path"
-let g:go_golint_bin="~/your/custom/golint/path"
-let g:go_errcheck_bin="~/your/custom/errcheck/path"
-```
-
-If you wish you can disable auto installation of binaries completely.
-
-```vim
-let g:go_disable_autoinstall = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
 ```
 
 ## Snippets
@@ -232,6 +235,27 @@ type foo struct {
 And many more! For the full list have a look at the
 [included snippets](https://github.com/fatih/vim-go/blob/master/gosnippets/):
 
+## Troubleshooting
+
+### I'm using Fish shell but have some problems using Vim-go
+
+First environment variables in Fish are applied differently, it should be like:
+
+	set -x GOPATH /your/own/gopath
+
+Second, Vim needs a POSIX compatible shell (more info here:
+https://github.com/dag/vim-fish#teach-a-vim-to-fish). If you use Fish to open
+vim, it will make certain shell based commands fail (means vim-go will fail
+too). To overcome this problem change the default shell by adding the following
+into your .vimrc (on the top of the file):
+
+	if $SHELL =~ 'fish'
+	  set shell='/bin/bash'
+	endif
+
+or
+
+	set shell='/bin/bash'
 
 
 ## Why another plugin?
