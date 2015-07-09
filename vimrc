@@ -43,6 +43,7 @@ Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'mattn/emmet-vim'
 Bundle '29decibel/vim-stringify'
 Bundle 'Absolight/vim-bind'
+Bundle 'elixir-lang/vim-elixir'
 
 " =============================================================================
 " Color schemes
