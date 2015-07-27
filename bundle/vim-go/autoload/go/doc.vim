@@ -71,6 +71,14 @@ function! s:godocWord(args)
     return [pkg, exported_name]
 endfunction
 
+function! s:godocNotFound(content)
+    if len(a:content) == 0
+        return 1
+    endif
+
+    return a:content =~# '^.*: no such file or directory\n$'
+endfunction
+
 function! go#doc#OpenBrowser(...)
     let pkgs = s:godocWord(a:000)
     if empty(pkgs)
@@ -85,7 +93,7 @@ function! go#doc#OpenBrowser(...)
     call go#tool#OpenBrowser(godoc_url)
 endfunction
 
-function! go#doc#Open(mode, ...)
+function! go#doc#Open(newmode, mode, ...)
     let pkgs = s:godocWord(a:000)
     if empty(pkgs)
         return
@@ -97,12 +105,12 @@ function! go#doc#Open(mode, ...)
     let command = g:go_doc_command . ' ' . g:go_doc_options . ' ' . pkg
 
     silent! let content = system(command)
-    if v:shell_error || !len(content)
+    if v:shell_error || s:godocNotFound(content)
         echo 'No documentation found for "' . pkg . '".'
         return -1
     endif
 
-    call s:GodocView(a:mode, content)
+    call s:GodocView(a:newmode, a:mode, content)
 
     if exported_name == ''
         silent! normal gg
@@ -129,10 +137,10 @@ function! go#doc#Open(mode, ...)
     silent! normal gg
 endfunction
 
-function! s:GodocView(position, content)
+function! s:GodocView(newposition, position, content)
     " reuse existing buffer window if it exists otherwise create a new one
     if !bufexists(s:buf_nr)
-        execute a:position
+        execute a:newposition
         sil file `="[Godoc]"`
         let s:buf_nr = bufnr('%')
     elseif bufwinnr(s:buf_nr) == -1
