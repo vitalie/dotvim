@@ -1,6 +1,6 @@
 " sneak.vim - The missing motion
 " Author:       Justin M. Keyes
-" Version:      1.7.2
+" Version:      1.7.4
 " License:      MIT
 
 if exists('g:loaded_sneak_plugin') || &compatible || v:version < 700
@@ -20,10 +20,13 @@ func! sneak#init()
   let g:sneak#opt = { 'f_reset' : get(g:, 'sneak#nextprev_f', get(g:, 'sneak#f_reset', 1))
       \ ,'t_reset'      : get(g:, 'sneak#nextprev_t', get(g:, 'sneak#t_reset', 1))
       \ ,'s_next'       : get(g:, 'sneak#s_next', 0)
+      \ ,'absolute_dir' : get(g:, 'sneak#absolute_dir', 0)
       \ ,'textobject_z' : get(g:, 'sneak#textobject_z', 1)
       \ ,'use_ic_scs'   : get(g:, 'sneak#use_ic_scs', 0)
       \ ,'map_netrw'    : get(g:, 'sneak#map_netrw', 1)
       \ ,'streak'       : get(g:, 'sneak#streak', 0) && (v:version >= 703) && has("conceal")
+      \ ,'streak_esc'   : get(g:, 'sneak#streak_esc', "\<space>")
+      \ ,'prompt'       : get(g:, 'sneak#prompt', '>')
       \ }
 
   for k in ['f', 't'] "if user mapped f/t to Sneak, then disable f/t reset.
@@ -73,14 +76,18 @@ func! sneak#rpt(op, reverse) abort
     return
   endif
 
+  let l:relative_reverse = (a:reverse && !s:st.reverse) || (!a:reverse && s:st.reverse)
   call sneak#to(a:op, s:st.input, s:st.inputlen, v:count1, 1,
-        \ ((a:reverse && !s:st.reverse) || (!a:reverse && s:st.reverse)), s:st.inclusive, 0)
+        \ (g:sneak#opt.absolute_dir ? a:reverse : l:relative_reverse), s:st.inclusive, 0)
 endf
 
 " input:      may be shorter than inputlen if the user pressed <enter> at the prompt.
 " inclusive:  0 => like t, 1 => like f, 2 => like /
 func! sneak#to(op, input, inputlen, count, repeatmotion, reverse, inclusive, streak) abort "{{{
   if empty(a:input) "user canceled
+    if a:op ==# 'c'  " user <esc> during change-operation should return to previous mode.
+      call feedkeys((col('.') > 1 && col('.') < col('$') ? "\<RIGHT>" : '') . "\<C-\>\<C-G>", 'n')
+    endif
     redraw | echo '' | return
   endif
 
@@ -192,13 +199,13 @@ func! sneak#to(op, input, inputlen, count, repeatmotion, reverse, inclusive, str
   let w:sneak_hl_id = matchadd('SneakPluginTarget',
         \ (s.prefix).(s.match_pattern).(s.search).'\|'.curln_pattern.(s.search))
 
-  "let user deactivate with <esc>
-  "  - use <expr> map to avoid remapping of e.g. ':', but return <esc>, which
-  "    needs to get remapped (for e.g. `<Home>`).
-  if maparg('<esc>', 'n') ==# ""|nmap <expr> <silent> <esc> sneak#cancel() . "\<esc>"|endif
+  "Let user deactivate with <esc>
+  if (has('nvim') || has('gui_running')) && maparg('<esc>', 'n') ==# ""
+    nmap <expr> <silent> <esc> sneak#cancel() . "\<esc>"
+  endif
 
   "enter streak-mode iff there are >=2 _additional_ on-screen matches.
-  let target = (2 == a:streak || (a:streak && g:sneak#opt.streak)) && !max(bounds) && s.hasmatches(2)
+  let target = (2 == a:streak || (a:streak && g:sneak#opt.streak && s.hasmatches(2))) && !max(bounds)
         \ ? sneak#streak#to(s, is_v, a:reverse): ""
 
   if !is_op
@@ -217,7 +224,7 @@ func! s:attach_autocmds()
     autocmd!
     autocmd InsertEnter,WinLeave,BufLeave <buffer> call sneak#cancel()
     "_nested_ autocmd to skip the _first_ CursorMoved event.
-    "NOTE: CursorMoved is _not_ triggered if there is 'typeahead', i.e. during a macro or script...
+    "NOTE: CursorMoved is _not_ triggered if there is typeahead during a macro/script...
     autocmd CursorMoved <buffer> autocmd SneakPlugin CursorMoved <buffer> call sneak#cancel()
   augroup END
 endf
@@ -256,7 +263,7 @@ endf
 
 func! s:getnchars(n, mode)
   let s = ''
-  echo '>'
+  echo g:sneak#opt.prompt
   for i in range(1, a:n)
     if sneak#util#isvisualop(a:mode) | exe 'norm! gv' | endif "preserve selection
     let c = sneak#util#getchar()
@@ -280,7 +287,7 @@ func! s:getnchars(n, mode)
         break
       endif
     endif
-    redraw | echo '>'.s
+    redraw | echo g:sneak#opt.prompt . s
   endfor
   return s
 endf
@@ -374,7 +381,9 @@ if g:sneak#opt.map_netrw && -1 != stridx(maparg("s", "n"), "Sneak")
   func! s:map_netrw_key(key)
     let expanded_map = maparg(a:key,'n')
     if !strlen(expanded_map) || expanded_map =~# '_Net\|FileBeagle'
-      exec (expanded_map =~# '<Plug>' ? 'nmap' : 'nnoremap').' <buffer> <silent> <leader>'.a:key.' '.expanded_map
+      if strlen(expanded_map) > 0 "else, mapped to <nop>
+        silent exe (expanded_map =~# '<Plug>' ? 'nmap' : 'nnoremap').' <buffer> <silent> <leader>'.a:key.' '.expanded_map
+      endif
       "unmap the default buffer-local mapping to allow Sneak's global mapping.
       silent! exe 'nunmap <buffer> '.a:key
     endif

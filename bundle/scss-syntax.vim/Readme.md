@@ -9,11 +9,11 @@ I recommend to use a plugin manager like [Vundle](https://github.com/gmarik/vund
 Open your `~/.vimrc` file and add the following line(s):
 
 ```vim
-Bundle 'JulesWang/css.vim' " only necessary if your Vim version < 7.4
-Bundle 'cakebaker/scss-syntax.vim'
+Plugin 'JulesWang/css.vim' " only necessary if your Vim version < 7.4
+Plugin 'cakebaker/scss-syntax.vim'
 ```
 
-Afterwards, run `:BundleInstall` in Vim.
+Afterwards, run `:PluginInstall` in Vim.
 
 ### Manual
 
@@ -24,6 +24,10 @@ Afterwards, run `:BundleInstall` in Vim.
 ## Configuration
 
 Usually no configuration is necessary.
+
+### CSS3
+
+For highlighting CSS elements, this plugin relies on `css.vim` that comes bundled with Vim. Unfortunately, it's support for CSS3 is only rudimentary. To avoid highlighting issues I recommend to install the [vim-css3-syntax](https://github.com/hail2u/vim-css3-syntax) plugin.
 
 ### Filetype
 

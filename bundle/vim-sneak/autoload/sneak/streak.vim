@@ -88,11 +88,14 @@ func! s:do_streak(s, v, reverse) "{{{
   call s:after()
 
   let mappedto = maparg(choice, a:v ? 'x' : 'n')
-  let mappedtoNext = mappedto =~# '<Plug>SneakNext'
+  let mappedtoNext = (g:sneak#opt.absolute_dir && a:reverse)
+        \ ? mappedto =~# '<Plug>SneakPrevious'
+        \ : mappedto =~# '<Plug>SneakNext'
 
   if choice == "\<Tab>" && overflow[0] > 0 "overflow => decorate next N matches
     call cursor(overflow[0], overflow[1])
-  elseif -1 != index(["\<Esc>", "\<C-c>"], choice)
+  elseif (strlen(g:sneak#opt.streak_esc) && choice ==# g:sneak#opt.streak_esc)
+        \ || -1 != index(["\<Esc>", "\<C-c>"], choice)
     return "\<Esc>" "exit streak-mode.
   elseif !mappedtoNext && !has_key(s:matchmap, choice) "press _any_ invalid key to escape.
     call feedkeys(choice) "exit streak-mode and fall through to Vim.
@@ -186,7 +189,8 @@ func! sneak#streak#sanitize_target_labels()
     if s:is_special_key(k) "remove the char
       let g:sneak#target_labels = substitute(g:sneak#target_labels, '\%'.(i+1).'c.', '', '')
       "move ; (or s if 'clever-s' is enabled) to the front.
-      if (!g:sneak#opt.s_next && maparg(k, 'n') =~# '<Plug>SneakNext') || (maparg(k, 'n') =~# '<Plug>Sneak\(_s\|Forward\)')
+      if !g:sneak#opt.absolute_dir
+            \ && ((!g:sneak#opt.s_next && maparg(k, 'n') =~# '<Plug>SneakNext') || (maparg(k, 'n') =~# '<Plug>Sneak\(_s\|Forward\)'))
         let g:sneak#target_labels = k . g:sneak#target_labels
       else
         let nrkeys -= 1

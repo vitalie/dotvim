@@ -12,12 +12,14 @@ let s:libs = [
   \ 'prelude',
   \ 'angularjs',
   \ 'angularui',
+  \ 'angularuirouter',
   \ 'requirejs',
   \ 'sugar',
   \ 'jasmine',
   \ 'chai',
   \ 'react',
-  \ 'flux'
+  \ 'flux',
+  \ 'handlebars'
   \ ]
 
 let s:default_libs = [
