@@ -36,13 +36,13 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'justinmk/vim-sneak'
 Bundle 'scrooloose/syntastic'
 Bundle 'mileszs/ack.vim'
-Bundle 'SirVer/ultisnips'
 Bundle 'ntpeters/vim-better-whitespace'
-" Bundle 'Valloric/YouCompleteMe'
 Bundle 'mattn/emmet-vim'
 Bundle '29decibel/vim-stringify'
 Bundle 'Absolight/vim-bind'
 Bundle 'elixir-lang/vim-elixir'
+" Bundle 'SirVer/ultisnips'
+" Bundle 'Valloric/YouCompleteMe'
 
 " =============================================================================
 " Color schemes
