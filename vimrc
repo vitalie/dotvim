@@ -169,6 +169,11 @@ set wildignore+=.bak,.pyc,.o,.ojb,.,a,
 colorscheme default
 set pastetoggle=<F2>
 
+" Set swap file location.
+set nobackup
+set nowritebackup
+set swapfile
+set directory=$HOME/tmp/vim,$HOME/tmp
 
 " =============================================================================
 " Settings - Plugins
@@ -275,6 +280,7 @@ nnoremap <Leader>gw :Gwrite<CR>
 nnoremap <Leader>ge :Gedit<CR>
 nnoremap <Leader>ga :Git add -p %<CR>
 
+nnoremap <silent><Tab> <C-w>w
 
 " =============================================================================
 " Keybindings - Languages
