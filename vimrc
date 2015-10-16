@@ -38,7 +38,6 @@ Bundle 'scrooloose/syntastic'
 Bundle 'mileszs/ack.vim'
 Bundle 'SirVer/ultisnips'
 Bundle 'ntpeters/vim-better-whitespace'
-Bundle 'christoomey/vim-tmux-navigator'
 " Bundle 'Valloric/YouCompleteMe'
 Bundle 'mattn/emmet-vim'
 Bundle '29decibel/vim-stringify'
@@ -249,9 +248,6 @@ au BufNewFile,BufReadPost *.cfg set filetype=config
 
 nnoremap ci( %ci(
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
-nnoremap <F1> :call RestartThyme()<CR>
-inoremap <F1> <nop>
-vnoremap <F1> <nop>
 inoremap ,c <C-x><C-o>
 map Q mzgg=G`z<CR>
 cmap w!! w !sudo tee % >/dev/null
