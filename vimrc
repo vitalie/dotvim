@@ -67,12 +67,6 @@ Bundle 'pangloss/vim-javascript'
 " CoffeeScript
 Bundle 'kchmck/vim-coffee-script'
 
-" Dart
-Bundle 'dart-lang/dart-vim-plugin'
-
-" TypeScript
-Bundle 'leafgarland/typescript-vim'
-
 " Go
 Bundle 'fatih/vim-go'
 
