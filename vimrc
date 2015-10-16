@@ -40,7 +40,6 @@ Bundle 'ntpeters/vim-better-whitespace'
 Bundle 'mattn/emmet-vim'
 Bundle '29decibel/vim-stringify'
 Bundle 'Absolight/vim-bind'
-Bundle 'elixir-lang/vim-elixir'
 " Bundle 'SirVer/ultisnips'
 " Bundle 'Valloric/YouCompleteMe'
 
@@ -104,6 +103,9 @@ Bundle 'burnettk/vim-angular'
 Bundle 'othree/javascript-libraries-syntax.vim'
 " Bundle 'matthewsimo/angular-vim-snippets'
 Bundle 'claco/jasmine.vim'
+
+" Elixir
+Bundle 'elixir-lang/vim-elixir'
 
 
 " =============================================================================
