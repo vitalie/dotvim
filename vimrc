@@ -168,7 +168,7 @@ set pastetoggle=<F2>
 set nobackup
 set nowritebackup
 set swapfile
-set directory=$HOME/tmp/vim,$HOME/tmp
+set directory=$HOME/.vim/swapfiles//
 
 " =============================================================================
 " Settings - Plugins
