@@ -144,7 +144,6 @@ set noautowrite
 set numberwidth=1
 set so=3
 " set re=1
-set background=dark
 " set cursorline
 set ruler
 set splitright
@@ -161,8 +160,11 @@ set wildignore+=.bak,.pyc,.o,.ojb,.,a,
       \.pdf,.jpg,.gif,.png,
       \.avi,.mkv,.so,
       \node_modules/*,vendor/*,target/*
-colorscheme default
 set pastetoggle=<F2>
+
+set background=dark
+colorscheme default
+set guifont=Monaco:h13
 
 " Set swap file location.
 set nobackup
