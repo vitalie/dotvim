@@ -49,7 +49,9 @@ Bundle 'Absolight/vim-bind'
 " Bundle 'nanotech/jellybeans.vim'
 " Bundle 'tpope/vim-vividchalk'
 " Bundle 'Lokaltog/vim-distinguished'
-" Bundle 'altercation/vim-colors-solarized'
+" Bundle 'tomasr/molokai'
+" Bundle 'sjl/badwolf'
+Bundle 'altercation/vim-colors-solarized'
 
 
 " =============================================================================
@@ -164,7 +166,23 @@ set pastetoggle=<F2>
 
 set background=dark
 colorscheme default
-set guifont=Monaco:h13
+if has("gui_running")
+  set background=dark
+  colorscheme solarized
+  if has("gui_gtk2")
+    set guifont=Monospace\ 10
+  elseif has("gui_photon")
+    set guifont=Monaco:h13
+  elseif has("gui_kde")
+    set guifont=Courier\ New/11/-1/5/50/0/0/0/1/0
+  elseif has("gui_win32")
+    set guifont=DejaVu_Sans_Mono:h10:cANSI
+  elseif has("x11")
+    set guifont=-*-courier-medium-r-normal-*-*-180-*-*-m-*-*
+  else
+    set guifont=Courier_New:h11:cDEFAULT
+  endif
+endif
 
 " Set swap file location.
 set nobackup
