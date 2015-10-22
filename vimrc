@@ -176,7 +176,7 @@ if has("gui_running")
   elseif has("gui_kde")
     set guifont=Courier\ New/11/-1/5/50/0/0/0/1/0
   elseif has("gui_macvim")
-    set guifont=Monaco:h13
+    set guifont=Monaco:h14
   elseif has("gui_win32")
     set guifont=DejaVu_Sans_Mono:h10:cANSI
   elseif has("x11")
@@ -214,10 +214,10 @@ let g:go_golint_bin="~/workspace/golang/bin/golint"
 
 
 " UltiSnips
-let g:UltiSnipsUsePythonVersion = 2
-let g:UltiSnipsSnippetDirectories=["bundle/ultisnips/UltiSnips", "bundle/more-snippets"]
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
+" let g:UltiSnipsUsePythonVersion = 2
+" let g:UltiSnipsSnippetDirectories=["bundle/ultisnips/UltiSnips", "bundle/more-snippets"]
+" let g:UltiSnipsExpandTrigger="<tab>"
+" let g:UltiSnipsJumpForwardTrigger="<tab>"
 
 " Syntastic
 let g:syntastic_javascript_checkers=['jshint']
