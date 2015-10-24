@@ -229,7 +229,7 @@ let g:used_javascript_libs = 'jquery,underscore,angularjs,jasmine'
 
 " Ctrl-P
 let g:ctrlp_custom_ignore = {
-      \ 'dir': 'node_modules\|bower_components\|deps\|vendor\|target\|resources/public/*',
+      \ 'dir': '.bundle\|node_modules\|bower_components\|deps\|vendor\|target\|resources/public/*',
       \ 'file': '.lein*'
       \ }
 let g:ctrlp_match_window = 'bottom,order:ttb' " bottom, listing from top to bottom
