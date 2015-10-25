@@ -176,7 +176,7 @@ if has("gui_running")
   elseif has("gui_kde")
     set guifont=Courier\ New/11/-1/5/50/0/0/0/1/0
   elseif has("gui_macvim")
-    set guifont=Monaco:h14
+    set guifont=Menlo\ Regular:h14
   elseif has("gui_win32")
     set guifont=DejaVu_Sans_Mono:h10:cANSI
   elseif has("x11")
