@@ -252,6 +252,11 @@ if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
 
+" Use `ag` when available.
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
 " =============================================================================
 " Settings - Languages
 
