@@ -40,6 +40,7 @@ Bundle 'ntpeters/vim-better-whitespace'
 Bundle 'mattn/emmet-vim'
 Bundle '29decibel/vim-stringify'
 Bundle 'Absolight/vim-bind'
+Bundle 'itchyny/lightline.vim'
 " Bundle 'SirVer/ultisnips'
 " Bundle 'Valloric/YouCompleteMe'
 
