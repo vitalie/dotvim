@@ -208,19 +208,18 @@ set directory=$HOME/.vim/swapfiles//
 " Go
 let g:go_disable_autoinstall = 1
 let g:go_fmt_command = "gofmt"
-" let g:go_gocode_bin="~/your/custom/gocode/path"
-" let g:go_goimports_bin="~/your/custom/goimports/path"
-" let g:go_godef_bin="~/your/custom/godef/path"
-" let g:go_oracle_bin="~/your/custom/godef/path"
-let g:go_golint_bin="~/workspace/golang/bin/golint"
-" let g:go_errcheck_bin="~/your/custom/errcheck/path"
+let g:go_gocode_bin="gocode"
+let g:go_goimports_bin="goimports"
+let g:go_godef_bin="godef"
+let g:go_oracle_bin="oracle"
+let g:go_golint_bin="golint"
+let g:go_errcheck_bin="errcheck"
 
-
-" UltiSnips
-" let g:UltiSnipsUsePythonVersion = 2
-" let g:UltiSnipsSnippetDirectories=["bundle/ultisnips/UltiSnips", "bundle/more-snippets"]
-" let g:UltiSnipsExpandTrigger="<tab>"
-" let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
 
 " Syntastic
 let g:syntastic_javascript_checkers=['jshint']
@@ -311,12 +310,26 @@ nnoremap <silent><Tab> <C-w>w
 " Keybindings - Languages
 
 " Go
-au FileType go nmap K <Plug>(go-doc)
-au FileType go nmap gd <Plug>(go-def-split)
-au FileType go nmap cgr <Plug>(go-run)
-au FileType go nmap cgb <Plug>(go-build)
-au FileType go nmap cgt <Plug>(go-test)
-au FileType go nmap cgv <Plug>(go-vet)
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>b <Plug>(go-build)
+au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <leader>c <Plug>(go-coverage)
+
+au FileType go nmap <Leader>dx <Plug>(go-def-split)
+au FileType go nmap <Leader>ds <Plug>(go-def-vertical)
+
+au FileType go nmap <Leader>gd <Plug>(go-doc)
+au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
+
+" Show a list of interfaces which is implemented by the type under cursor.
+au FileType go nmap <Leader>im <Plug>(go-implements)
+
+" Show type info for the word under your cursor.
+au FileType go nmap <Leader>in <Plug>(go-info)
+
+" Rename the identifier under the cursor to a new name.
+au FileType go nmap <Leader>e <Plug>(go-rename)
 
 " =============================================================================
 " Functions
