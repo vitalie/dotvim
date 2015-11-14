@@ -162,6 +162,7 @@ set wildmenu
 set wildignore+=.bak,.pyc,.o,.ojb,.,a,
       \.pdf,.jpg,.gif,.png,
       \.avi,.mkv,.so,
+      \deps/*,_build/*,
       \node_modules/*,vendor/*,target/*
 set pastetoggle=<F2>
 
@@ -231,7 +232,7 @@ let g:used_javascript_libs = 'jquery,underscore,angularjs,jasmine'
 
 " Ctrl-P
 let g:ctrlp_custom_ignore = {
-      \ 'dir': '.bundle\|node_modules\|bower_components\|deps\|vendor\|target\|resources/public/*',
+      \ 'dir': '.bundle\|node_modules\|bower_components\|deps\|_build\|vendor\|target\|resources/public/*',
       \ 'file': '.lein*'
       \ }
 let g:ctrlp_match_window = 'bottom,order:ttb' " bottom, listing from top to bottom
