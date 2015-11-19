@@ -162,6 +162,7 @@ set wildmenu
 set wildignore+=.bak,.pyc,.o,.ojb,.,a,
       \.pdf,.jpg,.gif,.png,
       \.avi,.mkv,.so,
+      \.git/*,
       \.bundle/*,tmp/cache/*,
       \deps/*,_build/*,
       \node_modules/*,bower_components/*,vendor/*
@@ -233,7 +234,7 @@ let g:used_javascript_libs = 'jquery,underscore,angularjs,jasmine'
 
 " Ctrl-P
 let g:ctrlp_custom_ignore = {
-      \ 'dir': '.bundle\|tmp/cache/*\|node_modules\|bower_components\|vendor\|deps\|_build',
+      \ 'dir': '.git\|.bundle\|tmp/cache/*\|node_modules\|bower_components\|vendor\|deps\|_build',
       \ 'file': '.lein*'
       \ }
 let g:ctrlp_match_window = 'bottom,order:ttb' " bottom, listing from top to bottom
