@@ -310,10 +310,10 @@ nnoremap <Leader>ga :Git add -p %<CR>
 nnoremap <silent><Tab> <C-w>w
 
 " List all open buffers.
-nnoremap <Leader>yt :ls<CR>
+nnoremap <Leader>bl :ls<CR>
 
 " Close all buffers.
-nnoremap <Leader>yd :bufdo bd<CR>
+nnoremap <Leader>bd :bufdo bd<CR>
 
 " =============================================================================
 " Keybindings - Languages
