@@ -225,9 +225,14 @@ let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 
 " Syntastic
-let g:syntastic_javascript_checkers=['jshint']
-let g:syntastic_coffee_checkers=[]
-let g:syntastic_go_checkers=[]
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 " JavaScript libraries
 let g:used_javascript_libs = 'jquery,underscore,angularjs,jasmine'
