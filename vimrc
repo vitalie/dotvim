@@ -171,6 +171,7 @@ set pastetoggle=<F2>
 set background=dark
 colorscheme default
 if has("gui_running")
+  set cursorline
   set background=dark
   colorscheme solarized
   if has("gui_gtk2")
