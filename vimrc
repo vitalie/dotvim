@@ -175,7 +175,7 @@ if has("gui_running")
   set background=dark
   colorscheme solarized
   if has("gui_gtk2")
-    set guifont=Monospace\ 10
+    set guifont=Ubuntu\ Mono\ 11
   elseif has("gui_photon")
     set guifont=Courier\ New:s11
   elseif has("gui_kde")
