@@ -179,6 +179,7 @@ if has("gui_running")
   nnoremap <C-Tab>    :tabnext<CR>
   nnoremap <C-S-Tab>  :tabprevious<CR>
   nnoremap <C-t>      :tabnew<CR>
+  nnoremap <C-w>      :tabclose<CR>
   nnoremap <C-Insert> :tabnew<CR>
   nnoremap <C-Delete> :tabclose<CR>
 
@@ -207,7 +208,6 @@ if has("gui_running")
     set guifont=Menlo\ Regular:h14
     set guioptions-=T   " Hde toolbar.
     set guioptions-=r   " Remove scrollbar.
-
   elseif has("gui_win32")
     set guifont=DejaVu_Sans_Mono:h10:cANSI
   elseif has("x11")
