@@ -174,6 +174,29 @@ if has("gui_running")
   set cursorline
   set background=dark
   colorscheme solarized
+
+  " Tabs navigation.
+  nnoremap <C-Tab>    :tabnext<CR>
+  nnoremap <C-S-Tab>  :tabprevious<CR>
+  nnoremap <C-t>      :tabnew<CR>
+  nnoremap <C-Insert> :tabnew<CR>
+  nnoremap <C-Delete> :tabclose<CR>
+
+  noremap <D-1> :tabn 1<CR>
+  noremap <D-2> :tabn 2<CR>
+  noremap <D-3> :tabn 3<CR>
+  noremap <D-4> :tabn 4<CR>
+  noremap <D-5> :tabn 5<CR>
+  noremap <D-6> :tabn 6<CR>
+  noremap <D-7> :tabn 7<CR>
+  noremap <D-8> :tabn 8<CR>
+  noremap <D-9> :tabn 9<CR>
+  noremap <D-0> :tablast<CR>
+
+  inoremap <C-S-Tab> <Esc>:tabprevious<CR>i
+  inoremap <C-Tab>   <Esc>:tabnext<CR>i
+  inoremap <C-t>     <Esc>:tabnew<CR>
+
   if has("gui_gtk2")
     set guifont=Ubuntu\ Mono\ 11
   elseif has("gui_photon")
@@ -185,19 +208,6 @@ if has("gui_running")
     set guioptions-=T   " Hde toolbar.
     set guioptions-=r   " Remove scrollbar.
 
-    " Tabs navigation.
-    noremap <C-Tab> :tabnext<CR>
-    noremap <C-S-Tab> :tabprev<CR>
-    noremap <D-1> :tabn 1<CR>
-    noremap <D-2> :tabn 2<CR>
-    noremap <D-3> :tabn 3<CR>
-    noremap <D-4> :tabn 4<CR>
-    noremap <D-5> :tabn 5<CR>
-    noremap <D-6> :tabn 6<CR>
-    noremap <D-7> :tabn 7<CR>
-    noremap <D-8> :tabn 8<CR>
-    noremap <D-9> :tabn 9<CR>
-    noremap <D-0> :tablast<CR>
   elseif has("gui_win32")
     set guifont=DejaVu_Sans_Mono:h10:cANSI
   elseif has("x11")
