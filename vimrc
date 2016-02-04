@@ -159,13 +159,12 @@ set hidden
 set vb t_vb=
 set scrolloff=999999
 set wildmenu
-set wildignore+=.bak,.pyc,.o,.ojb,.,a,
+set wildignore+=*/tmp/*,*.so,*.beam,*.zip,
       \.pdf,.jpg,.gif,.png,
-      \.avi,.mkv,.so,
-      \.git/*,
-      \.bundle/*,tmp/cache/*,
-      \deps/*,_build/*,
-      \node_modules/*,bower_components/*,vendor/*
+      \.avi,.mkv,
+      \*/pkg/*,*/vendor/pkg/*,
+      \*/deps/*,*/_build/*,*/priv/static/*,
+      \*/node_modules/*,*/bower_components/*
 set pastetoggle=<F2>
 
 set background=dark
@@ -266,10 +265,6 @@ let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 let g:used_javascript_libs = 'jquery,underscore,angularjs,jasmine'
 
 " Ctrl-P
-let g:ctrlp_custom_ignore = {
-      \ 'dir': '.git\|.bundle\|tmp/cache/*\|node_modules\|bower_components\|vendor\|deps\|_build',
-      \ 'file': '.lein*'
-      \ }
 let g:ctrlp_match_window = 'bottom,order:ttb' " bottom, listing from top to bottom
 let g:ctrlp_switch_buffer = 0                 " disable
 let g:ctrlp_working_path_mode = 0             " disable
