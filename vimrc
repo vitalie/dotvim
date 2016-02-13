@@ -162,8 +162,8 @@ set wildmenu
 set wildignore+=*/tmp/*,*.so,*.beam,*.zip,
       \.pdf,.jpg,.gif,.png,
       \.avi,.mkv,
-      \*/pkg/*,*/vendor/pkg/*,
       \*/deps/*,*/_build/*,*/priv/static/*,
+      \*/pkg/*,*/vendor/src/*,*/vendor/pkg/*,
       \*/node_modules/*,*/bower_components/*
 set pastetoggle=<F2>
 
