@@ -234,7 +234,7 @@ set directory=$HOME/.vim/swapfiles//
 
 " Go
 let g:go_disable_autoinstall = 1
-let g:go_fmt_command = "gofmt"
+let g:go_fmt_command = "goimports"
 let g:go_gocode_bin="gocode"
 let g:go_goimports_bin="goimports"
 let g:go_godef_bin="godef"
