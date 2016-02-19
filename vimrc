@@ -163,7 +163,7 @@ set wildignore+=*/tmp/*,*.so,*.beam,*.zip,
       \.pdf,.jpg,.gif,.png,
       \.avi,.mkv,
       \*/deps/*,*/_build/*,*/priv/static/*,
-      \*/pkg/*,*/vendor/src/*,*/vendor/pkg/*,
+      \*/bin/*,*/pkg/*,*/vendor/src/*,*/vendor/pkg/*,
       \*/node_modules/*,*/bower_components/*
 set pastetoggle=<F2>
 
