@@ -1,4 +1,8 @@
-" Original version by @bcarrell
+" Reload config file with with:
+"
+"   :so $MYVIMRC
+"
+" Original version by @bcarrell.
 
 set nocompatible
 set t_Co=256
