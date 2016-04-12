@@ -265,10 +265,13 @@ let g:syntastic_check_on_wq = 0
 
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
-let g:syntastic_typescript_checkers = ['tslint', 'tsc']
+let g:syntastic_typescript_checkers = ['tslint']
 
 " JavaScript libraries
 let g:used_javascript_libs = 'jquery,underscore'
+
+" TypeScript options
+let g:syntastic_typescript_tsc_fname = ''
 
 " Ctrl-P
 let g:ctrlp_match_window = 'bottom,order:ttb' " bottom, listing from top to bottom
