@@ -45,6 +45,7 @@ Bundle 'mattn/emmet-vim'
 Bundle '29decibel/vim-stringify'
 Bundle 'Absolight/vim-bind'
 Bundle 'itchyny/lightline.vim'
+Bundle 'leafgarland/typescript-vim'
 " Bundle 'SirVer/ultisnips'
 " Bundle 'Valloric/YouCompleteMe'
 
@@ -264,9 +265,10 @@ let g:syntastic_check_on_wq = 0
 
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+let g:syntastic_typescript_checkers = ['tslint', 'tsc']
 
 " JavaScript libraries
-let g:used_javascript_libs = 'jquery,underscore,angularjs,jasmine'
+let g:used_javascript_libs = 'jquery,underscore'
 
 " Ctrl-P
 let g:ctrlp_match_window = 'bottom,order:ttb' " bottom, listing from top to bottom
