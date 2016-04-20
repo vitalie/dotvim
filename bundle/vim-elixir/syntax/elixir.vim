@@ -10,7 +10,7 @@ syn cluster elixirNotTop contains=@elixirRegexSpecial,@elixirStringContained,@el
 syn match elixirComment '#.*' contains=elixirTodo,@Spell
 syn keyword elixirTodo FIXME NOTE TODO OPTIMIZE XXX HACK contained
 
-syn keyword elixirKeyword case when cond for if unless try receive send
+syn keyword elixirKeyword case when with cond for if unless try receive send
 syn keyword elixirKeyword exit raise throw after rescue catch else
 syn keyword elixirKeyword quote unquote super spawn spawn_link spawn_monitor
 
@@ -31,7 +31,7 @@ syn keyword elixirSelf self
 syn match elixirId '\<[_a-zA-Z]\w*[!?]\?\>'
 
 " This unfortunately also matches function names in function calls
-syn match elixirUnusedVariable '\<_\w*\>'
+syn match elixirUnusedVariable '\(([^)]*\)\@<=\<_\w*\>'
 
 syn keyword elixirOperator and not or when xor in
 syn match   elixirOperator '!==\|!=\|!'
@@ -50,7 +50,7 @@ syn match   elixirAtom '\(:\)\@<!:\%([a-zA-Z_]\w*\%([?!]\|=[>=]\@!\)\?\|<>\|===\
 syn match   elixirAtom '\(:\)\@<!:\%(<=>\|&&\?\|%\(()\|\[\]\|{}\)\|++\?\|--\?\|||\?\|!\|//\|[%&`/|]\)'
 syn match   elixirAtom "\%([a-zA-Z_]\w*[?!]\?\):\(:\)\@!"
 
-syn match   elixirAlias '\<[A-Z]\w*\(\.[A-Z]\w*\)*\>'
+syn match   elixirAlias '\<[!]\?[A-Z]\w*\(\.[A-Z]\w*\)*\>'
 
 syn keyword elixirBoolean true false nil
 
@@ -184,3 +184,5 @@ hi def link elixirStringDelimiter        Delimiter
 hi def link elixirRegexDelimiter         Delimiter
 hi def link elixirInterpolationDelimiter Delimiter
 hi def link elixirSigilDelimiter         Delimiter
+
+let b:current_syntax = "elixir"
