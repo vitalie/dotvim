@@ -21,25 +21,16 @@ endif
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! SyntaxCheckers_javascript_jscs_IsAvailable() dict
-    if !executable(self.getExec())
-        return 0
-    endif
-    return syntastic#util#versionIsAtLeast(self.getVersion(), [2, 1])
-endfunction
-
 function! SyntaxCheckers_javascript_jscs_GetLocList() dict
-    let makeprg = self.makeprgBuild({
-        \ 'args_after': '--no-colors --max-errors -1 --reporter json' })
+    let makeprg = self.makeprgBuild({ 'args_after': '--no-colors --reporter checkstyle' })
 
-    let errorformat = '%f:%l:%c:%m'
+    let errorformat = '%f:%t:%l:%c:%m'
 
     return SyntasticMake({
         \ 'makeprg': makeprg,
         \ 'errorformat': errorformat,
         \ 'subtype': 'Style',
-        \ 'preprocess': 'jscs',
-        \ 'defaults': {'type': 'E'},
+        \ 'preprocess': 'checkstyle',
         \ 'returns': [0, 2] })
 endfunction
 

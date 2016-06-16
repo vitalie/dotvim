@@ -51,14 +51,7 @@ function! SyntaxCheckers_haskell_ghc_mod_IsAvailable() dict
         let s:ghc_mod_new = -1
     endif
 
-    " ghc-mod 5.4.0 wants to run in the root directory of the project;
-    " syntastic can't cope with the resulting complications
-    "
-    " References:
-    " https://hackage.haskell.org/package/ghc-mod-5.4.0.0/changelog
-    let s:ghc_mod_bailout = syntastic#util#versionIsAtLeast(parsed_ver, [5, 4])
-
-    return (s:ghc_mod_new >= 0) && (v:version >= 704 || s:ghc_mod_new) && !s:ghc_mod_bailout
+    return (s:ghc_mod_new >= 0) && (v:version >= 704 || s:ghc_mod_new)
 endfunction
 
 function! SyntaxCheckers_haskell_ghc_mod_GetLocList() dict

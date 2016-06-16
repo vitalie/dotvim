@@ -24,14 +24,17 @@ function! SyntaxCheckers_coffee_coffeelint_GetLocList() dict
     endif
     let makeprg = self.makeprgBuild({ 'args_after': (s:coffeelint_new ? '--reporter csv' : '--csv') })
 
-    let errorformat = '%f:%l:%t:%m'
+    let errorformat =
+        \ '%f\,%l\,%\d%#\,%trror\,%m,' .
+        \ '%f\,%l\,%trror\,%m,' .
+        \ '%f\,%l\,%\d%#\,%tarn\,%m,' .
+        \ '%f\,%l\,%tarn\,%m'
 
     return SyntasticMake({
         \ 'makeprg': makeprg,
         \ 'errorformat': errorformat,
         \ 'subtype': 'Style',
-        \ 'returns': [0, 1],
-        \ 'preprocess': 'coffeelint' })
+        \ 'returns': [0, 1] })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({

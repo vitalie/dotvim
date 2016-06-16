@@ -16,6 +16,8 @@ if exists('g:loaded_syntastic_css_recess_checker')
 endif
 let g:loaded_syntastic_css_recess_checker = 1
 
+runtime! syntax_checkers/less/*.vim
+
 call g:SyntasticRegistry.CreateAndRegisterChecker({
     \ 'filetype': 'css',
     \ 'name': 'recess',

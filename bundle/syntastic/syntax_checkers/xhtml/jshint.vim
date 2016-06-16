@@ -15,6 +15,8 @@ if exists('g:loaded_syntastic_xhtml_jshint_checker')
 endif
 let g:loaded_syntastic_xhtml_jshint_checker = 1
 
+runtime! syntax_checkers/html/*.vim
+
 call g:SyntasticRegistry.CreateAndRegisterChecker({
     \ 'filetype': 'xhtml',
     \ 'name': 'jshint',

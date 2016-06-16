@@ -19,13 +19,13 @@ endfunction " }}}2
 
 function! g:SyntasticAutoloclistNotifier.AutoToggle(loclist) abort " {{{2
     call syntastic#log#debug(g:_SYNTASTIC_DEBUG_NOTIFICATIONS, 'autoloclist: toggle')
-    let auto_loc_list = syntastic#util#var('auto_loc_list')
     if !a:loclist.isEmpty()
-        if auto_loc_list == 1 || auto_loc_list == 3
+        if syntastic#util#var('auto_loc_list') == 1
             call a:loclist.show()
         endif
     else
-        if auto_loc_list == 1 || auto_loc_list == 2
+        if syntastic#util#var('auto_loc_list') > 0
+
             "TODO: this will close the loc list window if one was opened by
             "something other than syntastic
             lclose
