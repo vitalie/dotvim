@@ -336,28 +336,37 @@ vnoremap = :call Stringify()<CR>
 
 " Leader
 let mapleader=" "
-nnoremap <Leader>q :q!<CR>
-nnoremap <Leader>w :w!<CR>
-nnoremap <Leader>s :vsplit<space>
-nnoremap <Leader>x :split<space>
-nnoremap <Leader>a :Ack<space>
-nnoremap <Leader><Leader> :CtrlP<CR>
-nnoremap <Leader>gs :Gstatus<CR>
-nnoremap <Leader>gc :Gcommit<CR>
-nnoremap <Leader>gb :Gblame<CR>
-nnoremap <Leader>gl :Glog<CR>
-nnoremap <Leader>gp :Git push<CR>
-nnoremap <Leader>gw :Gwrite<CR>
-nnoremap <Leader>ge :Gedit<CR>
-nnoremap <Leader>ga :Git add -p %<CR>
+nnoremap <leader>q :q!<CR>
+nnoremap <leader>w :w!<CR>
+nnoremap <leader>s :vsplit<space>
+nnoremap <leader>x :split<space>
+nnoremap <leader>a :Ack<space>
+nnoremap <leader><leader> :CtrlP<CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gc :Gcommit<CR>
+nnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gl :Glog<CR>
+nnoremap <leader>gp :Git push<CR>
+nnoremap <leader>gw :Gwrite<CR>
+nnoremap <leader>ge :Gedit<CR>
+nnoremap <leader>ga :Git add -p %<CR>
 
 nnoremap <silent><Tab> <C-w>w
 
 " List all open buffers.
-nnoremap <Leader>bl :ls<CR>
+nnoremap <leader>bl :ls<CR>
 
 " Close all buffers.
-nnoremap <Leader>bd :bufdo bd<CR>
+nnoremap <leader>bd :bufdo bd<CR>
+
+" Toggle highlighting.
+nnoremap <silent> <leader>n :nohl<CR>
+
+" Window movements.
+nnoremap <leader>h <C-w>h
+nnoremap <leader>j <C-w>j
+nnoremap <leader>k <C-w>k
+nnoremap <leader>l <C-w>l
 
 " =============================================================================
 " Keybindings - Languages
@@ -368,12 +377,12 @@ au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
 
-au FileType go nmap <Leader>dx <Plug>(go-def-split)
-au FileType go nmap <Leader>ds <Plug>(go-def-vertical)
+au FileType go nmap <leader>dx <Plug>(go-def-split)
+au FileType go nmap <leader>ds <Plug>(go-def-vertical)
 
-au FileType go nmap <Leader>gd <Plug>(go-doc)
-au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
+au FileType go nmap <leader>gd <Plug>(go-doc)
+au FileType go nmap <leader>gv <Plug>(go-doc-vertical)
+au FileType go nmap <leader>gb <Plug>(go-doc-browser)
 
 " Show a list of interfaces which is implemented by the type under cursor.
 au FileType go nmap <Leader>im <Plug>(go-implements)
