@@ -282,8 +282,11 @@ let g:ctrlp_switch_buffer = 0                 " disable
 let g:ctrlp_working_path_mode = 0             " disable
 
 " Whitespace
-autocmd BufWritePre * StripWhitespace                           " strip whitespaces
-let g:better_whitespace_filetypes_blacklist = ['sql', 'cisco']  " exceptions
+autocmd BufWritePre * StripWhitespace
+let g:better_whitespace_filetypes_blacklist = [
+      \ 'sql', 'cisco',
+      \ 'diff', 'gitcommit', 'unite', 'qf', 'help'
+      \ ]
 
 " Wildfire
 let g:wildfire_objects = [
