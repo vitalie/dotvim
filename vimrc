@@ -115,6 +115,9 @@ Bundle 'claco/jasmine.vim'
 " Elixir
 Bundle 'elixir-lang/vim-elixir'
 
+" Cisco IOS
+Bundle 'CyCoreSystems/vim-cisco-ios'
+
 
 " =============================================================================
 " Settings - General
@@ -279,7 +282,8 @@ let g:ctrlp_switch_buffer = 0                 " disable
 let g:ctrlp_working_path_mode = 0             " disable
 
 " Whitespace
-autocmd BufWritePre * StripWhitespace
+autocmd BufWritePre * StripWhitespace                           " strip whitespaces
+let g:better_whitespace_filetypes_blacklist = ['sql', 'cisco']  " exceptions
 
 " Wildfire
 let g:wildfire_objects = [
