@@ -324,6 +324,9 @@ au BufNewFile,BufReadPost *.bind set filetype=bindzone
 " Cfg
 au BufNewFile,BufReadPost *.cfg set filetype=config
 
+" Cisco
+au BufNewFile,BufReadPost *.cisco set nofoldenable
+
 " =============================================================================
 " Keybindings - General
 
