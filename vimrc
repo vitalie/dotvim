@@ -1,8 +1,8 @@
-" Reload config file with with:
-"
-"   :so $MYVIMRC
-"
-" Original version by @bcarrell.
+" Reload vimrc file after saving it.
+augroup AutoReloadVimRC
+  au!
+  au BufWritePost .vimrc,vimrc,$MYVIMRC so $MYVIMRC
+augroup END
 
 set nocompatible
 set t_Co=256
@@ -166,13 +166,32 @@ set mouse=
 set hidden
 set vb t_vb=
 set scrolloff=999999
+
 set wildmenu
-set wildignore+=*/tmp/*,*.so,*.beam,*.zip,
-      \.pdf,.jpg,.gif,.png,
-      \.avi,.mkv,
-      \*/deps/*,*/_build/*,*/priv/static/*,
-      \*/bin/*,*/pkg/*,*/vendor/src/*,*/vendor/pkg/*,
-      \*/node_modules/*,*/bower_components/*
+set wildmode=list:longest,list:full
+
+" Ignored files.
+set wildignore+=*.o
+set wildignore+=*.a
+set wildignore+=*.so
+set wildignore+=*.pdf
+set wildignore+=*.gif
+set wildignore+=*.jpg
+set wildignore+=*.png
+set wildignore+=*.zip
+set wildignore+=*/.git/*
+set wildignore+=*/.bundle/*
+set wildignore+=*/log/*
+set wildignore+=*/tmp/*
+set wildignore+=*/deps/*
+set wildignore+=*/_build/*
+set wildignore+=*/priv/static/*
+set wildignore+=*.beam
+set wildignore+=*/pkg/*
+set wildignore+=*/vendor/pkg/*
+set wildignore+=*/node_modules/*
+set wildignore+=*/bower_components/*
+
 set pastetoggle=<F2>
 
 set background=dark
