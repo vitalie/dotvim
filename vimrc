@@ -5,7 +5,6 @@ augroup AutoReloadVimRC
 augroup END
 
 set nocompatible
-set t_Co=256
 filetype off
 
 
@@ -140,10 +139,6 @@ set encoding=utf-8
 set showcmd
 " set cc=80
 set statusline=%<\ %n\ %f\ %m%r%y%=\ Line:\ \%l\/\%L\ Column:\ \%c%V
-set expandtab
-set smarttab
-set tabstop=2
-set shiftwidth=2
 set history=700
 set autoread
 set nowritebackup
@@ -169,6 +164,14 @@ set scrolloff=999999
 
 set wildmenu
 set wildmode=list:longest,list:full
+
+set smarttab
+set tabstop=2     " How many spaces to be rendered for a tab.
+set shiftwidth=2  " The number of columns used in indentat operations (<< and >>).
+set expandtab     " Replace tab key with spaces in insert mode.
+
+set list
+set listchars=tab:▸\ ,nbsp:⎵,extends:…,trail:•
 
 " Ignored files.
 set wildignore+=*.o
@@ -199,6 +202,9 @@ colorscheme default
 if has("gui_running")
   set cursorline
   set background=dark
+  " Solarized theme options.
+  let g:solarized_visibility = "high"
+  let g:solarized_contrast = "high"
   colorscheme solarized
 
   " Tabs navigation.
