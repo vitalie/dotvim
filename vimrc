@@ -294,13 +294,6 @@ let g:ctrlp_match_window = 'bottom,order:ttb' " bottom, listing from top to bott
 let g:ctrlp_switch_buffer = 0                 " disable
 let g:ctrlp_working_path_mode = 0             " disable
 
-" Whitespace
-autocmd BufWritePre * StripWhitespace
-let g:better_whitespace_filetypes_blacklist = [
-      \ 'sql', 'cisco',
-      \ 'diff', 'gitcommit', 'unite', 'qf', 'help'
-      \ ]
-
 " Wildfire
 let g:wildfire_objects = [
       \ "i'", 'i"', "i)", "i]", "i}", "ip", "it",
@@ -377,6 +370,9 @@ nnoremap <leader>bd :bufdo bd<CR>
 
 " Toggle highlighting.
 nnoremap <silent> <leader>n :nohl<CR>
+
+" Strip whitespaces.
+nnoremap <silent> <leader>sp :StripWhitespace<CR>
 
 " Window movements.
 nnoremap <leader>h <C-w>h
