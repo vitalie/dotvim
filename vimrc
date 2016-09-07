@@ -4,123 +4,117 @@ augroup AutoReloadVimRC
   au BufWritePost .vimrc,vimrc,$MYVIMRC so $MYVIMRC
 augroup END
 
-set nocompatible
-filetype off
-
-
 " =============================================================================
 " Vundle
 
+set nocompatible
+filetype off
+
 let has_vundle=1
-if !filereadable($HOME."/.vim/bundle/vundle/README.md")
-  echo "Installing Vundle..."
+if !filereadable($HOME."/.vim/bundle/Vundle.vim/README.md")
+  echo "Installing Vundle ..."
   echo ""
   silent !mkdir -p $HOME/.vim/bundle
-  silent !git clone https://github.com/gmarik/vundle $HOME/.vim/bundle/vundle
+  silent !git clone https://github.com/VundleVim/Vundle.vim $HOME/.vim/bundle/Vundle.vim
   let has_vundle=0
 endif
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-Bundle 'gmarik/vundle'
 
+" Set the runtime path to include Vundle and initialize.
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" Let Vundle manage Vundle, required.
+Plugin 'gmarik/Vundle.vim'
 
 " =============================================================================
-" Bundles - General
-
-Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-commentary'
-Bundle 'tpope/vim-repeat'
-Bundle 'tpope/vim-unimpaired'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-vinegar'
-Bundle 'gcmt/wildfire.vim'
-Bundle 'jiangmiao/auto-pairs'
-Bundle 'ctrlpvim/ctrlp.vim'
-Bundle 'justinmk/vim-sneak'
-Bundle 'scrooloose/syntastic'
-Bundle 'mileszs/ack.vim'
-Bundle 'ntpeters/vim-better-whitespace'
-Bundle 'mattn/emmet-vim'
-Bundle '29decibel/vim-stringify'
-Bundle 'Absolight/vim-bind'
-Bundle 'itchyny/lightline.vim'
-Bundle 'leafgarland/typescript-vim'
-" Bundle 'SirVer/ultisnips'
-" Bundle 'Valloric/YouCompleteMe'
+" Plugins - General
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-vinegar'
+Plugin 'gcmt/wildfire.vim'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'justinmk/vim-sneak'
+Plugin 'scrooloose/syntastic'
+Plugin 'mileszs/ack.vim'
+Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'mattn/emmet-vim'
+Plugin '29decibel/vim-stringify'
+Plugin 'Absolight/vim-bind'
+Plugin 'itchyny/lightline.vim'
+Plugin 'leafgarland/typescript-vim'
+" Plugin 'Valloric/YouCompleteMe'
 
 " =============================================================================
 " Color schemes
-" Bundle 'chriskempson/base16-vim'
-" Bundle 'nanotech/jellybeans.vim'
-" Bundle 'tpope/vim-vividchalk'
-" Bundle 'Lokaltog/vim-distinguished'
-" Bundle 'tomasr/molokai'
-" Bundle 'sjl/badwolf'
-Bundle 'altercation/vim-colors-solarized'
+" Plugin 'chriskempson/base16-vim'
+" Plugin 'nanotech/jellybeans.vim'
+" Plugin 'tpope/vim-vividchalk'
+" Plugin 'Lokaltog/vim-distinguished'
+" Plugin 'tomasr/molokai'
+" Plugin 'sjl/badwolf'
+Plugin 'altercation/vim-colors-solarized'
 
 
 " =============================================================================
-" Bundles - Languages
+" Plugins - Languages
 
 " Ruby
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'tpope/vim-rails'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-rails'
 
 " JavaScript
-Bundle 'pangloss/vim-javascript'
+Plugin 'pangloss/vim-javascript'
 
 " CoffeeScript
-Bundle 'kchmck/vim-coffee-script'
+Plugin 'kchmck/vim-coffee-script'
 
 " Go
-Bundle 'fatih/vim-go'
+Plugin 'fatih/vim-go'
 
 " Rust
-Bundle 'wting/rust.vim'
+Plugin 'wting/rust.vim'
 
 " Python
-Bundle 'hdima/python-syntax'
+Plugin 'hdima/python-syntax'
 
-" Less
-Bundle 'groenewege/vim-less'
+" SCSS
+Plugin 'cakebaker/scss-syntax.vim'
 
-" Sass
-Bundle 'cakebaker/scss-syntax.vim'
-
-" Haml
-Bundle 'tpope/vim-haml'
-
-" Markdown
-Bundle 'tpope/vim-markdown'
-
-" Stylus
-Bundle 'wavded/vim-stylus'
-
-" Jade
-Bundle 'digitaltoad/vim-jade'
+" HAML
+Plugin 'tpope/vim-haml'
 
 " Slim
-Bundle 'slim-template/vim-slim'
+Plugin 'slim-template/vim-slim'
+
+" Markdown
+Plugin 'tpope/vim-markdown'
 
 " JSON
-Bundle 'elzr/vim-json'
+Plugin 'elzr/vim-json'
 
 " AngularJS
-Bundle 'burnettk/vim-angular'
-Bundle 'othree/javascript-libraries-syntax.vim'
-" Bundle 'matthewsimo/angular-vim-snippets'
-Bundle 'claco/jasmine.vim'
+Plugin 'burnettk/vim-angular'
+Plugin 'othree/javascript-libraries-syntax.vim'
+Plugin 'claco/jasmine.vim'
 
 " Elixir
-Bundle 'elixir-lang/vim-elixir'
+Plugin 'elixir-lang/vim-elixir'
 
 " Cisco IOS
-Bundle 'CyCoreSystems/vim-cisco-ios'
+Plugin 'CyCoreSystems/vim-cisco-ios'
 
+" All Plugins must be added before the following this line.
+call vundle#end()            " required
+filetype plugin indent on    " required
 
 " =============================================================================
 " Settings - General
 
+" Load the plugin and indent settings for the detected filetype.
 filetype plugin indent on
 syntax on
 set backspace=indent,eol,start
@@ -150,7 +144,7 @@ set noautowrite
 set numberwidth=1
 set so=3
 " set re=1
-" set cursorline
+set cursorline
 set ruler
 set splitright
 set splitbelow
@@ -162,9 +156,6 @@ set hidden
 set vb t_vb=
 set scrolloff=999999
 
-set wildmenu
-set wildmode=list:longest,list:full
-
 set smarttab
 set tabstop=2     " How many spaces to be rendered for a tab.
 set shiftwidth=2  " The number of columns used in indentat operations (<< and >>).
@@ -172,6 +163,11 @@ set expandtab     " Replace tab key with spaces in insert mode.
 
 set list
 set listchars=tab:▸\ ,nbsp:⎵,extends:…,trail:•
+
+set pastetoggle=<F2>
+
+set wildmenu
+set wildmode=list:longest,list:full
 
 " Ignored files.
 set wildignore+=*.o
@@ -195,18 +191,24 @@ set wildignore+=*/vendor/pkg/*
 set wildignore+=*/node_modules/*
 set wildignore+=*/bower_components/*
 
-set pastetoggle=<F2>
+" Set swap file location.
+set nobackup
+set nowritebackup
+set swapfile
+set directory=$HOME/.vim/swapfiles//
 
-set background=dark
-colorscheme default
+" Solarized theme settings.
 if has("gui_running")
-  set cursorline
-  set background=dark
-  " Solarized theme options.
   let g:solarized_visibility = "high"
   let g:solarized_contrast = "high"
-  colorscheme solarized
+else
+  let g:solarized_termtrans = 1
+  let g:solarized_termcolors = 256
+endif
+set background=dark
+colorscheme solarized
 
+if has("gui_running")
   " Tabs navigation.
   nnoremap <C-Tab>    :tabnext<CR>
   nnoremap <C-S-Tab>  :tabprevious<CR>
@@ -248,12 +250,6 @@ if has("gui_running")
     set guifont=Courier_New:h11:cDEFAULT
   endif
 endif
-
-" Set swap file location.
-set nobackup
-set nowritebackup
-set swapfile
-set directory=$HOME/.vim/swapfiles//
 
 " =============================================================================
 " Settings - Plugins
