@@ -198,10 +198,9 @@ set swapfile
 set directory=$HOME/.vim/swapfiles//
 
 " Solarized theme settings.
-if has("gui_running")
-  let g:solarized_visibility = "high"
-  let g:solarized_contrast = "high"
-else
+let g:solarized_visibility = "high"
+let g:solarized_contrast = "high"
+if !has("gui_running")
   let g:solarized_termtrans = 1
   let g:solarized_termcolors = 256
 endif
@@ -253,13 +252,6 @@ endif
 
 " =============================================================================
 " Settings - Plugins
-
-" YouCompleteMe
-" let g:ycm_key_list_select_completion=["<S-Tab>", "<Down>"]
-" let g:ycm_key_list_previous_completion=["<Up>"]
-" let g:ycm_key_invoke_completion=""
-" let g:ycm_autoclose_preview_window_after_completion = 1
-" let g:ycm_autoclose_preview_window_after_insertion = 1
 
 " Go
 let g:go_disable_autoinstall = 1
