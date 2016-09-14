@@ -5,59 +5,35 @@ https://github.com/itchyny/lightline.vim
 
 ### powerline theme (default)
 
-![lightline.vim - powerline - normal](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/powerline/1.png)
-![lightline.vim - powerline - insert](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/powerline/2.png)
-![lightline.vim - powerline - visual](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/powerline/3.png)
-![lightline.vim - powerline - replace](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/powerline/4.png)
+![lightline.vim - powerline](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/powerline/0.png)
 
 ### wombat (with the patched font)
 
-![lightline.vim - wombat - normal](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/wombat/1.png)
-![lightline.vim - wombat - insert](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/wombat/2.png)
-![lightline.vim - wombat - visual](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/wombat/3.png)
-![lightline.vim - wombat - replace](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/wombat/4.png)
+![lightline.vim - wombat](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/wombat/0.png)
 
 ### jellybeans (with the patched font)
 
-![lightline.vim - jellybeans - normal](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/jellybeans/1.png)
-![lightline.vim - jellybeans - insert](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/jellybeans/2.png)
-![lightline.vim - jellybeans - visual](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/jellybeans/3.png)
-![lightline.vim - jellybeans - replace](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/jellybeans/4.png)
+![lightline.vim - jellybeans](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/jellybeans/0.png)
 
 ### solarized theme (dark)
 
-![lightline.vim - solarized_dark - normal](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/solarized_dark/1.png)
-![lightline.vim - solarized_dark - insert](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/solarized_dark/2.png)
-![lightline.vim - solarized_dark - visual](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/solarized_dark/3.png)
-![lightline.vim - solarized_dark - replace](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/solarized_dark/4.png)
+![lightline.vim - solarized_dark](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/solarized_dark/0.png)
 
 ### solarized theme (light)
 
-![lightline.vim - solarized_light - normal](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/solarized_light/1.png)
-![lightline.vim - solarized_light - insert](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/solarized_light/2.png)
-![lightline.vim - solarized_light - visual](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/solarized_light/3.png)
-![lightline.vim - solarized_light - replace](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/solarized_light/4.png)
+![lightline.vim - solarized_light](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/solarized_light/0.png)
 
 ### PaperColor theme (light)
 
-![lightline.vim - PaperColor - normal](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/PaperColor/1.png)
-![lightline.vim - PaperColor - insert](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/PaperColor/2.png)
-![lightline.vim - PaperColor - visual](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/PaperColor/3.png)
-![lightline.vim - PaperColor - replace](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/PaperColor/4.png)
+![lightline.vim - PaperColor](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/PaperColor/0.png)
 
 ### seoul256 theme
 
-![lightline.vim - seoul256 - normal](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/seoul256/1.png)
-![lightline.vim - seoul256 - insert](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/seoul256/2.png)
-![lightline.vim - seoul256 - visual](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/seoul256/3.png)
-![lightline.vim - seoul256 - replace](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/seoul256/4.png)
+![lightline.vim - seoul256](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/seoul256/0.png)
 
 ### landscape theme (with the patched font)
 
-![lightline.vim - landscape - normal](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/landscape/1.png)
-![lightline.vim - landscape - insert](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/landscape/2.png)
-![lightline.vim - landscape - visual](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/landscape/3.png)
-![lightline.vim - landscape - replace](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/landscape/4.png)
+![lightline.vim - landscape](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/landscape/0.png)
 
 With branch name, read-only mark and modified mark.
 ![lightline.vim - landscape - fugitive](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/landscape/5.png)
@@ -121,6 +97,7 @@ let g:lightline = {
       \ }
 ```
 to get:
+
 ![lightline.vim - tutorial](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/tutorial/2.png)
 
 
@@ -295,8 +272,9 @@ set noshowmode
 ```
 
 
-Now, let us get back to the tutorial (with the patched font for vim-powerline).
+Now, let's get back to the tutorial (with the patched font for vim-powerline).
 You look into a help file to find the marks annoying.
+
 ![lightline.vim - tutorial](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/tutorial/6.png)
 
 Help files are read-only and no-modifiable? We know that!
@@ -315,8 +293,8 @@ let g:lightline = {
 ![lightline.vim - tutorial](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/tutorial/7.png)
 
 Huh? Weird!
-The components do not collapse even if they have no information!
-In order to avoid this situation, you set expressions to `g:lightline.component_visible_condition`, which should become 1 only when the corresponding components have information.
+The subseparators are visible even if the components are empty.
+In order to hide the subseparators, you can set expressions to `g:lightline.component_visible_condition`, which should be 1 only when the corresponding component is not empty.
 ```vim
 let g:lightline = {
       \ 'colorscheme': 'wombat',
@@ -335,8 +313,8 @@ let g:lightline = {
 ![lightline.vim - tutorial](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/tutorial/8.png)
 
 Okay. It works nice.
-
-
+The configuration `component_visible_condition` is used to control the visibility of the subseparators.
+You cannot use this variable to control the visibility of the components themselves.
 
 How does lightline decide the components to show in the statusline?
 It's very simple.
@@ -362,15 +340,8 @@ let g:lightline = {
       \ }
 ```
 If the plugin arranges all the components (in a situation you `set paste` and the file `.vimrc` is read-only, try to modify):
+
 ![lightline.vim - tutorial](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/tutorial/9.png)
-
-The mode component, the paste component, read-only component, filename component and modified component in a row.
-Normally, the paste component does not show up.
-![lightline.vim - tutorial](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/tutorial/10.png)
-
-If the file is not read-only (more common cases), the read-only component does not show up.
-![lightline.vim - tutorial](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/tutorial/11.png)
-
 
 Again look into `g:lightline.active.left`.
 ```vim
@@ -379,8 +350,6 @@ let g:lightline = {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'readonly', 'filename', 'modified' ] ] ...
 ```
-And the screen shot of all the components.
-![lightline.vim - tutorial](https://raw.githubusercontent.com/wiki/itchyny/lightline.vim/image/tutorial/9.png)
 
 The mode and paste component are displayed in the same group.
 The read-only, filename and modified component are in the second group.
@@ -391,11 +360,11 @@ You can configure the components in the statusline by the following four variabl
 + `g:lightline.inactive.left`
 + `g:lightline.inactive.right`
 
-Of course, your settings in `.vimrc` have priority over the default settings in lightline.
+Of course, your configurations in `.vimrc` have priority over the default settings in lightline.
 
 
 
-GitHub branch is important for us.
+Git branch is important for us.
 And it is a default component in [powerline](https://github.com/Lokaltog/powerline) and [vim-powerline](https://github.com/Lokaltog/vim-powerline).
 However, lightline does not provide the branch feature by default.
 
@@ -542,8 +511,8 @@ Oops! We forgot the cool mark for the branch component! (work with the patched f
 ```vim
 function! LightLineFugitive()
   if exists("*fugitive#head")
-    let _ = fugitive#head()
-    return strlen(_) ? '⭠ '._ : ''
+    let branch = fugitive#head()
+    return branch !=# '' ? '⭠ '.branch : ''
   endif
   return ''
 endfunction
@@ -574,7 +543,7 @@ subseparator.left  | '\|'    | '' (\ue0b1) | '⮁' (\u2b81)
 subseparator.right | '\|'    | '' (\ue0b3) | '⮃' (\u2b83)
 branch symbol      | --      | '' (\ue0a0) | '⭠' (\u2b60)
 readonly symbol    | --      | '' (\ue0a2) | '⭤' (\u2b64)
-linecolumn symbol  | --      | '' (\ue0a1) | '⭡' (\u2b81)
+linecolumn symbol  | --      | '' (\ue0a1) | '⭡' (\u2b61)
 
 ### My settings
 I show my settings. I use the patched font for vim-powerline.
@@ -618,8 +587,8 @@ endfunction
 
 function! LightLineFugitive()
   if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
-    let _ = fugitive#head()
-    return strlen(_) ? '⭠ '._ : ''
+    let branch = fugitive#head()
+    return branch !=# '' ? '⭠ '.branch : ''
   endif
   return ''
 endfunction
@@ -629,11 +598,11 @@ function! LightLineFileformat()
 endfunction
 
 function! LightLineFiletype()
-  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
 endfunction
 
 function! LightLineFileencoding()
-  return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+  return winwidth(0) > 70 ? (&fenc !=# '' ? &fenc : &enc) : ''
 endfunction
 
 function! LightLineMode()
@@ -698,7 +667,7 @@ endfunction
 
 function! LightLineFilename()
   let fname = expand('%:t')
-  return fname == 'ControlP' ? g:lightline.ctrlp_item :
+  return fname == 'ControlP' && has_key(g:lightline, 'ctrlp_item') ? g:lightline.ctrlp_item :
         \ fname == '__Tagbar__' ? g:lightline.fname :
         \ fname =~ '__Gundo\|NERD_tree' ? '' :
         \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
@@ -713,8 +682,8 @@ function! LightLineFugitive()
   try
     if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
       let mark = ''  " edit here for cool mark
-      let _ = fugitive#head()
-      return strlen(_) ? mark._ : ''
+      let branch = fugitive#head()
+      return branch !=# '' ? mark.branch : ''
     endif
   catch
   endtry
@@ -726,11 +695,11 @@ function! LightLineFileformat()
 endfunction
 
 function! LightLineFiletype()
-  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
 endfunction
 
 function! LightLineFileencoding()
-  return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+  return winwidth(0) > 70 ? (&fenc !=# '' ? &fenc : &enc) : ''
 endfunction
 
 function! LightLineMode()
@@ -747,7 +716,7 @@ function! LightLineMode()
 endfunction
 
 function! CtrlPMark()
-  if expand('%:t') =~ 'ControlP'
+  if expand('%:t') =~ 'ControlP' && has_key(g:lightline, 'ctrlp_item')
     call lightline#link('iR'[g:lightline.ctrlp_regex])
     return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
           \ , g:lightline.ctrlp_next], 0)
