@@ -283,6 +283,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 let g:syntastic_typescript_checkers = ['tslint']
+let g:syntastic_haskell_checkers = ['hlint']
 
 " JavaScript libraries
 let g:used_javascript_libs = 'jquery,underscore'
@@ -322,8 +323,18 @@ au BufNewFile,BufRead *.go set filetype=go
 au FileType go setlocal ai ts=4 sw=4 sts=4 noexpandtab
 let g:go_auto_type_info = 1
 
+" Haskell
+" Tab specific option
+" set tabstop=8                   "A tab is 8 spaces
+" set expandtab                   "Always uses spaces instead of tabs
+" set softtabstop=4               "Insert 4 spaces when tab is pressed
+" set shiftwidth=4                "An indent is 4 spaces
+" set shiftround                  "Round indent to nearest shiftwidth multiple
+au BufNewFile,BufRead *.hs set filetype=haskell
+au FileType haskell setlocal ai ts=8 sts=4 sw=4 sr expandtab
+
 " Markdown
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+au BufNewFile,BufReadPost *.md set filetype=markdown
 
 " Bind
 au BufNewFile,BufReadPost *.bind set filetype=bindzone
