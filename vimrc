@@ -283,6 +283,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 let g:syntastic_typescript_checkers = ['tslint']
+let g:syntastic_scss_checkers = ['scss_lint']
 let g:syntastic_haskell_checkers = ['hlint']
 
 " JavaScript libraries
