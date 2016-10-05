@@ -321,7 +321,7 @@ let python_highlight_all = 1
 
 " Go
 au BufNewFile,BufRead *.go set filetype=go
-au FileType go setlocal ai ts=4 sw=4 sts=4 noexpandtab
+au FileType go setlocal ai ts=4 sw=4 sts=4 noexpandtab nolist
 let g:go_auto_type_info = 1
 
 " Haskell
