@@ -239,9 +239,13 @@ if has("gui_running")
   elseif has("gui_kde")
     set guifont=Courier\ New/11/-1/5/50/0/0/0/1/0
   elseif has("gui_macvim")
-    set guifont=Menlo\ Regular:h14
-    set guioptions-=T   " Hde toolbar.
-    set guioptions-=r   " Remove scrollbar.
+    set guioptions-=T " Hde toolbar.
+    set guioptions-=r " Remove scrollbar.
+    if system("osascript -e 'tell application \"Finder\" to get bounds of window of desktop' | cut -d ' ' -f 4") > 900
+      set guifont=Menlo\ Regular:h15
+    else
+      set guifont=Menlo\ Regular:h14
+    endif
   elseif has("gui_win32")
     set guifont=DejaVu_Sans_Mono:h10:cANSI
   elseif has("x11")
