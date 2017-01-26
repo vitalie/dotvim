@@ -1,12 +1,5 @@
-" Reload vimrc file after saving it.
-augroup AutoReloadVimRC
-  au!
-  au BufWritePost .vimrc,vimrc,$MYVIMRC so $MYVIMRC
-augroup END
-
 " =============================================================================
 " Vundle
-
 set nocompatible
 filetype off
 
@@ -46,19 +39,10 @@ Plugin 'mattn/emmet-vim'
 Plugin '29decibel/vim-stringify'
 Plugin 'Absolight/vim-bind'
 Plugin 'itchyny/lightline.vim'
-Plugin 'leafgarland/typescript-vim'
-" Plugin 'Valloric/YouCompleteMe'
 
 " =============================================================================
-" Color schemes
-" Plugin 'chriskempson/base16-vim'
-" Plugin 'nanotech/jellybeans.vim'
-" Plugin 'tpope/vim-vividchalk'
-" Plugin 'Lokaltog/vim-distinguished'
-" Plugin 'tomasr/molokai'
-" Plugin 'sjl/badwolf'
+" Color scheme
 Plugin 'altercation/vim-colors-solarized'
-
 
 " =============================================================================
 " Plugins - Languages
@@ -76,14 +60,9 @@ Plugin 'kchmck/vim-coffee-script'
 " Go
 Plugin 'fatih/vim-go'
 
-" Rust
-Plugin 'wting/rust.vim'
-
-" Python
-Plugin 'hdima/python-syntax'
-
 " SCSS
 Plugin 'cakebaker/scss-syntax.vim'
+Plugin 'gcorne/vim-sass-lint'
 
 " HAML
 Plugin 'tpope/vim-haml'
@@ -127,21 +106,16 @@ set ttimeout
 set ttimeoutlen=50
 set incsearch
 set hlsearch
-" set ignorecase
 set smartcase
 set laststatus=2
 set encoding=utf-8
 set showcmd
-" set cc=80
 set statusline=%<\ %n\ %f\ %m%r%y%=\ Line:\ \%l\/\%L\ Column:\ \%c%V
 set history=700
 set autoread
 set nowritebackup
 set nobackup
-" set noswapfile
 set noautowrite
-" set number
-" set relativenumber
 set numberwidth=1
 set so=3
 " set re=1
@@ -260,41 +234,35 @@ endif
 
 " Go
 let g:go_disable_autoinstall = 1
-let g:go_fmt_command = "goimports"
-let g:go_gocode_bin="gocode"
-let g:go_goimports_bin="goimports"
-let g:go_godef_bin="godef"
-let g:go_oracle_bin="oracle"
-let g:go_golint_bin="golint"
-let g:go_errcheck_bin="errcheck"
+let g:go_fmt_command = 'goimports'
+let g:go_gocode_bin='gocode'
+let g:go_goimports_bin='goimports'
+let g:go_godef_bin='godef'
+let g:go_oracle_bin='oracle'
+let g:go_golint_bin='golint'
+let g:go_errcheck_bin='errcheck'
 
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
+let g:go_auto_type_info = 1
 
 " Syntastic
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-
+let g:syntastic_aggregate_errors = 1
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
+let g:syntastic_echo_current_error = 1
+let g:syntastic_enable_signs = 1
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_sass_checkers=['sass_lint']
+let g:syntastic_scss_checkers=['sass_lint']
+let g:syntastic_style_error_symbol = '✗'
+let g:syntastic_style_warning_symbol = '✗'
+let g:syntastic_warning_symbol = '✗'
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
-let g:syntastic_typescript_checkers = ['tslint']
-let g:syntastic_scss_checkers = ['scss_lint']
-let g:syntastic_haskell_checkers = ['hlint']
-
-" JavaScript libraries
-let g:used_javascript_libs = 'jquery,underscore'
-
-" TypeScript options
-let g:syntastic_typescript_tsc_fname = ''
 
 " Ctrl-P
 let g:ctrlp_match_window = 'bottom,order:ttb' " bottom, listing from top to bottom
@@ -307,57 +275,29 @@ let g:wildfire_objects = [
       \ "a'", 'a"', "a)", "a]", "a}", "ap", "at"
       \ ]
 
-" Remember cursor position
-if has("autocmd")
-  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-endif
-
 " Use `ag` when available.
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 
 " =============================================================================
-" Settings - Languages
-
-" Python
-let python_highlight_all = 1
-
-" Go
-au BufNewFile,BufRead *.go set filetype=go
-au FileType go setlocal ai ts=4 sw=4 sts=4 noexpandtab nolist
-let g:go_auto_type_info = 1
-
-" Haskell
-" Tab specific option
-" set tabstop=8                   "A tab is 8 spaces
-" set expandtab                   "Always uses spaces instead of tabs
-" set softtabstop=4               "Insert 4 spaces when tab is pressed
-" set shiftwidth=4                "An indent is 4 spaces
-" set shiftround                  "Round indent to nearest shiftwidth multiple
-au BufNewFile,BufRead *.hs set filetype=haskell
-au FileType haskell setlocal ai ts=8 sts=4 sw=4 sr expandtab
-
-" Markdown
-au BufNewFile,BufReadPost *.md set filetype=markdown
-
-" Bind
-au BufNewFile,BufReadPost *.bind set filetype=bindzone
-
-" Cfg
-au BufNewFile,BufReadPost *.cfg set filetype=config
-
-" Cisco
-au BufNewFile,BufReadPost *.cisco set nofoldenable
-
-" =============================================================================
 " Keybindings - General
 
+" Autocommands
+if !exists("autocommands_loaded")
+  let autocommands_loaded = 1
+
+  " Reload vimrc automatically
+  autocmd BufWritePost  vimrc     source %
+  autocmd FileType      go        setlocal ai ts=4 sw=4 sts=4 noexpandtab nolist
+  autocmd FileType      cisco     set nofoldenable
+
+  " Remember cursor position
+  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+endif
+
 nnoremap ci( %ci(
-cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
-inoremap ,c <C-x><C-o>
-map Q mzgg=G`z<CR>
-cmap w!! w !sudo tee % >/dev/null
 vnoremap = :call Stringify()<CR>
 
 " Leader
