@@ -39,6 +39,7 @@ Plugin 'mattn/emmet-vim'
 Plugin '29decibel/vim-stringify'
 Plugin 'Absolight/vim-bind'
 Plugin 'itchyny/lightline.vim'
+Plugin 'RobbieClarken/vim-haproxy'
 
 " =============================================================================
 " Color scheme
