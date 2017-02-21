@@ -216,7 +216,7 @@ if has("gui_running")
   elseif has("gui_macvim")
     set guioptions-=T " Hde toolbar.
     set guioptions-=r " Remove scrollbar.
-    if system("osascript -e 'tell application \"Finder\" to get bounds of window of desktop' | cut -d ' ' -f 4") > 900
+    if system("osascript -e 'tell application \"Finder\" to get bounds of window of desktop' | cut -d ' ' -f 4") > 1080
       set guifont=Menlo\ Regular:h15
     else
       set guifont=Menlo\ Regular:h14
