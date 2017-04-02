@@ -82,11 +82,11 @@ augroup railsPluginDetect
   autocmd User ProjectionistDetect
         \ if RailsDetect(get(g:, 'projectionist_file', '')) |
         \   call projectionist#append(b:rails_root,
-        \     {'*': {}}) |
+        \     {'*': {"start": rails#app().static_rails_command('server')}}) |
         \ endif
 augroup END
 
-command! -bar -bang -nargs=* -complete=customlist,rails#complete_rails Rails execute rails#new_app_command(<bang>0,<f-args>)
+command! -bang -bar -nargs=* -count -complete=customlist,rails#complete_rails Rails execute rails#command(<bang>0, !<count> && <line1> ? -1 : <count>, <q-args>)
 
 " }}}1
 " abolish.vim support {{{1

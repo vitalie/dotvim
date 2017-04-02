@@ -1,12 +1,12 @@
 " Vim syntax file
 " Language:    AngularJS for coffee
 " Maintainer:  othree <othree@gmail.com>
-" Last Change: 2013/07/26
+" Last Change: 2017/02/15
 " Version:     1.1.13.1
 " URL:         http://angularjs.org/
 
-syntax keyword coffeeAngular angular containedin=ALLBUT,coffeeComment,coffeeLineComment,coffeeString,coffeeTemplate,coffeeTemplateSubstitution nextgroup=coffeeAngulardot
-syntax match   coffeeAngulardot contained /\./ nextgroup=coffeeAngularMethods
+syntax keyword coffeeAngular angular containedin=ALLBUT,coffeeComment,coffeeLineComment,coffeeString,coffeeTemplate,coffeeTemplateSubstitution nextgroup=coffeeAngularDot
+syntax match   coffeeAngularDot contained /\./ nextgroup=coffeeAngularMethods
 syntax keyword coffeeAngularMethods contained bind bootstrap copy element equals
 syntax keyword coffeeAngularMethods contained extend forEach fromJson identity injector
 syntax keyword coffeeAngularMethods contained isArray isDate isDefined isElement isFunction
@@ -18,6 +18,11 @@ syntax keyword coffeeAServices containedin=ALLBUT,coffeeComment,coffeeLineCommen
 syntax keyword coffeeAServices containedin=ALLBUT,coffeeComment,coffeeLineComment,coffeeString $locale $parse $rootElement
 syntax keyword coffeeAServices containedin=ALLBUT,coffeeComment,coffeeLineComment,coffeeString $routeParams $templateCache $window 
 syntax keyword coffeeAServices containedin=ALLBUT,coffeeComment,coffeeLineComment,coffeeString $cookies $resource $sanitize
+syntax keyword coffeeAServices containedin=ALLBUT,coffeeComment,coffeeLineComment,coffeeString $element
+
+syntax keyword coffeeAServices containedin=ALLBUT,coffeeComment,coffeeLineComment,coffeeString $attributes nextgroup=coffeeASattributesdot
+syntax match   coffeeASattributesdot contained /\./ nextgroup=coffeeASattributesMethods
+syntax keyword coffeeASattributesMethods contained $normalize $addClass $removeClass $updateClass $observe $set $attr
 
 syntax keyword coffeeAServices containedin=ALLBUT,coffeeComment,coffeeLineComment,coffeeString $http nextgroup=coffeeAShttpdot
 syntax match   coffeeAShttpdot contained /\./ nextgroup=coffeeAShttpMethods
@@ -58,8 +63,8 @@ syntax keyword coffeeAScookieStoreMethods contained get put remove
 syntax cluster coffeeAFunctions contains=coffeeAMFunctions
 syntax cluster coffeeAAttrs contains=coffeeAMAttrs
 
-syntax keyword coffeeAMFunctions contained config constant controller directive factory
-syntax keyword coffeeAMFunctions contained filter provider run service value
+syntax keyword coffeeAMFunctions contained config constant controller component directive
+syntax keyword coffeeAMFunctions contained factory filter provider run service value
 syntax keyword coffeeAMAttrs contained name requires
 
 
@@ -81,6 +86,7 @@ if version >= 508 || !exists("did_angularjs_coffee_syntax_inits")
   HiLink coffeeAMFunctions     PreProc
   HiLink coffeeAMAttrs         PreProc
 
+  HiLink coffeeASattributesMethods  PreProc
   HiLink coffeeAShttpMethods        PreProc
   HiLink coffeeASinterpolateMethods PreProc
   HiLink coffeeASlocationMethods    PreProc

@@ -2,7 +2,7 @@ javascript-libraries-syntax.vim
 ===============================
 
 Syntax file for JavaScript libraries. Supports JavaScript libraries I am using (patches welcome).
-Should works well with other JavaScript syntax file. [SyntaxComplete][] also works well on all 
+Should work well with other JavaScript syntax files. [SyntaxComplete][] also works well on all 
 supported languages.
 
 [SyntaxComplete]:http://www.vim.org/scripts/script.php?script_id=3172
@@ -22,9 +22,12 @@ Libraries
 * [Flux](https://facebook.github.io/flux/)
 * [RequireJS](http://requirejs.org/)
 * [Sugar.js](http://sugarjs.com/)
-* [Jasmine](http://pivotal.github.io/jasmine/)
+* [Jasmine](https://jasmine.github.io/)
 * [Chai](http://chaijs.com/)
 * [Handlebars](http://handlebarsjs.com/)
+* [Ramda](http://ramdajs.com/)
+* [Vue](https://vuejs.org/)
+* [d3](https://d3js.org/)
 
 File Types
 ----------
@@ -33,8 +36,6 @@ File Types
 * [CoffeeScript](http://coffeescript.org/)
 * [LiveScript](http://livescript.net/)
 * [TypeScript](http://www.typescriptlang.org/)
-
-Will be more when SyntaxComplete has new version.
 
 Install
 -------
@@ -49,7 +50,9 @@ Config
 
 You can use g:used_javascript_libs to setup used libraries, ex:
 
-    let g:used_javascript_libs = 'underscore,backbone'
+```viml
+let g:used_javascript_libs = 'underscore,backbone'
+```
 
 Support libs id:
 
@@ -68,16 +71,21 @@ Support libs id:
 * Jasmine: jasmine
 * Chai: chai
 * Handlebars: handlebars
+* Ramda: ramda
+* Vue.js: vue
+* d3.js: d3
 
 Default lib set is: `jquery,underscore,backbone`
 
 You can use [local vimrc][] to setup libraries used in project. Sample code for local vimrc:
 
-    autocmd BufReadPre *.js let b:javascript_lib_use_jquery = 1
-    autocmd BufReadPre *.js let b:javascript_lib_use_underscore = 1
-    autocmd BufReadPre *.js let b:javascript_lib_use_backbone = 1
-    autocmd BufReadPre *.js let b:javascript_lib_use_prelude = 0
-    autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 0
+```viml
+autocmd BufReadPre *.js let b:javascript_lib_use_jquery = 1
+autocmd BufReadPre *.js let b:javascript_lib_use_underscore = 1
+autocmd BufReadPre *.js let b:javascript_lib_use_backbone = 1
+autocmd BufReadPre *.js let b:javascript_lib_use_prelude = 0
+autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 0
+```
 
 [local vimrc]:https://github.com/MarcWeber/vim-addon-local-vimrc
 
@@ -98,6 +106,13 @@ All repeat defination will be removed when SyntaxComplete supports this feature.
 
 Changes
 -------
+
+### Version 0.6
+* Add Vue.js
+* Add d3.js
+
+### Version 0.5
+* Add Ramda
 
 ### Version 0.4
 * Add React, Flux, Chai, Handlbars
@@ -147,10 +162,13 @@ Credits
 
 * Bruno Michel, [jQuery : Syntax file for jQuery][jquery.vim]
 * [Peter Renström][], for [summarize and explain AngularJS stuff][issue1].
+* [Benedict Aas][], for [summarize Ramda stuff][issue34]
 
 [jquery.vim]:http://www.vim.org/scripts/script.php?script_id=2416
 [Peter Renström]:https://github.com/renstrom
 [issue1]:https://github.com/othree/javascript-libraries-syntax.vim/issues/1
+[Benedict Aas]:https://github.com/Shou
+[issue34]:https://github.com/othree/javascript-libraries-syntax.vim/issues/34#issuecomment-216404353
 
 License
 -------

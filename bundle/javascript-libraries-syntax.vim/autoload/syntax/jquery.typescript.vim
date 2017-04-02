@@ -2,7 +2,7 @@
 " Language:    jQuery for typescript
 " Maintainer:  othree <othree@gmail.com>
 " Maintainer:  Bruno Michel <brmichel@free.fr>
-" Last Change: 2014/10/29
+" Last Change: 2017/02/15
 " Version:     1.9.0.2
 " URL:         http://api.jquery.com/
 
@@ -11,7 +11,7 @@ if exists("b:current_syntax") && b:current_syntax == 'typescript'
   setlocal iskeyword+=$
 endif
 
-syntax keyword typescriptjQuery jQuery $ containedin=ALLBUT,typescriptComment,typescriptLineComment,typescriptString,typescriptTemplate,typescriptTemplateSubstitution
+syntax keyword typescriptjQuery jQuery $ containedin=ALLBUT,typescriptComment,typescriptLineComment,typescriptString,typescriptTemplate,typescriptTemplateSubstitution nextgroup=@typescriptAfterIdentifier
 " syntax match   typescriptjQuerydot       contained /\./ nextgroup=@typescriptQGlobals
 " syntax match   typescriptjQuerydot       contained /([^)]*)\./ nextgroup=@typescriptQFunctions
 
@@ -48,7 +48,7 @@ syntax keyword typescriptQEvents         contained focusin focusout keydown keyp
 syntax keyword typescriptQEvents         contained click dblclick hover mousedown mouseenter mouseleave mousemove mouseout mouseover mouseup
 syntax keyword typescriptQManipulation   contained clone
 syntax keyword typescriptQManipulation   contained unwrap wrap wrapAll wrapInner
-syntax keyword typescriptQManipulation   contained append appendTo html preprend prependTo text
+syntax keyword typescriptQManipulation   contained append appendTo html prepend prependTo text
 syntax keyword typescriptQManipulation   contained after before insertAfter insertBefore
 syntax keyword typescriptQManipulation   contained detach empty remove
 syntax keyword typescriptQManipulation   contained replaceAll replaceWith
@@ -64,16 +64,17 @@ syntax keyword typescriptQTraversing     contained children closest find next ne
 " syntax region  typescriptString                start=/"/  skip=/\\\\\|\\"\|\\\n/  end=/"\|$/ contains=typescriptASCII,@jSelectors
 " syntax region  typescriptString                start=/'/  skip=/\\\\\|\\'\|\\\n/  end=/'\|$/ contains=typescriptASCII,@jSelectors
 
-syntax cluster cssSelectors              contains=cssId,cssClass,cssOperators,cssBasicFilters,cssContentFilters,cssVisibility,cssChildFilters,cssForms,cssFormFilters
-syntax match   cssId                     contained containedin=typescriptString /#[0-9A-Za-z_\-]\+/
-syntax match   cssClass                  contained containedin=typescriptString /\.[0-9A-Za-z_\-]\+/
-syntax match   cssOperators              contained containedin=typescriptString /*\|>\|+\|-\|\~/
-syntax match   cssBasicFilters           contained containedin=typescriptString /:\(animated\|eq\|even\|first\|focus\|gt\|header\|last\|lang\|lt\|not\|odd\|root\|target\)/
-syntax match   cssChildFilters           contained containedin=typescriptString /:\(first\|last\|nth\|only\|nth-last\)-child/
-syntax match   cssChildFilters           contained containedin=typescriptString /:\(first\|last\|nth\|only\|nth-last\)-of-type/
-syntax match   cssContentFilters         contained containedin=typescriptString /:\(contains\|empty\|has\|parent\)/
-syntax match   cssForms                  contained containedin=typescriptString /:\(button\|checkbox\|checked\|disabled\|enabled\|file\|image\|input\|password\|radio\|reset\|selected\|submit\|text\)/
-syntax match   cssVisibility             contained containedin=typescriptString /:\(hidden\|visible\)/
+" syntax cluster cssSelectors              contains=cssId,cssClass,cssOperators,cssBasicFilters,cssContentFilters,cssVisibility,cssChildFilters,cssForms,cssFormFilters
+" syntax cluster typescriptNoReserved      add=@cssSelectors
+" syntax match   cssId                     contained containedin=typescriptString /#[0-9A-Za-z_\-]\+/
+" syntax match   cssClass                  contained containedin=typescriptString /\.[0-9A-Za-z_\-]\+/
+" syntax match   cssOperators              contained containedin=typescriptString /*\|>\|+\|-\|\~/
+" syntax match   cssBasicFilters           contained containedin=typescriptString /:\(animated\|eq\|even\|first\|focus\|gt\|header\|last\|lang\|lt\|not\|odd\|root\|target\)/
+" syntax match   cssChildFilters           contained containedin=typescriptString /:\(first\|last\|nth\|only\|nth-last\)-child/
+" syntax match   cssChildFilters           contained containedin=typescriptString /:\(first\|last\|nth\|only\|nth-last\)-of-type/
+" syntax match   cssContentFilters         contained containedin=typescriptString /:\(contains\|empty\|has\|parent\)/
+" syntax match   cssForms                  contained containedin=typescriptString /:\(button\|checkbox\|checked\|disabled\|enabled\|file\|image\|input\|password\|radio\|reset\|selected\|submit\|text\)/
+" syntax match   cssVisibility             contained containedin=typescriptString /:\(hidden\|visible\)/
 
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
@@ -108,15 +109,15 @@ if version >= 508 || !exists("did_jquery_typescript_syntax_inits")
   HiLink typescriptQTraversing     PreProc
   HiLink typescriptQUtilities      PreProc
 
-  HiLink cssId                     Identifier
-  HiLink cssClass                  Constant
-  HiLink cssOperators              Special
-  HiLink cssBasicFilters           Statement
-  HiLink cssContentFilters         Statement
-  HiLink cssVisibility             Statement
-  HiLink cssChildFilters           Statement
-  HiLink cssForms                  Statement
-  HiLink cssFormFilters            Statement
+  " HiLink cssId                     Identifier
+  " HiLink cssClass                  Constant
+  " HiLink cssOperators              Special
+  " HiLink cssBasicFilters           Statement
+  " HiLink cssContentFilters         Statement
+  " HiLink cssVisibility             Statement
+  " HiLink cssChildFilters           Statement
+  " HiLink cssForms                  Statement
+  " HiLink cssFormFilters            Statement
 
 
   delcommand HiLink

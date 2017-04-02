@@ -44,7 +44,7 @@ endif
 setlocal formatoptions-=t formatoptions+=croql
 
 setlocal include=^\\s*\\<\\(load\\>\\\|require\\>\\\|autoload\\s*:\\=[\"']\\=\\h\\w*[\"']\\=,\\)
-setlocal includeexpr=substitute(substitute(v:fname,'::','/','g'),'$','.rb','')
+setlocal includeexpr=substitute(substitute(v:fname,'::','/','g'),'\%(\.rb\)\=$','.rb','')
 setlocal suffixesadd=.rb
 
 if exists("&ofu") && has("ruby")
@@ -75,20 +75,20 @@ function! s:query_path(root) abort
     let prefix = ''
   endif
   if &shellxquote == "'"
-    let path_check = prefix.'ruby -e "' . code . '"'
+    let path_check = prefix.'ruby --disable-gems -e "' . code . '"'
   else
-    let path_check = prefix."ruby -e '" . code . "'"
+    let path_check = prefix."ruby --disable-gems -e '" . code . "'"
   endif
 
   let cd = haslocaldir() ? 'lcd' : 'cd'
-  let cwd = getcwd()
+  let cwd = fnameescape(getcwd())
   try
     exe cd fnameescape(a:root)
     let path = split(system(path_check),',')
-    exe cd fnameescape(cwd)
+    exe cd cwd
     return path
   finally
-    exe cd fnameescape(cwd)
+    exe cd cwd
   endtry
 endfunction
 
@@ -136,7 +136,7 @@ if exists('s:ruby_paths') && stridx(&l:tags, join(map(copy(s:ruby_paths),'v:val.
   let &l:tags = &tags . ',' . join(map(copy(s:ruby_paths),'v:val."/tags"'),',')
 endif
 
-if has("gui_win32") && !exists("b:browsefilter")
+if (has("gui_win32") || has("gui_gtk")) && !exists("b:browsefilter")
   let b:browsefilter = "Ruby Source Files (*.rb)\t*.rb\n" .
                      \ "All Files (*.*)\t*.*\n"
 endif
@@ -184,7 +184,7 @@ if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
         \."| sil! exe 'unmap <buffer> [[' | sil! exe 'unmap <buffer> ]]' | sil! exe 'unmap <buffer> []' | sil! exe 'unmap <buffer> ]['"
         \."| sil! exe 'unmap <buffer> [m' | sil! exe 'unmap <buffer> ]m' | sil! exe 'unmap <buffer> [M' | sil! exe 'unmap <buffer> ]M'"
 
-  if maparg('im','n') == ''
+  if maparg('im','x') == '' && maparg('im','o') == '' && maparg('am','x') == '' && maparg('am','o') == ''
     onoremap <silent> <buffer> im :<C-U>call <SID>wrap_i('[m',']M')<CR>
     onoremap <silent> <buffer> am :<C-U>call <SID>wrap_a('[m',']M')<CR>
     xnoremap <silent> <buffer> im :<C-U>call <SID>wrap_i('[m',']M')<CR>
@@ -194,7 +194,7 @@ if !exists("g:no_plugin_maps") && !exists("g:no_ruby_maps")
           \."| sil! exe 'xunmap <buffer> im' | sil! exe 'xunmap <buffer> am'"
   endif
 
-  if maparg('iM','n') == ''
+  if maparg('iM','x') == '' && maparg('iM','o') == '' && maparg('aM','x') == '' && maparg('aM','o') == ''
     onoremap <silent> <buffer> iM :<C-U>call <SID>wrap_i('[[','][')<CR>
     onoremap <silent> <buffer> aM :<C-U>call <SID>wrap_a('[[','][')<CR>
     xnoremap <silent> <buffer> iM :<C-U>call <SID>wrap_i('[[','][')<CR>
@@ -359,7 +359,7 @@ function! RubyCursorFile() abort
   endtry
   let pre = matchstr(strpart(getline('.'), 0, col('.')-1), '.*\f\@<!')
   let post = matchstr(strpart(getline('.'), col('.')), '\f\@!.*')
-  let ext = getline('.') =~# '^\s*\%(require\|autoload\)\>' ? '.rb' : ''
+  let ext = getline('.') =~# '^\s*\%(require\%(_relative\)\=\|autoload\)\>' && cfile !~# '\.rb$' ? '.rb' : ''
   if s:synname() ==# 'rubyConstant'
     let cfile = substitute(cfile,'\.\w\+[?!=]\=$','','')
     let cfile = substitute(cfile,'::','/','g')
@@ -367,7 +367,7 @@ function! RubyCursorFile() abort
     let cfile = substitute(cfile,'\(\l\|\d\)\(\u\)','\1_\2', 'g')
     return tolower(cfile) . '.rb'
   elseif getline('.') =~# '^\s*require_relative\s*\(["'']\).*\1\s*$'
-    let cfile = expand('%:p:h') . '/' . matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1') . '.rb'
+    let cfile = expand('%:p:h') . '/' . matchstr(getline('.'),'\(["'']\)\zs.\{-\}\ze\1') . ext
   elseif getline('.') =~# '^\s*\%(require[( ]\|load[( ]\|autoload[( ]:\w\+,\)\s*\%(::\)\=File\.expand_path(\(["'']\)\.\./.*\1,\s*__FILE__)\s*$'
     let target = matchstr(getline('.'),'\(["'']\)\.\.\zs/.\{-\}\ze\1')
     let cfile = expand('%:p:h') . target . ext

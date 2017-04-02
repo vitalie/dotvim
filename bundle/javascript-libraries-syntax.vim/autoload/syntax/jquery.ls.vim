@@ -2,7 +2,7 @@
 " Language:    jQuery for ls
 " Maintainer:  othree <othree@gmail.com>
 " Maintainer:  Bruno Michel <brmichel@free.fr>
-" Last Change: 2014/10/29
+" Last Change: 2017/02/15
 " Version:     1.9.0.2
 " URL:         http://api.jquery.com/
 
@@ -11,7 +11,7 @@ if exists("b:current_syntax") && b:current_syntax == 'ls'
   setlocal iskeyword+=$
 endif
 
-syntax keyword lsjQuery jQuery $ containedin=ALLBUT,lsComment,lsLineComment,lsString,lsTemplate,lsTemplateSubstitution
+syntax keyword lsjQuery jQuery $ containedin=ALLBUT,lsComment,lsLineComment,lsString,lsTemplate,lsTemplateSubstitution nextgroup=@lsAfterIdentifier
 " syntax match   lsjQuerydot       contained /\./ nextgroup=@lsQGlobals
 " syntax match   lsjQuerydot       contained /([^)]*)\./ nextgroup=@lsQFunctions
 
@@ -48,7 +48,7 @@ syntax keyword lsQEvents         contained focusin focusout keydown keypress key
 syntax keyword lsQEvents         contained click dblclick hover mousedown mouseenter mouseleave mousemove mouseout mouseover mouseup
 syntax keyword lsQManipulation   contained clone
 syntax keyword lsQManipulation   contained unwrap wrap wrapAll wrapInner
-syntax keyword lsQManipulation   contained append appendTo html preprend prependTo text
+syntax keyword lsQManipulation   contained append appendTo html prepend prependTo text
 syntax keyword lsQManipulation   contained after before insertAfter insertBefore
 syntax keyword lsQManipulation   contained detach empty remove
 syntax keyword lsQManipulation   contained replaceAll replaceWith
@@ -64,16 +64,17 @@ syntax keyword lsQTraversing     contained children closest find next nextAll ne
 " syntax region  lsString                start=/"/  skip=/\\\\\|\\"\|\\\n/  end=/"\|$/ contains=lsASCII,@jSelectors
 " syntax region  lsString                start=/'/  skip=/\\\\\|\\'\|\\\n/  end=/'\|$/ contains=lsASCII,@jSelectors
 
-syntax cluster cssSelectors              contains=cssId,cssClass,cssOperators,cssBasicFilters,cssContentFilters,cssVisibility,cssChildFilters,cssForms,cssFormFilters
-syntax match   cssId                     contained containedin=lsString /#[0-9A-Za-z_\-]\+/
-syntax match   cssClass                  contained containedin=lsString /\.[0-9A-Za-z_\-]\+/
-syntax match   cssOperators              contained containedin=lsString /*\|>\|+\|-\|\~/
-syntax match   cssBasicFilters           contained containedin=lsString /:\(animated\|eq\|even\|first\|focus\|gt\|header\|last\|lang\|lt\|not\|odd\|root\|target\)/
-syntax match   cssChildFilters           contained containedin=lsString /:\(first\|last\|nth\|only\|nth-last\)-child/
-syntax match   cssChildFilters           contained containedin=lsString /:\(first\|last\|nth\|only\|nth-last\)-of-type/
-syntax match   cssContentFilters         contained containedin=lsString /:\(contains\|empty\|has\|parent\)/
-syntax match   cssForms                  contained containedin=lsString /:\(button\|checkbox\|checked\|disabled\|enabled\|file\|image\|input\|password\|radio\|reset\|selected\|submit\|text\)/
-syntax match   cssVisibility             contained containedin=lsString /:\(hidden\|visible\)/
+" syntax cluster cssSelectors              contains=cssId,cssClass,cssOperators,cssBasicFilters,cssContentFilters,cssVisibility,cssChildFilters,cssForms,cssFormFilters
+" syntax cluster lsNoReserved      add=@cssSelectors
+" syntax match   cssId                     contained containedin=lsString /#[0-9A-Za-z_\-]\+/
+" syntax match   cssClass                  contained containedin=lsString /\.[0-9A-Za-z_\-]\+/
+" syntax match   cssOperators              contained containedin=lsString /*\|>\|+\|-\|\~/
+" syntax match   cssBasicFilters           contained containedin=lsString /:\(animated\|eq\|even\|first\|focus\|gt\|header\|last\|lang\|lt\|not\|odd\|root\|target\)/
+" syntax match   cssChildFilters           contained containedin=lsString /:\(first\|last\|nth\|only\|nth-last\)-child/
+" syntax match   cssChildFilters           contained containedin=lsString /:\(first\|last\|nth\|only\|nth-last\)-of-type/
+" syntax match   cssContentFilters         contained containedin=lsString /:\(contains\|empty\|has\|parent\)/
+" syntax match   cssForms                  contained containedin=lsString /:\(button\|checkbox\|checked\|disabled\|enabled\|file\|image\|input\|password\|radio\|reset\|selected\|submit\|text\)/
+" syntax match   cssVisibility             contained containedin=lsString /:\(hidden\|visible\)/
 
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
@@ -108,15 +109,15 @@ if version >= 508 || !exists("did_jquery_ls_syntax_inits")
   HiLink lsQTraversing     PreProc
   HiLink lsQUtilities      PreProc
 
-  HiLink cssId                     Identifier
-  HiLink cssClass                  Constant
-  HiLink cssOperators              Special
-  HiLink cssBasicFilters           Statement
-  HiLink cssContentFilters         Statement
-  HiLink cssVisibility             Statement
-  HiLink cssChildFilters           Statement
-  HiLink cssForms                  Statement
-  HiLink cssFormFilters            Statement
+  " HiLink cssId                     Identifier
+  " HiLink cssClass                  Constant
+  " HiLink cssOperators              Special
+  " HiLink cssBasicFilters           Statement
+  " HiLink cssContentFilters         Statement
+  " HiLink cssVisibility             Statement
+  " HiLink cssChildFilters           Statement
+  " HiLink cssForms                  Statement
+  " HiLink cssFormFilters            Statement
 
 
   delcommand HiLink
