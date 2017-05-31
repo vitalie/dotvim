@@ -72,7 +72,8 @@ Plugin 'tpope/vim-haml'
 Plugin 'slim-template/vim-slim'
 
 " Markdown
-Plugin 'tpope/vim-markdown'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
 
 " JSON
 Plugin 'elzr/vim-json'
@@ -340,6 +341,9 @@ nnoremap <leader>l <C-w>l
 
 " =============================================================================
 " Keybindings - Languages
+
+" Markdown
+let g:vim_markdown_folding_disabled = 1
 
 " Go
 au FileType go nmap <leader>r <Plug>(go-run)
