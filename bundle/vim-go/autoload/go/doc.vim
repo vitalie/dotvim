@@ -31,11 +31,12 @@ function! go#doc#OpenBrowser(...) abort
 
     let import = out["import"]
     let name = out["name"]
-    let decl = out["decl"]
 
-    let godoc_url = "https://godoc.org/" . import
-    if decl !~ "^package"
-      let godoc_url .= "#" . name
+    " if import is empty, it means we selected a package name
+    if import ==# ""
+      let godoc_url = "https://godoc.org/" . name 
+    else
+      let godoc_url = "https://godoc.org/" . import . "#" . name
     endif
 
     echo godoc_url
@@ -92,20 +93,13 @@ function! s:GodocView(newposition, position, content) abort
     execute bufwinnr(s:buf_nr) . 'wincmd w'
   endif
 
-  if a:position == "split"
-    " cap buffer height to 20, but resize it for smaller contents
-    let max_height = 20
-    let content_height = len(split(a:content, "\n"))
-    if content_height > max_height
-      exe 'resize ' . max_height
-    else
-      exe 'resize ' . content_height
-    endif
+  " cap buffer height to 20, but resize it for smaller contents
+  let max_height = 20
+  let content_height = len(split(a:content, "\n"))
+  if content_height > max_height
+    exe 'resize ' . max_height
   else
-    " set a sane maximum width for vertical splits. In this case the minimum
-    " that fits the godoc for package http without extra linebreaks and line
-    " numbers on
-    exe 'vertical resize 84'
+    exe 'resize ' . content_height
   endif
 
   setlocal filetype=godoc
@@ -159,7 +153,8 @@ function! s:gogetdoc(json) abort
     "     file size followed by newline
     "     file contents
     let in = ""
-    let content = join(go#util#GetLines(), "\n")
+    let sep = go#util#LineEnding()
+    let content = join(getline(1, '$'), sep)
     let in = fname . "\n" . strlen(content) . "\n" . content
     let command .= " -modified"
     let out = go#util#System(command, in)

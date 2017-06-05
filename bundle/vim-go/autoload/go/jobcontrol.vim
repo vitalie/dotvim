@@ -38,19 +38,9 @@ endfunction
 " GOPATH when g:go_autodetect_gopath is enabled. The job is started inside the
 " current files folder.
 function! s:spawn(bang, desc, args) abort
-  let status_type = a:args[0]
-  let status_dir = expand('%:p:h')
-  let started_at = reltime()
-
-  call go#statusline#Update(status_dir, {
-        \ 'desc': "current status",
-        \ 'type': status_type,
-        \ 'state': "started",
-        \})
-
-  let job = {
-        \ 'desc': a:desc,
-        \ 'bang': a:bang,
+  let job = { 
+        \ 'desc': a:desc, 
+        \ 'bang': a:bang, 
         \ 'winnr': winnr(),
         \ 'importpath': go#package#ImportPath(expand('%:p:h')),
         \ 'state': "RUNNING",
@@ -59,9 +49,6 @@ function! s:spawn(bang, desc, args) abort
         \ 'on_stdout': function('s:on_stdout'),
         \ 'on_stderr': function('s:on_stderr'),
         \ 'on_exit' : function('s:on_exit'),
-        \ 'status_type' : status_type,
-        \ 'status_dir' : status_dir,
-        \ 'started_at' : started_at,
         \ }
 
   " modify GOPATH if needed
@@ -103,24 +90,7 @@ endfunction
 " references and also displaying errors in the quickfix window collected by
 " on_stderr handler. If there are no errors and a quickfix window is open,
 " it'll be closed.
-function! s:on_exit(job_id, exit_status, event) dict abort
-  let status = {
-        \ 'desc': 'last status',
-        \ 'type': self.status_type,
-        \ 'state': "success",
-        \ }
-
-  if a:exit_status
-    let status.state = "failed"
-  endif
-
-  let elapsed_time = reltimestr(reltime(self.started_at))
-  " strip whitespace
-  let elapsed_time = substitute(elapsed_time, '^\s*\(.\{-}\)\s*$', '\1', '')
-  let status.state .= printf(" (%ss)", elapsed_time)
-
-  call go#statusline#Update(self.status_dir, status)
-
+function! s:on_exit(job_id, exit_status) abort
   let std_combined = self.stderr + self.stdout
 
   let cd = exists('*haslocaldir') && haslocaldir() ? 'lcd ' : 'cd '
@@ -129,26 +99,19 @@ function! s:on_exit(job_id, exit_status, event) dict abort
 
   call s:callback_handlers_on_exit(s:jobs[a:job_id], a:exit_status, std_combined)
 
-  let l:listtype = go#list#Type("quickfix")
   if a:exit_status == 0
-    call go#list#Clean(l:listtype)
-    call go#list#Window(l:listtype)
+    call go#list#Clean(0)
+    call go#list#Window(0)
 
     let self.state = "SUCCESS"
-
-    if get(g:, 'go_echo_command_info', 1)
-      call go#util#EchoSuccess("[" . self.status_type . "] SUCCESS")
-    endif
+    call go#util#EchoSuccess("SUCCESS")
 
     execute cd . fnameescape(dir)
     return
   endif
 
   let self.state = "FAILED"
-
-  if get(g:, 'go_echo_command_info', 1)
-    call go#util#EchoError("[" . self.status_type . "] FAILED")
-  endif
+  call go#util#EchoError("FAILED")
 
   let errors = go#tool#ParseErrors(std_combined)
   let errors = go#tool#FilterValids(errors)
@@ -163,7 +126,8 @@ function! s:on_exit(job_id, exit_status, event) dict abort
 
   " if we are still in the same windows show the list
   if self.winnr == winnr()
-    call go#list#Populate(l:listtype, errors, self.desc)
+    let l:listtype = "locationlist"
+    call go#list#Populate(l:listtype, errors)
     call go#list#Window(l:listtype, len(errors))
     if !empty(errors) && !self.bang
       call go#list#JumpToFirst(l:listtype)
@@ -183,14 +147,14 @@ function! s:callback_handlers_on_exit(job, exit_status, data) abort
 endfunction
 
 " on_stdout is the stdout handler for jobstart(). It collects the output of
-" stderr and stores them to the jobs internal stdout list.
-function! s:on_stdout(job_id, data, event) dict abort
+" stderr and stores them to the jobs internal stdout list. 
+function! s:on_stdout(job_id, data) abort
   call extend(self.stdout, a:data)
 endfunction
 
 " on_stderr is the stderr handler for jobstart(). It collects the output of
 " stderr and stores them to the jobs internal stderr list.
-function! s:on_stderr(job_id, data, event) dict abort
+function! s:on_stderr(job_id, data) abort
   call extend(self.stderr, a:data)
 endfunction
 

@@ -16,7 +16,7 @@ function! go#def#Jump(mode) abort
     if &modified
       " Write current unsaved buffer to a temp file and use the modified content
       let l:tmpname = tempname()
-      call writefile(go#util#GetLines(), l:tmpname)
+      call writefile(getline(1, '$'), l:tmpname)
       let fname = l:tmpname
     endif
 
@@ -41,7 +41,8 @@ function! go#def#Jump(mode) abort
     let stdin_content = ""
 
     if &modified
-      let content  = join(go#util#GetLines(), "\n")
+      let sep = go#util#LineEnding()
+      let content  = join(getline(1, '$'), sep)
       let stdin_content = fname . "\n" . strlen(content) . "\n" . content
       call add(cmd, "-modified")
     endif
@@ -86,7 +87,7 @@ function! go#def#Jump(mode) abort
     return
   endif
 
-  call go#def#jump_to_declaration(out, a:mode, bin_name)
+  call s:jump_to_declaration(out, a:mode, bin_name)
   let $GOPATH = old_gopath
 endfunction
 
@@ -95,10 +96,10 @@ function! s:jump_to_declaration_cb(mode, bin_name, job, exit_status, data) abort
     return
   endif
 
-  call go#def#jump_to_declaration(a:data[0], a:mode, a:bin_name)
+  call s:jump_to_declaration(a:data[0], a:mode, a:bin_name)
 endfunction
 
-function! go#def#jump_to_declaration(out, mode, bin_name) abort
+function! s:jump_to_declaration(out, mode, bin_name) abort
   let final_out = a:out
   if a:bin_name == "godef"
     " append the type information to the same line so our we can parse it.
@@ -145,27 +146,19 @@ function! go#def#jump_to_declaration(out, mode, bin_name) abort
     if get(g:, 'go_def_reuse_buffer', 0) && bufloaded(filename) != 0 && bufwinnr(filename) != -1
       " jumpt to existing buffer if it exists
       execute bufwinnr(filename) . 'wincmd w'
-    else
-      if &modified
-        let cmd = 'hide edit'
-      else
-        let cmd = 'edit'
+    elseif a:mode == "tab"
+      let &switchbuf = "usetab"
+      if bufloaded(filename) == 0
+        tab split
       endif
-
-      if a:mode == "tab"
-        let &switchbuf = "usetab"
-        if bufloaded(filename) == 0
-          tab split
-        endif
-      elseif a:mode == "split"
-        split
-      elseif a:mode == "vsplit"
-        vsplit
-      endif
-
-      " open the file and jump to line and column
-      exec cmd filename
+    elseif a:mode == "split"
+      split
+    elseif a:mode == "vsplit"
+      vsplit
     endif
+
+    " open the file and jump to line and column
+    exec 'edit' filename
   endif
   call cursor(line, col)
 
@@ -209,7 +202,7 @@ function! go#def#StackUI() abort
       let prefix = " "
     endif
 
-    call add(stackOut, printf("%s %d %s|%d col %d|%s",
+    call add(stackOut, printf("%s %d %s|%d col %d|%s", 
           \ prefix, i+1, entry["file"], entry["line"], entry["col"], entry["ident"]))
     let i += 1
   endwhile
@@ -279,13 +272,7 @@ function! go#def#Stack(...) abort
     let target = s:go_stack[s:go_stack_level]
 
     " jump
-    if expand('%:p') != target["file"]
-      if &modified
-        exec 'hide edit' target["file"]
-      else
-        exec 'edit' target["file"]
-      endif
-    endif
+    exec 'edit' target["file"]
     call cursor(target["line"], target["col"])
     normal! zz
   else
@@ -298,7 +285,7 @@ function s:def_job(args) abort
     " do not print anything during async definition search&jump
   endfunction
 
-  let a:args.error_info_cb = funcref('s:error_info_cb')
+  let a:args.error_info_cb = function('s:error_info_cb')
   let callbacks = go#job#Spawn(a:args)
 
   let start_options = {

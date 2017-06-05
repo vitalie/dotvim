@@ -9,7 +9,6 @@ function go#job#Spawn(args)
         \ 'jobdir': fnameescape(expand("%:p:h")),
         \ 'messages': [],
         \ 'args': a:args.cmd,
-        \ 'bang': 0,
         \ }
 
   if has_key(a:args, 'bang')
@@ -58,17 +57,16 @@ function go#job#Spawn(args)
       endif
     endif
 
-    let l:listtype = go#list#Type("quickfix")
     if exitval == 0
-      call go#list#Clean(l:listtype)
-      call go#list#Window(l:listtype)
+      call go#list#Clean(0)
+      call go#list#Window(0)
       return
     endif
 
-    call self.show_errors(l:listtype)
+    call self.show_errors()
   endfunction
 
-  function cbs.show_errors(listtype) dict
+  function cbs.show_errors() dict
     let cd = exists('*haslocaldir') && haslocaldir() ? 'lcd ' : 'cd '
     try
       execute cd self.jobdir
@@ -86,10 +84,11 @@ function go#job#Spawn(args)
     endif
 
     if self.winnr == winnr()
-      call go#list#Populate(a:listtype, errors, join(self.args))
-      call go#list#Window(a:listtype, len(errors))
+      let l:listtype = "quickfix"
+      call go#list#Populate(l:listtype, errors)
+      call go#list#Window(l:listtype, len(errors))
       if !empty(errors) && !self.bang
-        call go#list#JumpToFirst(a:listtype)
+        call go#list#JumpToFirst(l:listtype)
       endif
     endif
   endfunction

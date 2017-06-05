@@ -11,7 +11,7 @@
 "
 " Options:
 "
-"   g:go_asmfmt_autosave [default=0]
+"   g:go_asmfmt_autosave [default=1]
 "
 "       Flag to automatically call :Fmt when file is saved.
 
@@ -25,7 +25,7 @@ function! go#asmfmt#Format() abort
 
   " Write the current buffer to a tempfile.
   let l:tmpname = tempname()
-  call writefile(go#util#GetLines(), l:tmpname)
+  call writefile(getline(1, '$'), l:tmpname)
 
   " Run asmfmt.
   let path = go#path#CheckBinPath("asmfmt")
@@ -56,14 +56,14 @@ function! go#asmfmt#Format() abort
 endfunction
 
 function! go#asmfmt#ToggleAsmFmtAutoSave() abort
-  if get(g:, "go_asmfmt_autosave", 0)
-    let g:go_asmfmt_autosave = 1
-    call go#util#EchoProgress("auto asmfmt enabled")
+  if get(g:, "go_asmfmt_autosave", 1)
+    let g:go_asmfmt_autosave = 0
+    call go#util#EchoProgress("auto asmfmt disabled")
     return
   end
 
-  let g:go_asmfmt_autosave = 0
-  call go#util#EchoProgress("auto asmfmt disabled")
+  let g:go_asmfmt_autosave = 1
+  call go#util#EchoProgress("auto asmfmt enabled")
 endfunction
 
 " vim: sw=2 ts=2 et

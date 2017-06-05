@@ -18,7 +18,6 @@ let s:packages = [
       \ "github.com/jstemmer/gotags",
       \ "github.com/klauspost/asmfmt/cmd/asmfmt",
       \ "github.com/fatih/motion",
-      \ "github.com/fatih/gomodifytags",
       \ "github.com/zmb3/gogetdoc",
       \ "github.com/josharian/impl",
       \ ]
@@ -33,15 +32,15 @@ command! -nargs=? -complete=dir GoPath call go#path#GoPath(<f-args>)
 " target install directory. GoInstallBinaries doesn't install binaries if they
 " exist, to update current binaries pass 1 to the argument.
 function! s:GoInstallBinaries(updateBinaries)
-  let err = s:CheckBinaries()
-  if err != 0
+  if $GOPATH == ""
+    echohl Error
+    echomsg "vim.go: $GOPATH is not set"
+    echohl None
     return
   endif
 
-  if go#path#Default() == ""
-    echohl Error
-    echomsg "vim.go: $GOPATH is not set and 'go env GOPATH' returns empty"
-    echohl None
+  let err = s:CheckBinaries()
+  if err != 0
     return
   endif
 
@@ -170,7 +169,7 @@ endfunction
 
 function! s:asmfmt_autosave()
   " Go asm formatting on save
-  if get(g:, "go_asmfmt_autosave", 0)
+  if get(g:, "go_asmfmt_autosave", 1)
     call go#asmfmt#Format()
   endif
 endfunction
