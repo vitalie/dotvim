@@ -40,6 +40,7 @@ Plugin '29decibel/vim-stringify'
 Plugin 'Absolight/vim-bind'
 Plugin 'itchyny/lightline.vim'
 Plugin 'RobbieClarken/vim-haproxy'
+Plugin 'rodjek/vim-puppet'
 
 " =============================================================================
 " Color scheme
