@@ -73,7 +73,6 @@ Plugin 'tpope/vim-haml'
 Plugin 'slim-template/vim-slim'
 
 " Markdown
-Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 
 " JSON
@@ -89,6 +88,9 @@ Plugin 'elixir-lang/vim-elixir'
 
 " Cisco IOS
 Plugin 'CyCoreSystems/vim-cisco-ios'
+
+" Text aligning around a selected character.
+Plugin 'tommcdo/vim-lion'
 
 " All Plugins must be added before the following this line.
 call vundle#end()            " required
@@ -266,6 +268,9 @@ let g:syntastic_style_error_symbol = '✗'
 let g:syntastic_style_warning_symbol = '✗'
 let g:syntastic_warning_symbol = '✗'
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+
+" vim-lion
+let g:lion_squeeze_spaces = 1
 
 " Ctrl-P
 let g:ctrlp_match_window = 'bottom,order:ttb' " bottom, listing from top to bottom
