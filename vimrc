@@ -1,191 +1,147 @@
 " =============================================================================
-" Vundle
-set nocompatible
-filetype off
-
-let has_vundle=1
-if !filereadable($HOME."/.vim/bundle/Vundle.vim/README.md")
-  echo "Installing Vundle ..."
-  echo ""
-  silent !mkdir -p $HOME/.vim/bundle
-  silent !git clone https://github.com/VundleVim/Vundle.vim $HOME/.vim/bundle/Vundle.vim
-  let has_vundle=0
-endif
-
-" Set the runtime path to include Vundle and initialize.
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" Let Vundle manage Vundle, required.
-Plugin 'gmarik/Vundle.vim'
-
+call plug#begin('~/.vim/bundle')
 " =============================================================================
+
 " Plugins - General
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-vinegar'
-Plugin 'tpope/vim-endwise'
-Plugin 'gcmt/wildfire.vim'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'justinmk/vim-sneak'
-Plugin 'scrooloose/syntastic'
-Plugin 'mileszs/ack.vim'
-Plugin 'ntpeters/vim-better-whitespace'
-Plugin 'mattn/emmet-vim'
-Plugin '29decibel/vim-stringify'
-Plugin 'Absolight/vim-bind'
-Plugin 'itchyny/lightline.vim'
-Plugin 'RobbieClarken/vim-haproxy'
-Plugin 'rodjek/vim-puppet'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-endwise'
+Plug 'gcmt/wildfire.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'justinmk/vim-sneak'
+Plug 'scrooloose/syntastic'
+Plug 'mileszs/ack.vim'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'mattn/emmet-vim'
+Plug '29decibel/vim-stringify'
+Plug 'farmergreg/vim-lastplace'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'itchyny/lightline.vim'
+
+Plug 'elzr/vim-json'
+Plug 'fatih/vim-nginx'
+Plug 'RobbieClarken/vim-haproxy'
+Plug 'plasticboy/vim-markdown'
+Plug 'rodjek/vim-puppet'
+Plug 'Absolight/vim-bind'
+Plug 'CyCoreSystems/vim-cisco-ios'
 
 " =============================================================================
 " Color scheme
-Plugin 'altercation/vim-colors-solarized'
+Plug 'altercation/vim-colors-solarized'
 
 " =============================================================================
 " Plugins - Languages
 
 " Ruby
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'tpope/vim-rails'
-
-" JavaScript
-Plugin 'pangloss/vim-javascript'
-
-" CoffeeScript
-Plugin 'kchmck/vim-coffee-script'
+Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rails'
 
 " Go
-Plugin 'fatih/vim-go'
-
-" SCSS
-Plugin 'cakebaker/scss-syntax.vim'
-Plugin 'gcorne/vim-sass-lint'
-
-" HAML
-Plugin 'tpope/vim-haml'
-
-" Slim
-Plugin 'slim-template/vim-slim'
-
-" Markdown
-Plugin 'plasticboy/vim-markdown'
-
-" JSON
-Plugin 'elzr/vim-json'
-
-" AngularJS
-Plugin 'burnettk/vim-angular'
-Plugin 'othree/javascript-libraries-syntax.vim'
-Plugin 'claco/jasmine.vim'
+Plug 'fatih/vim-go'
 
 " Elixir
-Plugin 'elixir-lang/vim-elixir'
+Plug 'elixir-lang/vim-elixir'
 
-" Cisco IOS
-Plugin 'CyCoreSystems/vim-cisco-ios'
+" JavaScript
+Plug 'pangloss/vim-javascript'
+Plug 'othree/javascript-libraries-syntax.vim'
+Plug 'kchmck/vim-coffee-script'
+Plug 'burnettk/vim-angular'
+
+" SCSS
+Plug 'cakebaker/scss-syntax.vim'
+
+" Templates
+Plug 'tpope/vim-haml'
+Plug 'slim-template/vim-slim'
 
 " Text aligning around a selected character.
-Plugin 'tommcdo/vim-lion'
+Plug 'tommcdo/vim-lion'
 
 " All Plugins must be added before the following this line.
-call vundle#end()            " required
-filetype plugin indent on    " required
-
 " =============================================================================
+call plug#end()
+" =============================================================================
+
 " Settings - General
-
-" Load the plugin and indent settings for the detected filetype.
+set nocompatible
+filetype off
 filetype plugin indent on
-syntax on
-set backspace=indent,eol,start
-set complete-=i
-set showmatch
-set nrformats-=octal
-set shiftround
-set ttimeout
-set ttimeoutlen=50
-set incsearch
-set hlsearch
-set smartcase
+
+set ttyfast
+set ttymouse=xterm2
+set ttyscroll=3
+
 set laststatus=2
-set encoding=utf-8
-set showcmd
-set statusline=%<\ %n\ %f\ %m%r%y%=\ Line:\ \%l\/\%L\ Column:\ \%c%V
-set history=700
-set autoread
-set nowritebackup
-set nobackup
-set noautowrite
-set numberwidth=1
-set so=3
-" set re=1
-set cursorline
-set ruler
-set splitright
-set splitbelow
-set shortmess+=I
-set nowrap
-set nostartofline
-set mouse=
+set encoding=utf-8             " Set default encoding to UTF-8
+set autoread                   " Automatically reread changed files without asking me anything
+set autoindent
+set backspace=indent,eol,start " Makes backspace key more powerful.
+set incsearch                  " Shows the match while typing
+set hlsearch                   " Highlight found searches
+set mouse=a                    " Enable mouse mode
+
+set noerrorbells               " No beeps
+set showcmd                    " Show me what I'm typing
+set noswapfile                 " Don't use swapfile
+set nobackup                   " Don't create annoying backup files
+set splitright                 " Split vertical windows right to the current windows
+set splitbelow                 " Split horizontal windows below to the current windows
+set autowrite                  " Automatically save before :next, :make etc.
 set hidden
-set vb t_vb=
-set scrolloff=999999
+set fileformats=unix,dos,mac   " Prefer Unix over Windows over OS 9 formats
+set noshowmatch                " Do not show matching brackets by flickering
+set noshowmode                 " We show the mode with airline or lightline
+set ignorecase                 " Search case insensitive...
+set smartcase                  " ... but not it begins with upper case
+set completeopt=menu,menuone
+set nocursorcolumn             " speed up syntax highlighting
+set nocursorline
+set updatetime=300
 
-set smarttab
-set tabstop=2     " How many spaces to be rendered for a tab.
-set shiftwidth=2  " The number of columns used in indentat operations (<< and >>).
-set expandtab     " Replace tab key with spaces in insert mode.
+set pumheight=10               " Completion window max size
 
+"http://stackoverflow.com/questions/20186975/vim-mac-how-to-copy-to-clipboard-without-pbcopy
+set clipboard^=unnamed
+set clipboard^=unnamedplus
+
+" ~/.viminfo needs to be writable and readable
+set viminfo='200
+
+set lazyredraw          " Wait to redraw
+
+if has('persistent_undo')
+  set undofile
+  set undodir=~/.cache/vim
+endif
+
+set pastetoggle=<F2>
+set tabstop=2    " How many spaces to be rendered for a tab.
+set shiftwidth=2 " The number of columns used in indentat operations (<< and >>).
+set expandtab    " Replace tab key with spaces in insert mode."
 set list
 set listchars=tab:▸\ ,nbsp:⎵,extends:…,trail:•
 
-set pastetoggle=<F2>
-
-set wildmenu
-set wildmode=list:longest,list:full
-
-" Ignored files.
-set wildignore+=*.o
-set wildignore+=*.a
-set wildignore+=*.so
-set wildignore+=*.pdf
-set wildignore+=*.gif
-set wildignore+=*.jpg
-set wildignore+=*.png
-set wildignore+=*.zip
-set wildignore+=*/.git/*
-set wildignore+=*/.bundle/*
-set wildignore+=*/log/*
-set wildignore+=*/tmp/*
-set wildignore+=*/deps/*
-set wildignore+=*/_build/*
-set wildignore+=*/priv/static/*
-set wildignore+=*.beam
-set wildignore+=*/pkg/*
-set wildignore+=*/vendor/pkg/*
-set wildignore+=*/node_modules/*
-set wildignore+=*/bower_components/*
-
-" Set swap file location.
-set nobackup
-set nowritebackup
-set swapfile
-set directory=$HOME/.vim/swapfiles//
-
 " Solarized theme settings.
-let g:solarized_visibility = "high"
-let g:solarized_contrast = "high"
-if !has("gui_running")
-  let g:solarized_termtrans = 1
-  let g:solarized_termcolors = 256
-endif
+" For iterm2:
+" 1. Preferences > Text -> Uncheck "Draw bold text in bright colors"
+" 2. Preferences > Terminal > Terminal Emulation -> Set "Report Terminal Type" to "xterm-256color"
+syntax enable
 set background=dark
+if !has('gui_running')
+  let g:solarized_termcolors=256
+endif
 colorscheme solarized
+
+" Open help vertically.
+command! -nargs=* -complete=help Help vertical belowright help <args>
+autocmd FileType help wincmd L
 
 if has("gui_running")
   " Tabs navigation.
@@ -234,76 +190,26 @@ if has("gui_running")
   endif
 endif
 
+
 " =============================================================================
-" Settings - Plugins
+" Filetypes
 
-" Go
-let g:go_disable_autoinstall = 1
-let g:go_fmt_command = 'goimports'
-let g:go_gocode_bin='gocode'
-let g:go_goimports_bin='goimports'
-let g:go_godef_bin='godef'
-let g:go_oracle_bin='oracle'
-let g:go_golint_bin='golint'
-let g:go_errcheck_bin='errcheck'
+augroup reload_vimrc
+  autocmd!
+  autocmd BufWritePost vimrc source %
+augroup END
 
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_build_constraints = 1
-let g:go_auto_type_info = 1
+autocmd FileType apache setlocal commentstring=#\ %s
+autocmd BufNewFile,BufRead *.cisco setlocal nofoldenable
+autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+autocmd BufNewFile,BufRead *.ruby setlocal expandtab tabstop=2 shiftwidth=2
 
-" Syntastic
-let g:syntastic_aggregate_errors = 1
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_echo_current_error = 1
-let g:syntastic_enable_signs = 1
-let g:syntastic_error_symbol = '✗'
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_sass_checkers=['sass_lint']
-let g:syntastic_scss_checkers=['sass_lint']
-let g:syntastic_style_error_symbol = '✗'
-let g:syntastic_style_warning_symbol = '✗'
-let g:syntastic_warning_symbol = '✗'
-let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-
-" vim-lion
-let g:lion_squeeze_spaces = 1
-
-" Ctrl-P
-let g:ctrlp_match_window = 'bottom,order:ttb' " bottom, listing from top to bottom
-let g:ctrlp_switch_buffer = 0                 " disable
-let g:ctrlp_working_path_mode = 0             " disable
-
-" Wildfire
-let g:wildfire_objects = [
-      \ "i'", 'i"', "i)", "i]", "i}", "ip", "it",
-      \ "a'", 'a"', "a)", "a]", "a}", "ap", "at"
-      \ ]
-
-" Use `ag` when available.
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
+augroup filetypedetect
+  autocmd BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
+augroup END
 
 " =============================================================================
 " Keybindings - General
-
-" Autocommands
-if !exists("autocommands_loaded")
-  let autocommands_loaded = 1
-
-  " Reload vimrc automatically
-  autocmd BufWritePost  vimrc     source %
-  autocmd FileType      go        setlocal ai ts=4 sw=4 sts=4 noexpandtab nolist
-  autocmd FileType      cisco     set nofoldenable
-
-  " Remember cursor position
-  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
-endif
 
 nnoremap ci( %ci(
 vnoremap = :call Stringify()<CR>
@@ -316,14 +222,6 @@ nnoremap <leader>s :vsplit<space>
 nnoremap <leader>x :split<space>
 nnoremap <leader>a :Ack<space>
 nnoremap <leader><leader> :CtrlP<CR>
-nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gc :Gcommit<CR>
-nnoremap <leader>gb :Gblame<CR>
-nnoremap <leader>gl :Glog<CR>
-nnoremap <leader>gp :Git push<CR>
-nnoremap <leader>gw :Gwrite<CR>
-nnoremap <leader>ge :Gedit<CR>
-nnoremap <leader>ga :Git add -p %<CR>
 
 nnoremap <silent><Tab> <C-w>w
 
@@ -345,33 +243,118 @@ nnoremap <leader>j <C-w>j
 nnoremap <leader>k <C-w>k
 nnoremap <leader>l <C-w>l
 
+
 " =============================================================================
-" Keybindings - Languages
+" Settings - Plugins
+
+" Fugitive
+vnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gb :Gblame<CR>
+
+" Syntastic
+let g:syntastic_aggregate_errors = 1
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_echo_current_error = 1
+let g:syntastic_enable_signs = 1
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_sass_checkers=['sass_lint']
+let g:syntastic_scss_checkers=['sass_lint']
+let g:syntastic_style_error_symbol = '✗'
+let g:syntastic_style_warning_symbol = '✗'
+let g:syntastic_warning_symbol = '✗'
+let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:syntastic_ruby_checkers = ['mri']
+
+" Lion
+let g:lion_squeeze_spaces = 1
+
+" CtrlP
+let g:ctrlp_cmd = 'CtrlPMRU'
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_switch_buffer = 'et' " Jump to a file if it's open already.
+let g:ctrlp_mruf_max=450         " Number of recently opened files.
+let g:ctrlp_max_files=0          " Do not limit the number of searchable files.
+let g:ctrlp_use_caching = 1
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
+let g:ctrlp_match_window = 'bottom,order:ttb,max:10,results:10'
+let g:ctrlp_buftag_types = {'go' : '--language-force=go --golang-types=ftv'}
+
+" Wildfire
+let g:wildfire_objects = [
+      \ "i'", 'i"', "i)", "i]", "i}", "ip", "it",
+      \ "a'", 'a"', "a)", "a]", "a}", "ap", "at"
+      \ ]
+
+" Use `ag` when available.
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 
 " Markdown
 let g:vim_markdown_folding_disabled = 1
 
 " Go
-au FileType go nmap <leader>r <Plug>(go-run)
-au FileType go nmap <leader>b <Plug>(go-build)
-au FileType go nmap <leader>t <Plug>(go-test)
-au FileType go nmap <leader>c <Plug>(go-coverage)
+let g:go_fmt_fail_silently = 0
+let g:go_fmt_command = "goimports"
+let g:go_list_type = "quickfix"
+let g:go_auto_type_info = 0
+let g:go_def_mode = "guru"
+let g:go_echo_command_info = 1
+let g:go_gocode_autobuild = 0
+let g:go_gocode_unimported_packages = 1
 
-au FileType go nmap <leader>dx <Plug>(go-def-split)
-au FileType go nmap <leader>ds <Plug>(go-def-vertical)
+let g:go_autodetect_gopath = 1
+let g:go_info_mode = "guru"
 
-au FileType go nmap <leader>gd <Plug>(go-doc)
-au FileType go nmap <leader>gv <Plug>(go-doc-vertical)
-au FileType go nmap <leader>gb <Plug>(go-doc-browser)
+" let g:go_metalinter_autosave = 1
+" let g:go_metalinter_autosave_enabled = ['vet', 'golint']
 
-" Show a list of interfaces which is implemented by the type under cursor.
-au FileType go nmap <Leader>im <Plug>(go-implements)
+let g:go_highlight_space_tab_error = 0
+let g:go_highlight_array_whitespace_error = 0
+let g:go_highlight_trailing_whitespace_error = 0
+let g:go_highlight_extra_types = 0
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_types = 0
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
 
-" Show type info for the word under your cursor.
-au FileType go nmap <Leader>in <Plug>(go-info)
+let g:go_modifytags_transform = 'camelcase'
 
-" Rename the identifier under the cursor to a new name.
-au FileType go nmap <Leader>e <Plug>(go-rename)
+nmap <C-g> :GoDecls<cr>
+imap <C-g> <esc>:<C-u>GoDecls<cr>
 
-" =============================================================================
-" Functions
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+
+augroup go
+  autocmd!
+
+  autocmd FileType go nmap <silent> <Leader>v <Plug>(go-def-vertical)
+  autocmd FileType go nmap <silent> <Leader>s <Plug>(go-def-split)
+
+  autocmd FileType go nmap <silent> <Leader>x <Plug>(go-doc-vertical)
+
+  autocmd FileType go nmap <silent> <Leader>i <Plug>(go-info)
+  autocmd FileType go nmap <silent> <Leader>l <Plug>(go-metalinter)
+
+  autocmd FileType go nmap <silent> <leader>b :<C-u>call <SID>build_go_files()<CR>
+  autocmd FileType go nmap <silent> <leader>t  <Plug>(go-test)
+  autocmd FileType go nmap <silent> <leader>r  <Plug>(go-run)
+  autocmd FileType go nmap <silent> <leader>e  <Plug>(go-install)
+
+  autocmd FileType go nmap <silent> <Leader>c <Plug>(go-coverage-toggle)
+
+  autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+  autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+  autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+  autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+augroup END
