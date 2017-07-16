@@ -386,6 +386,7 @@ function! sj#ruby#JoinBlock()
 
   let lines = sj#GetLines(do_line_no, end_line_no)
   let lines = sj#TrimList(lines)
+  let lines = sj#RemoveBlanks(lines)
 
   let do_line  = substitute(lines[0], do_pattern, '{\1', '')
   let body     = join(lines[1:-2], '; ')
@@ -850,6 +851,127 @@ function! sj#ruby#JoinArrayLiteral()
   return 1
 endfunction
 
+function! sj#ruby#JoinModuleNamespace()
+  if !exists('g:loaded_matchit')
+    return 0
+  endif
+
+  let namespace_pattern = '^\s*module\s\+\zs[A-Z]\(\k\|::\)\+\s*$'
+  let class_pattern = '^\s*class\s\+\zs[A-Z]\k\+\s*\(\k\|::\)\+\s*\%(<\s\+\S\+\)\=$'
+
+  if search(namespace_pattern, 'Wc', line('.')) <= 0
+    return 0
+  endif
+
+  " Pin the starting point
+  let module_start_line = line('.')
+  let start_indent = indent('.')
+  let modules = [expand('<cWORD>')]
+  let keyword = 'module'
+  normal! j0
+
+  " Find the end point
+  let module_end_line = module_start_line
+  while search(namespace_pattern, 'Wc', line('.')) > 0
+    let module_end_line = line('.')
+    call add(modules, expand('<cWORD>'))
+    normal! j0
+  endwhile
+
+  if search(class_pattern, 'Wc', line('.')) > 0
+    " then the end is a class line
+    let module_end_line = line('.')
+    call add(modules, sj#GetMotion('vg_'))
+    let keyword = 'class'
+  else
+    " go back one line, to the last module
+    normal! k
+  endif
+
+  if len(modules) < 2
+    " nothing to join
+    return 0
+  endif
+
+  " go to the end of the deepest-nested module/class:
+  call search('^\s*\zs\%(module\|class\)', 'Wbc', line('.'))
+  normal %
+  let content_end_line = line('.') - 1
+  " delete the right amount of ends and go back
+  let range = (content_end_line + 1).','.(content_end_line + (len(modules) - 1))
+  silent exe range.'delete _'
+  exe module_end_line
+
+  if module_end_line + 1 <= content_end_line
+    " there's content in the class/module, so shift its indentation
+    let range = (module_end_line + 1).','.content_end_line
+    silent exe range.repeat('<', len(modules) - 1)
+  endif
+
+  " replace the module line
+  call sj#ReplaceLines(module_start_line, module_end_line, keyword.' '.join(modules, '::'))
+  return 1
+endfunction
+
+function! sj#ruby#SplitModuleNamespace()
+  let namespace_pattern = '^\s*\%(module\|class\)\s\+[A-Z]\k\+::'
+
+  if search(namespace_pattern, 'Wbc', line('.')) <= 0
+    return 0
+  endif
+
+  let start_line = line('.')
+
+  " is it a class or module?
+  let keyword = expand('<cword>')
+  " get the module path
+  if search(keyword.'\s\+\zs[A-Z]\k\+', 'W', line('.')) <= 0
+    return 0
+  endif
+  let module_path = expand('<cWORD>')
+  if search('\s\+<\s\+\S\+$', 'W', line('.')) > 0
+    let parent = sj#GetMotion('vg_')
+  else
+    let parent = ''
+  endif
+  let modules = split(module_path, '::')
+
+  if len(modules) < 2
+    " nothing to split
+    return 0
+  endif
+
+  " build up new lines
+  let lines = []
+  for module in modules[:-2]
+    call add(lines, 'module '.module)
+  endfor
+  call add(lines, keyword.' '.modules[-1].parent)
+
+  " shift contents of the class/module
+  if search('^\s*\zs\%(module\|class\)', 'Wbc', line('.')) <= 0
+    return 0
+  endif
+  normal %
+  let end_line = line('.') - 1
+  echomsg string([start_line, end_line])
+  if end_line - start_line > 0
+    let range = start_line.','.end_line
+    silent exe range.repeat('>', len(modules) - 1)
+  endif
+
+  " replace the module line
+  exe start_line
+  call sj#ReplaceMotion('V', join(lines, "\n"))
+
+  " add the necessary amount of "end"s
+  exe (end_line + len(lines))
+  let ends = split(repeat("end\n", len(modules)), "\n")
+  call sj#ReplaceMotion('V', join(ends, "\n"))
+
+  return 1
+endfunction
+
 " Helper functions
 
 function! s:JoinHashWithCurlyBraces()
@@ -945,7 +1067,7 @@ function! s:FindComments(start_line_no, end_line_no)
     exe lineno
     normal! 0
 
-    while search('\s*#.*$', 'W', lineno) > 0
+    while search('\s*#.*$', 'Wc', lineno) > 0
       let col = col('.')
 
       normal! f#

@@ -52,6 +52,96 @@ describe "ruby" do
     EOF
   end
 
+  describe "module namespaces" do
+    specify "with contents" do
+      set_file_contents <<-EOF
+        module Foo
+          module Bar
+            class Baz < Quux
+              def initialize
+                # foo
+              end
+            end
+          end
+        end
+      EOF
+
+      vim.search 'Foo'
+      join
+
+      assert_file_contents <<-EOF
+        class Foo::Bar::Baz < Quux
+          def initialize
+            # foo
+          end
+        end
+      EOF
+
+      vim.search 'Foo'
+      split
+
+      assert_file_contents <<-EOF
+        module Foo
+          module Bar
+            class Baz < Quux
+              def initialize
+                # foo
+              end
+            end
+          end
+        end
+      EOF
+    end
+
+    specify "without contents" do
+      set_file_contents <<-EOF
+        module Foo
+          module Bar
+            class Baz < Quux
+            end
+          end
+        end
+      EOF
+
+      vim.search 'Foo'
+      join
+
+      assert_file_contents <<-EOF
+        class Foo::Bar::Baz < Quux
+        end
+      EOF
+
+      vim.search 'Foo'
+      split
+
+      assert_file_contents <<-EOF
+        module Foo
+          module Bar
+            class Baz < Quux
+            end
+          end
+        end
+      EOF
+    end
+
+    specify "merging namespaces" do
+      set_file_contents <<-EOF
+        module Foo::Bar
+          class Baz::Qux
+          end
+        end
+      EOF
+
+      vim.search 'Foo'
+      join
+
+      assert_file_contents <<-EOF
+        class Foo::Bar::Baz::Qux
+        end
+      EOF
+    end
+  end
+
   describe "ternaries" do
     it "handles simplistic ternaries" do
       set_file_contents <<-EOF
@@ -336,7 +426,7 @@ describe "ruby" do
     end
 
     it "aligns thens in supercompact cases" do
-      pending('we need to add an alignment tool to the spec configuration')
+      skip 'we need to add an alignment tool to the spec configuration'
 
       set_file_contents <<-EOF
         case

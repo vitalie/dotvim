@@ -1,15 +1,15 @@
-
-" construct a new 'search' object
-func! sneak#search#new()
+func! sneak#search#new() abort
   let s = {}
 
-  func! s.init(input, repeatmotion, reverse)
+  func! s.init(input, repeatmotion, reverse) abort
+    let self._input = a:input
+    let self._repeatmotion = a:repeatmotion
     let self._reverse = a:reverse
     " search pattern modifiers (case-sensitivity, magic)
     let self.prefix = sneak#search#get_cs(a:input, g:sneak#opt.use_ic_scs).'\V'
     " the escaped user input to search for
-    let self.search = escape(a:input, '"\')
-    " example: highlight string 'ab' after line 42, column 5 
+    let self.search = substitute(escape(a:input, '"\'), '\a', '\\[[=\0=]]', 'g')
+    " example: highlight string 'ab' after line 42, column 5
     "          matchadd('foo', 'ab\%>42l\%5c', 1)
     let self.match_pattern = ''
     " do not wrap                     search backwards
@@ -19,18 +19,18 @@ func! sneak#search#new()
     if !a:repeatmotion && !sneak#is_sneaking() | let self._search_options .= 's' | endif
   endf
 
-  func! s.initpattern()
+  func! s.initpattern() abort
     let self._searchpattern = (self.prefix).(self.match_pattern).'\zs'.(self.search)
   endf
 
-  func! s.dosearch(...) " a:1 : extra search options
+  func! s.dosearch(...) abort " a:1 : extra search options
     return searchpos(self._searchpattern
           \, self._search_options.(a:0 ? a:1 : '')
           \, 0
           \)
   endf
 
-  func! s.get_onscreen_searchpattern(w)
+  func! s.get_onscreen_searchpattern(w) abort
     if &wrap
       return ''
     endif
@@ -40,12 +40,12 @@ func! sneak#search#new()
     return '\%>'.(wincol_lhs).'v'.'\%<'.(wincol_rhs+1).'v'
   endf
 
-  func! s.get_stopline()
+  func! s.get_stopline() abort
     return self._reverse ? line("w0") : line("w$")
   endf
 
   " returns 1 if there are n _on-screen_ matches in the search direction.
-  func! s.hasmatches(n)
+  func! s.hasmatches(n) abort
     let w = winsaveview()
     let searchpattern = (self._searchpattern).(self.get_onscreen_searchpattern(w))
     let visiblematches = 0
@@ -71,7 +71,7 @@ func! sneak#search#new()
 endf
 
 " gets the case sensitivity modifier for the search
-func! sneak#search#get_cs(input, use_ic_scs)
+func! sneak#search#get_cs(input, use_ic_scs) abort
   if !a:use_ic_scs || !&ignorecase || (&smartcase && sneak#util#has_upper(a:input))
     return '\C'
   endif

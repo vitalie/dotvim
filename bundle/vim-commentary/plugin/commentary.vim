@@ -1,6 +1,6 @@
 " commentary.vim - Comment stuff out
 " Maintainer:   Tim Pope <http://tpo.pe/>
-" Version:      1.2
+" Version:      1.3
 " GetLatestVimScripts: 3695 1 :AutoInstall: commentary.vim
 
 if exists("g:loaded_commentary") || &cp || v:version < 700
@@ -15,8 +15,11 @@ endfunction
 
 function! s:strip_white_space(l,r,line) abort
   let [l, r] = [a:l, a:r]
-  if stridx(a:line,l) == -1 && stridx(a:line,l[0:-2]) == 0 && a:line[strlen(a:line)-strlen(r[1:]):-1] == r[1:]
-    return [l[0:-2], r[1:]]
+  if l[-1:] == ' ' && stridx(a:line,l) == -1 && stridx(a:line,l[0:-2]) == 0
+    let l = l[:-2]
+  endif
+  if r[0] == ' ' && a:line[-strlen(r):] != r && a:line[1-strlen(r):] == r[1:]
+    let r = r[1:]
   endif
   return [l, r]
 endfunction
@@ -62,14 +65,13 @@ function! s:go(type,...) abort
 endfunction
 
 function! s:textobject(inner) abort
-  let [l_, r_] = s:surroundings()
-  let [l, r] = [l_, r_]
+  let [l, r] = s:surroundings()
   let lnums = [line('.')+1, line('.')-2]
   for [index, dir, bound, line] in [[0, -1, 1, ''], [1, 1, line('$'), '']]
     while lnums[index] != bound && line ==# '' || !(stridx(line,l) || line[strlen(line)-strlen(r) : -1] != r)
       let lnums[index] += dir
       let line = matchstr(getline(lnums[index]+dir),'\S.*\s\@<!')
-      let [l, r] = s:strip_white_space(l_,r_,line)
+      let [l, r] = s:strip_white_space(l,r,line)
     endwhile
   endfor
   while (a:inner || lnums[1] != line('$')) && empty(getline(lnums[0]))
@@ -96,15 +98,10 @@ if !hasmapto('<Plug>Commentary') || maparg('gc','n') ==# ''
   nmap gc  <Plug>Commentary
   omap gc  <Plug>Commentary
   nmap gcc <Plug>CommentaryLine
-  nmap cgc <Plug>ChangeCommentary
+  if maparg('c','n') ==# ''
+    nmap cgc <Plug>ChangeCommentary
+  endif
   nmap gcu <Plug>Commentary<Plug>Commentary
-endif
-
-if maparg('\\','n') ==# '' && maparg('\','n') ==# '' && get(g:, 'commentary_map_backslash', 1)
-  xmap \\  <Plug>Commentary:echomsg '\\ is deprecated. Use gc'<CR>
-  nmap \\  :echomsg '\\ is deprecated. Use gc'<CR><Plug>Commentary
-  nmap \\\ <Plug>CommentaryLine:echomsg '\\ is deprecated. Use gc'<CR>
-  nmap \\u <Plug>CommentaryUndo:echomsg '\\ is deprecated. Use gc'<CR>
 endif
 
 " vim:set et sw=2:

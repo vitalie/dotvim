@@ -39,12 +39,26 @@ class Buffer
 
   def syntax(content, pattern)
     with_file content
-    # move cursor the pattern
-    @vim.search pattern
-    # get a list of the syntax element
-    @vim.echo <<~EOF
+
+    # Using this function with a `pattern` that is not in `content` is pointless.
+    #
+    # @vim.search() silently fails if a pattern is not found and the cursor
+    # won't move. So, if the current cursor position happens to sport the
+    # expected syntax group already, this can lead to false positive tests.
+    #
+    # We work around this by using Vim's search() function, which returns 0 if
+    # there is no match.
+    if @vim.echo("search(#{pattern.inspect})") == '0'
+      return []
+    end
+
+    syngroups = @vim.echo <<~EOF
     map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
     EOF
+
+    # From: "['elixirRecordDeclaration', 'elixirAtom']"
+    # To:   ["elixirRecordDeclaration", "elixirAtom"]
+    syngroups.gsub!(/["'\[\]]/, '').split(', ')
   end
 
   private
@@ -55,6 +69,7 @@ class Buffer
     yield if block_given?
 
     @vim.write
+    @vim.command 'redraw'
     IO.read(@file)
   end
 
@@ -186,6 +201,7 @@ Vimrunner::RSpec.configure do |config|
     VIM.add_plugin(File.expand_path('..', __dir__))
     VIM.command('filetype off')
     VIM.command('filetype plugin indent on')
+    VIM.command('autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o') # disable automatic comment continuation
     VIM.normal(":set ignorecase<CR>") # make sure we test ignorecase
     VIM
   end

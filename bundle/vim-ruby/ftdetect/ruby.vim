@@ -2,7 +2,7 @@
 
 " Support functions {{{
 function! s:setf(filetype) abort
-  if &filetype !=# a:filetype
+  if &filetype !~# '\<'.a:filetype.'\>'
     let &filetype = a:filetype
   endif
 endfunction
@@ -36,7 +36,6 @@ au BufNewFile,BufRead *.builder,*.rxml,*.rjs,*.ruby		call s:setf('ruby')
 au BufNewFile,BufRead [rR]akefile,*.rake			call s:setf('ruby')
 au BufNewFile,BufRead [rR]akefile*				call s:StarSetf('ruby')
 
-" TODO: does anyone still use Rantfiles? Remove for Vim 8?
 " Rantfile
 au BufNewFile,BufRead [rR]antfile,*.rant			call s:setf('ruby')
 

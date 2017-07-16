@@ -345,6 +345,23 @@ Array literals ~
     three
     }
 <
+Module namespacing ~
+
+Note that splitting and joining module namespaces relies on the built-in
+|matchit| plugin being loaded. Check |matchit-install| for details.
+>
+    module Foo
+      class Bar < Baz
+        def qux
+        end
+      end
+    end
+
+    class Foo::Bar < Baz
+      def qux
+      end
+    end
+<
 
 ==============================================================================
 PYTHON                                                      *splitjoin-python*
@@ -436,8 +453,16 @@ just like explained above.
       die;
     }
 <
-Lists ~
+Hashes ~
+>
+    my $info = {name => $name, age => $age};
 
+    my $info = {
+      name => $name,
+      age => $age,
+    };
+<
+Lists ~
 >
     my @var = ['one', 'two', 'three'];
 
@@ -456,7 +481,6 @@ Lists ~
     );
 <
 Word lists ~
-
 >
     my @var = qw(one two three);
 
@@ -661,6 +685,42 @@ Match clauses ~
         },
     }
 <
+Question mark operator ~
+>
+    let file = File::open("foo.txt")?;
+
+    let file = match File::open("foo.txt") {
+        Ok(value) => value,
+        Err(e) => return Err(e.into()),
+    };
+
+    let thing = Some(3)?;
+
+    let thing = match Some(3) {
+        None => return None,
+        Some(value) => value,
+    };
+<
+Note that the plugin determines how to split a `?` by looking upwards for a
+`-> Result` or `-> Option` . If it can't find anything, it'll default to a
+`Result`.
+
+Fallback match split ~
+>
+    let foo = Some::value(chain).of(things);
+
+    let foo = match Some::value(chain).of(things) {
+
+    }
+<
+This one only splits, and is attempted last. The cursor MUST be on `Some` in
+order to get this effect, in this particular example.
+
+The plugin attempts to find the end of the expression, and make a match
+statement out of it.
+
+This is, at this time, experimental, because I've found myself trying to do
+it. It might be made smarter, or it might be dropped, so be warned.
 
 ==============================================================================
 PHP                                                            *splitjoin-php*

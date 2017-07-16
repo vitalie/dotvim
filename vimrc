@@ -11,7 +11,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-sleuth'
-Plug 'tpope/vim-markdown'
 Plug 'gcmt/wildfire.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -25,11 +24,14 @@ Plug 'farmergreg/vim-lastplace'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'itchyny/lightline.vim'
 
+" =============================================================================
+" Files
 Plug 'elzr/vim-json'
 Plug 'fatih/vim-nginx'
-Plug 'RobbieClarken/vim-haproxy'
 Plug 'rodjek/vim-puppet'
 Plug 'Absolight/vim-bind'
+Plug 'tpope/vim-markdown'
+Plug 'RobbieClarken/vim-haproxy'
 Plug 'CyCoreSystems/vim-cisco-ios'
 
 " =============================================================================
@@ -41,19 +43,20 @@ Plug 'altercation/vim-colors-solarized'
 
 " Ruby
 Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rbenv'
 Plug 'tpope/vim-rails'
+Plug 'tpope/vim-dispatch'
 
 " Go
 Plug 'fatih/vim-go'
 
 " Elixir
-Plug 'elixir-lang/vim-elixir'
+Plug 'elixir-editors/vim-elixir'
 
 " JavaScript
 Plug 'pangloss/vim-javascript'
 Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'kchmck/vim-coffee-script'
-Plug 'burnettk/vim-angular'
 
 " SCSS
 Plug 'cakebaker/scss-syntax.vim'
@@ -312,6 +315,7 @@ autocmd BufWritePost *.exs silent :!mix format %
 autocmd BufWritePost *.ex silent :!mix format %
 
 " Go
+let g:go_version_warning = 0
 let g:go_fmt_fail_silently = 0
 let g:go_fmt_command = "goimports"
 let g:go_list_type = "quickfix"

@@ -183,6 +183,11 @@ function! sj#GetMotion(motion)
   exec 'silent normal! '.a:motion.'"zy'
   let text = @z
 
+  if text == ''
+    " nothing got selected, so we might still be in visual mode
+    exe "normal! \<esc>"
+  endif
+
   call setreg('z', saved_register_text, saved_register_type)
   call sj#PopCursor()
 
@@ -239,6 +244,11 @@ endfunction
 " Execute sj#Trim on each item of a List
 function! sj#TrimList(list)
   return map(a:list, 'sj#Trim(v:val)')
+endfunction
+
+" Remove blank strings from the List
+function! sj#RemoveBlanks(list)
+  return filter(a:list, 'v:val !~ "^\\s*$"')
 endfunction
 
 " Searching for patterns {{{1
