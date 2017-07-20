@@ -125,7 +125,6 @@ set pastetoggle=<F2>
 set tabstop=2    " How many spaces to be rendered for a tab.
 set shiftwidth=2 " The number of columns used in indentat operations (<< and >>).
 set expandtab    " Replace tab key with spaces in insert mode."
-set list
 set listchars=tab:▸\ ,nbsp:⎵,extends:…,trail:•
 
 " Solarized theme settings.
@@ -202,7 +201,8 @@ augroup END
 autocmd FileType apache setlocal commentstring=#\ %s
 autocmd BufNewFile,BufRead *.cisco setlocal nofoldenable
 autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
-autocmd BufNewFile,BufRead *.ruby setlocal expandtab tabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.ruby setlocal expandtab tabstop=2 shiftwidth=2 list
+autocmd BufNewFile,BufRead *.coffee setlocal expandtab tabstop=2 shiftwidth=2 list
 
 augroup filetypedetect
   autocmd BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
@@ -322,9 +322,6 @@ let g:go_highlight_methods = 1
 
 let g:go_modifytags_transform = 'camelcase'
 
-nmap <C-g> :GoDecls<cr>
-imap <C-g> <esc>:<C-u>GoDecls<cr>
-
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
   let l:file = expand('%')
@@ -337,6 +334,9 @@ endfunction
 
 augroup go
   autocmd!
+
+  autocmd FileType go nmap <C-g> :GoDecls<cr>
+  autocmd FileType go imap <C-g> <esc>:<C-u>GoDecls<cr>
 
   autocmd FileType go nmap <silent> <Leader>v <Plug>(go-def-vertical)
   autocmd FileType go nmap <silent> <Leader>s <Plug>(go-def-split)
