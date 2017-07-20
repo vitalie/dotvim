@@ -127,6 +127,29 @@ set shiftwidth=2 " The number of columns used in indentat operations (<< and >>)
 set expandtab    " Replace tab key with spaces in insert mode."
 set listchars=tab:▸\ ,nbsp:⎵,extends:…,trail:•
 
+" Ignored files.
+set wildignore+=*.o
+set wildignore+=*.a
+set wildignore+=*.so
+set wildignore+=*.pdf
+set wildignore+=*.gif
+set wildignore+=*.jpg
+set wildignore+=*.png
+set wildignore+=*.zip
+set wildignore+=*/.git/*
+set wildignore+=*/.bundle/*
+set wildignore+=*/log/*
+set wildignore+=*/tmp/*
+set wildignore+=*/deps/*
+set wildignore+=*/_build/*
+set wildignore+=*/priv/static/*
+set wildignore+=*.beam
+set wildignore+=*/pkg/*
+set wildignore+=*/vendor/pkg/*
+set wildignore+=*/node_modules/*
+set wildignore+=tags
+set wildignore+=gems.tags
+
 " Solarized theme settings.
 " For iterm2:
 " 1. Preferences > Text -> Uncheck "Draw bold text in bright colors"
