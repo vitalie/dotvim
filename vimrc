@@ -157,7 +157,10 @@ set wildignore+=gems.tags
 syntax enable
 set background=dark
 if !has('gui_running')
-  let g:solarized_termcolors=256
+  let g:solarized_termtrans=1
+  if system('uname')=~'Darwin'
+    let g:solarized_termcolors=256
+  endif
 endif
 colorscheme solarized
 
