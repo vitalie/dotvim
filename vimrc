@@ -154,14 +154,11 @@ set wildignore+=gems.tags
 " For iterm2:
 " 1. Preferences > Text -> Uncheck "Draw bold text in bright colors"
 " 2. Preferences > Terminal > Terminal Emulation -> Set "Report Terminal Type" to "xterm-256color"
+set t_Co=256
 syntax enable
+let g:solarized_termtrans  = 1
+let g:solarized_termcolors = 256
 set background=dark
-if !has('gui_running')
-  let g:solarized_termtrans=1
-  if system('uname')=~'Darwin'
-    let g:solarized_termcolors=256
-  endif
-endif
 colorscheme solarized
 
 " Open help vertically.
