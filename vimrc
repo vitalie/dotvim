@@ -11,6 +11,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-markdown'
 Plug 'gcmt/wildfire.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -27,7 +28,6 @@ Plug 'itchyny/lightline.vim'
 Plug 'elzr/vim-json'
 Plug 'fatih/vim-nginx'
 Plug 'RobbieClarken/vim-haproxy'
-Plug 'plasticboy/vim-markdown'
 Plug 'rodjek/vim-puppet'
 Plug 'Absolight/vim-bind'
 Plug 'CyCoreSystems/vim-cisco-ios'
@@ -220,6 +220,7 @@ augroup END
 
 augroup filetypedetect
   autocmd BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
+  autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 augroup END
 
 " =============================================================================
@@ -305,9 +306,6 @@ let g:wildfire_objects = [
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
-
-" Markdown
-let g:vim_markdown_folding_disabled = 1
 
 " Go
 let g:go_fmt_fail_silently = 0
