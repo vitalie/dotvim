@@ -10,6 +10,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-sleuth'
 Plug 'gcmt/wildfire.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -122,9 +123,6 @@ if has('persistent_undo')
 endif
 
 set pastetoggle=<F2>
-set tabstop=2    " How many spaces to be rendered for a tab.
-set shiftwidth=2 " The number of columns used in indentat operations (<< and >>).
-set expandtab    " Replace tab key with spaces in insert mode."
 set listchars=tab:▸\ ,nbsp:⎵,extends:…,trail:•
 
 " Ignored files.
@@ -215,17 +213,10 @@ endif
 
 " =============================================================================
 " Filetypes
-
 augroup reload_vimrc
   autocmd!
   autocmd BufWritePost vimrc source %
 augroup END
-
-autocmd FileType apache setlocal commentstring=#\ %s
-autocmd BufNewFile,BufRead *.cisco setlocal nofoldenable
-autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
-autocmd BufNewFile,BufRead *.ruby setlocal expandtab tabstop=2 shiftwidth=2 list
-autocmd BufNewFile,BufRead *.coffee setlocal expandtab tabstop=2 shiftwidth=2 list
 
 augroup filetypedetect
   autocmd BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
