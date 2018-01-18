@@ -307,6 +307,10 @@ if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 
+" Elixir
+autocmd BufWritePost *.exs silent :!mix format %
+autocmd BufWritePost *.ex silent :!mix format %
+
 " Go
 let g:go_fmt_fail_silently = 0
 let g:go_fmt_command = "goimports"
