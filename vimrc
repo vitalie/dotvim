@@ -219,8 +219,8 @@ augroup reload_vimrc
 augroup END
 
 augroup filetypedetect
+  autocmd BufNewFile,BufRead .env.* setf sh
   autocmd BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
-  autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 augroup END
 
 " =============================================================================
