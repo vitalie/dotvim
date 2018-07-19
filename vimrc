@@ -45,6 +45,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rbenv'
 Plug 'tpope/vim-rails'
+Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-dispatch'
 
 " Go
