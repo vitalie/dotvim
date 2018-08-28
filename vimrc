@@ -283,7 +283,7 @@ let g:syntastic_style_error_symbol = '✗'
 let g:syntastic_style_warning_symbol = '✗'
 let g:syntastic_warning_symbol = '✗'
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-let g:syntastic_ruby_checkers = ['mri']
+let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 
 " Lion
 let g:lion_squeeze_spaces = 1
@@ -310,6 +310,18 @@ let g:wildfire_objects = [
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
+
+" Ruby
+function! RubocopAutocorrect()
+  execute "!rubocop -a " . bufname("%")
+  call SyntasticCheck()
+endfunction
+
+augroup ruby
+  autocmd!
+  autocmd FileType ruby nmap <silent> <Leader>f :call RubocopAutocorrect()<cr>
+augroup END
+
 
 " Elixir
 autocmd BufWritePost *.exs silent :!mix format %
