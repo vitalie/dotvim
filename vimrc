@@ -270,6 +270,18 @@ nnoremap <leader>l <C-w>l
 vnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gb :Gblame<CR>
 
+" Lightline
+let g:lightline = {
+      \ 'colorscheme': 'powerline',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head'
+      \ },
+      \ }
+
 " Syntastic
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_always_populate_loc_list = 1
