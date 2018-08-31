@@ -294,7 +294,7 @@ let g:syntastic_scss_checkers=['sass_lint']
 let g:syntastic_style_error_symbol = '✗'
 let g:syntastic_style_warning_symbol = '✗'
 let g:syntastic_warning_symbol = '✗'
-let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:syntastic_go_checkers = ['govet', 'golint']
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 let g:syntastic_haml_checkers = ['haml', 'haml_lint']
 
@@ -357,6 +357,7 @@ let g:go_info_mode = "guru"
 
 " let g:go_metalinter_autosave = 1
 " let g:go_metalinter_autosave_enabled = ['vet', 'golint']
+let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
 
 let g:go_highlight_space_tab_error = 0
 let g:go_highlight_array_whitespace_error = 0
