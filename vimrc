@@ -296,6 +296,7 @@ let g:syntastic_style_warning_symbol = '✗'
 let g:syntastic_warning_symbol = '✗'
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+let g:syntastic_haml_checkers = ['haml', 'haml_lint']
 
 " Lion
 let g:lion_squeeze_spaces = 1
