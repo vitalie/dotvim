@@ -295,7 +295,7 @@ let g:syntastic_style_error_symbol = '✗'
 let g:syntastic_style_warning_symbol = '✗'
 let g:syntastic_warning_symbol = '✗'
 let g:syntastic_go_checkers = ['govet', 'golint']
-let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+let g:syntastic_ruby_checkers = ['mri']
 let g:syntastic_haml_checkers = ['haml', 'haml_lint']
 
 " Lion
@@ -333,6 +333,7 @@ endfunction
 augroup ruby
   autocmd!
   autocmd FileType ruby nmap <silent> <leader>t  :Rails<cr>
+  autocmd FileType ruby nmap <silent> <Leader>l  :call SyntasticCheck('rubocop')<cr>
   autocmd FileType ruby nmap <silent> <Leader>f  :call RubocopAutocorrect()<cr>
 augroup END
 
