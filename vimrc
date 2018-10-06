@@ -51,6 +51,11 @@ Plug 'tpope/vim-dispatch'
 " Go
 Plug 'fatih/vim-go'
 
+" Erlang
+Plug 'vim-erlang/vim-erlang-runtime'
+Plug 'vim-erlang/vim-erlang-compiler'
+Plug 'vim-erlang/vim-erlang-tags'
+
 " Elixir
 Plug 'elixir-editors/vim-elixir'
 
@@ -337,6 +342,20 @@ augroup ruby
   autocmd FileType ruby nmap <silent> <Leader>f  :call RubocopAutocorrect()<cr>
 augroup END
 
+" Erlang
+function! ErlTidy()
+  let cur_pos = getpos(".")
+  silent !erl -noshell -eval 'erl_tidy:file("%",[verbose, {keep_unused, true}, {backups, false}]).' -s erlang halt
+  edit
+  normal gg=G
+  call setpos('.', cur_pos)
+  call SyntasticCheck()
+endfunction
+
+augroup erlang
+  autocmd!
+  autocmd FileType erlang nmap <silent> <Leader>f  :call ErlTidy()<cr>
+augroup END
 
 " Elixir
 autocmd BufWritePost *.exs silent :!mix format %
