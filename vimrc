@@ -49,7 +49,7 @@ Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-dispatch'
 
 " Go
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go', { 'tag': 'v1.18', 'do': ':GoInstallBinaries' }
 
 " Erlang
 Plug 'vim-erlang/vim-erlang-runtime'
