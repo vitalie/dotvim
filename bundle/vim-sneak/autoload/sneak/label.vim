@@ -22,10 +22,10 @@ func! s:placematch(c, pos) abort
   endif
 endf
 
-func! sneak#label#to(s, v) abort
+func! sneak#label#to(s, v, label) abort
   let seq = ""
   while 1
-    let choice = s:do_label(a:s, a:v, a:s._reverse)
+    let choice = s:do_label(a:s, a:v, a:s._reverse, a:label)
     let seq .= choice
     if choice =~# "^\<S-Tab>\\|\<BS>$"
       call a:s.init(a:s._input, a:s._repeatmotion, 1)
@@ -37,7 +37,7 @@ func! sneak#label#to(s, v) abort
   endwhile
 endf
 
-func! s:do_label(s, v, reverse) abort "{{{
+func! s:do_label(s, v, reverse, label) abort "{{{
   let w = winsaveview()
   call s:before()
   let search_pattern = (a:s.prefix).(a:s.search).(a:s.get_onscreen_searchpattern(w))
@@ -68,7 +68,7 @@ func! s:do_label(s, v, reverse) abort "{{{
   endwhile
 
   call winrestview(w) | redraw
-  let choice = sneak#util#getchar()
+  let choice = empty(a:label) ? sneak#util#getchar() : a:label
   call s:after()
 
   let mappedto = maparg(choice, a:v ? 'x' : 'n')
@@ -111,10 +111,10 @@ func! s:after() abort
     silent! let &l:syntax=s:o_syntax
     " Force Vim to reapply 'spell' (must set 'spelllang'). #110
     let [&l:spell,&l:spelllang]=[s:o_spell,s:o_spelllang]
+    call s:restore_conceal_in_other_windows()
   endif
 
   let [&l:concealcursor,&l:conceallevel]=[s:o_cocu,s:o_cole]
-  call s:restore_conceal_in_other_windows()
 endf
 
 func! s:disable_conceal_in_other_windows() abort
@@ -143,8 +143,8 @@ func! s:before() abort
 
   setlocal concealcursor=ncv conceallevel=2
 
-  " highlight the cursor location (else the cursor is not visible during getchar())
-  let s:sneak_cursor_hl = matchadd("Cursor", '\%#', 11, -1)
+  " Highlight the cursor location (because cursor is hidden during getchar()).
+  let s:sneak_cursor_hl = matchadd("SneakScope", '\%#', 11, -1)
 
   if s:clear_syntax
     setlocal nospell
@@ -155,18 +155,17 @@ func! s:before() abort
       setlocal foldmethod=manual
     endif
     syntax clear
-    " this is fast since we cleared syntax, and it allows sneak to work on very long wrapped lines.
+    " This is fast because we cleared syntax.  Allows Sneak to work on very long wrapped lines.
     setlocal synmaxcol=0
+    call s:disable_conceal_in_other_windows()
   endif
 
-  let s:orig_hl_conceal = sneak#hl#links_to('Conceal')
-  let s:orig_hl_sneak   = sneak#hl#links_to('Sneak')
+  let s:orig_hl_conceal = sneak#util#links_to('Conceal')
+  let s:orig_hl_sneak   = sneak#util#links_to('Sneak')
   "set temporary link to our custom 'conceal' highlight
   hi! link Conceal SneakLabel
   "set temporary link to hide the sneak search targets
   hi! link Sneak SneakLabelMask
-
-  call s:disable_conceal_in_other_windows()
 
   augroup sneak_label_cleanup
     autocmd!

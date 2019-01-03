@@ -284,6 +284,20 @@ call s:map('n', '[o+', ':set cursorline cursorcolumn<CR>')
 call s:map('n', ']o+', ':set nocursorline nocursorcolumn<CR>')
 call s:map('n', 'yo+', ':set <C-R>=<SID>cursor_options()<CR><CR>')
 
+function! s:legacy_option_map(letter) abort
+  let y = get(get(g:, 'nremap', {}), 'y', 'y')
+  return y . 'o' . a:letter . ':echo "Use ' . y . 'o' . a:letter . ' instead"' . "\<CR>"
+endfunction
+
+if empty(maparg('co', 'n')) && empty(maparg('c', 'n'))
+  nmap <silent><expr> co <SID>legacy_option_map(nr2char(getchar()))
+  nnoremap cop <Nop>
+endif
+if empty(maparg('=o', 'n')) && empty(maparg('=', 'n'))
+  nmap <silent><expr> =o <SID>legacy_option_map(nr2char(getchar()))
+  nnoremap =op <Nop>
+endif
+
 function! s:setup_paste() abort
   let s:paste = &paste
   let s:mouse = &mouse
@@ -318,8 +332,8 @@ function! s:putline(how, map) abort
     call setreg(v:register, body, 'l')
     exe 'normal! "'.v:register.a:how
     call setreg(v:register, body, type)
-    silent! call repeat#set("\<Plug>unimpairedPut".a:map)
   endif
+  silent! call repeat#set("\<Plug>unimpairedPut".a:map)
 endfunction
 
 nnoremap <silent> <Plug>unimpairedPutAbove :call <SID>putline('[p', 'Above')<CR>
@@ -353,12 +367,13 @@ function! s:string_decode(str) abort
 endfunction
 
 function! s:url_encode(str) abort
-  return substitute(a:str,'[^A-Za-z0-9_.~-]','\="%".printf("%02X",char2nr(submatch(0)))','g')
+  " iconv trick to convert utf-8 bytes to 8bits indiviual char.
+  return substitute(iconv(a:str, 'latin1', 'utf-8'),'[^A-Za-z0-9_.~-]','\="%".printf("%02X",char2nr(submatch(0)))','g')
 endfunction
 
 function! s:url_decode(str) abort
   let str = substitute(substitute(substitute(a:str,'%0[Aa]\n$','%0A',''),'%0[Aa]','\n','g'),'+',' ','g')
-  return substitute(str,'%\(\x\x\)','\=nr2char("0x".submatch(1))','g')
+  return iconv(substitute(str,'%\(\x\x\)','\=nr2char("0x".submatch(1))','g'), 'utf-8', 'latin1')
 endfunction
 
 " HTML entities {{{2
@@ -436,6 +451,7 @@ function! s:xml_encode(str) abort
   let str = substitute(str,'<','\&lt;','g')
   let str = substitute(str,'>','\&gt;','g')
   let str = substitute(str,'"','\&quot;','g')
+  let str = substitute(str,"'",'\&apos;','g')
   return str
 endfunction
 

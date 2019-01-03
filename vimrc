@@ -18,7 +18,6 @@ Plug 'justinmk/vim-sneak'
 Plug 'scrooloose/syntastic'
 Plug 'mileszs/ack.vim'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'mattn/emmet-vim'
 Plug '29decibel/vim-stringify'
 Plug 'farmergreg/vim-lastplace'
 Plug 'AndrewRadev/splitjoin.vim'
@@ -42,7 +41,7 @@ Plug 'altercation/vim-colors-solarized'
 " Plugins - Languages
 
 " Ruby
-Plug 'vim-ruby/vim-ruby'
+Plug 'vim-ruby/vim-ruby', { 'tag': 'stable-20190106' }
 Plug 'tpope/vim-rbenv'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-bundler'

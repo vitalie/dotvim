@@ -2,16 +2,17 @@
 " Filename: autoload/lightline.vim
 " Author: itchyny
 " License: MIT License
-" Last Change: 2017/11/11 13:29:26.
+" Last Change: 2018/11/24 12:00:00.
 " =============================================================================
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:_ = 1
+let s:_ = 1 " 1: uninitialized, 2: disabled
 
 function! lightline#update() abort
   if s:_
+    if s:_ == 2 | return | endif
     call lightline#init()
     call lightline#colorscheme()
   endif
@@ -40,15 +41,14 @@ function! lightline#update_disable() abort
 endfunction
 
 function! lightline#enable() abort
-  call lightline#colorscheme()
+  let s:_ = 1
   call lightline#update()
-  if s:lightline.enable.tabline
-    set tabline=%!lightline#tabline()
-  endif
   augroup lightline
     autocmd!
-    autocmd WinEnter,BufWinEnter,FileType,ColorScheme,SessionLoadPost * call lightline#update()
-    autocmd ColorScheme,SessionLoadPost * call lightline#highlight()
+    autocmd WinEnter,BufWinEnter,FileType,SessionLoadPost * call lightline#update()
+    autocmd SessionLoadPost * call lightline#highlight()
+    autocmd ColorScheme * if !has('vim_starting') || expand('<amatch>') !=# 'macvim'
+          \ | call lightline#update() | call lightline#highlight() | endif
     autocmd CursorMoved,BufUnload * call lightline#update_once()
   augroup END
   augroup lightline-disable
@@ -72,6 +72,7 @@ function! lightline#disable() abort
     autocmd!
     autocmd WinEnter * call lightline#update_disable()
   augroup END
+  let s:_ = 2
 endfunction
 
 function! lightline#toggle() abort
@@ -84,20 +85,20 @@ endfunction
 
 let s:_lightline = {
       \   'active': {
-      \     'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ],
-      \     'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \     'left': [['mode', 'paste'], ['readonly', 'filename', 'modified']],
+      \     'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding', 'filetype']]
       \   },
       \   'inactive': {
-      \     'left': [ [ 'filename' ] ],
-      \     'right': [ [ 'lineinfo' ], [ 'percent' ] ]
+      \     'left': [['filename']],
+      \     'right': [['lineinfo'], ['percent']]
       \   },
       \   'tabline': {
-      \     'left': [ [ 'tabs' ] ],
-      \     'right': [ [ 'close' ] ]
+      \     'left': [['tabs']],
+      \     'right': [['close']]
       \   },
       \   'tab': {
-      \     'active': [ 'tabnum', 'filename', 'modified' ],
-      \     'inactive': [ 'tabnum', 'filename', 'modified' ]
+      \     'active': ['tabnum', 'filename', 'modified'],
+      \     'inactive': ['tabnum', 'filename', 'modified']
       \   },
       \   'component': {
       \     'mode': '%{lightline#mode()}',
@@ -295,7 +296,7 @@ function! lightline#highlight(...) abort
 endfunction
 
 function! s:subseparator(components, subseparator, expanded) abort
-  let [a, c, f, v, u ] = [ a:components, s:lightline.component, s:lightline.component_function, s:lightline.component_visible_condition, s:lightline.component_function_visible_condition ]
+  let [a, c, f, v, u] = [a:components, s:lightline.component, s:lightline.component_function, s:lightline.component_visible_condition, s:lightline.component_function_visible_condition]
   let xs = map(range(len(a:components)), 'a:expanded[v:val] ? "1" :
         \ has_key(f, a[v:val]) ? (has_key(u, a[v:val]) ? "(".u[a[v:val]].")" : (exists("*".f[a[v:val]]) ? "" : "exists(\"*".f[a[v:val]]."\")&&").f[a[v:val]]."()!=#\"\"") :
         \ has_key(v, a[v:val]) ? "(".v[a[v:val]].")" : has_key(c, a[v:val]) ? "1" : "0"')
@@ -341,9 +342,9 @@ function! s:convert(name, index) abort
     let type = get(s:lightline.component_type, a:name, a:index)
     let is_raw = get(s:lightline.component_raw, a:name) || type ==# 'raw'
     return filter(s:map(s:evaluate_expand(s:lightline.component_expand[a:name]),
-          \ '[v:val, 1 + ' . is_raw . ', v:key == 1 && ' . (type !=# 'raw') . ' ? "' . type . '" : "' . a:index . '"]'), 'v:val[0] != []')
+          \ '[v:val, 1 + ' . is_raw . ', v:key == 1 && ' . (type !=# 'raw') . ' ? "' . type . '" : "' . a:index . '", "' . a:index . '"]'), 'v:val[0] != []')
   else
-    return [[[a:name], 0, a:index]]
+    return [[[a:name], 0, a:index, a:index]]
   endif
 endfunction
 
@@ -373,17 +374,29 @@ function! s:expand(components) abort
   let components = []
   let expanded = []
   let indices = []
+  let prevtype = ''
   let previndex = -1
   let xs = s:flatten_twice(s:map(deepcopy(a:components), 'map(v:val, "s:convert(v:val, ''" . v:key . "'')")'))
-  for [component, expand, index] in xs
-    if previndex != index
-      call add(indices, index)
+  for [component, expand, type, index] in xs
+    if prevtype !=# type
+      for i in range(previndex + 1, max([previndex, index - 1]))
+        call add(indices, string(i))
+        call add(components, [])
+        call add(expanded, [])
+      endfor
+      call add(indices, type)
       call add(components, [])
       call add(expanded, [])
     endif
     call extend(components[-1], component)
     call extend(expanded[-1], repeat([expand], len(component)))
+    let prevtype = type
     let previndex = index
+  endfor
+  for i in range(previndex + 1, max([previndex, len(a:components) - 1]))
+    call add(indices, string(i))
+    call add(components, [])
+    call add(expanded, [])
   endfor
   call add(indices, string(len(a:components)))
   return [components, expanded, indices]

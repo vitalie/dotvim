@@ -14,16 +14,18 @@ Advantages over the snippets that can be found around the net include:
 * Opens folds if the last edit position is inside a fold.
 * Works properly with new file templates and scripts that jump to a specific line in them.
 
-## Installation
-Thanks to [David Rabel](https://github.com/NoreSoft)'s hard work, you can install vim-lastplace from debian-testing:
-
-    apt-get install vim-lastplace
-    
-You can also use [pathogen.vim](https://github.com/tpope/vim-pathogen) or other plugin managers to install and use vim-lastplace.
+## Installation  
+You can use [pathogen.vim](https://github.com/tpope/vim-pathogen) or other plugin managers to install and use vim-lastplace.
 
     cd ~/.vim/bundle
     git clone git://github.com/farmergreg/vim-lastplace.git
 
+Depending on which Vim package you're using, Vim may be preconfigured with
+last-edit-position logic that doesn't work quite as well as vim-lastplace.
+If so, you may want to disable that in favor of vim-lastplace. For example,
+for Vim as packaged with Git for Windows, you can edit
+`C:\Program Files\Git\etc\vimrc` and comment out the "Remember positions in files"
+`autocmd BufReadPost *` block.
 
 ## Configuration
 You can configure what file types to ignore by setting
