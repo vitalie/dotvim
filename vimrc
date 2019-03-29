@@ -329,9 +329,10 @@ let g:wildfire_objects = [
       \ "a'", 'a"', "a)", "a]", "a}", "ap", "at"
       \ ]
 
-" Use `ag` when available.
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
+if executable('rg')
+  let g:ackprg = 'rg --vimgrep'
+elseif executable('ag')
+  let g:ackprg = 'ag --vimgrep --smart-case'
 endif
 
 " Ruby
