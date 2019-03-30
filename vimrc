@@ -2,25 +2,25 @@
 call plug#begin('~/.vim/bundle')
 " =============================================================================
 
+" =============================================================================
 " Plugins - General
+Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
-Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-sleuth'
+Plug 'scrooloose/syntastic'
+Plug 'justinmk/vim-sneak'
 Plug 'gcmt/wildfire.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'justinmk/vim-sneak'
-Plug 'scrooloose/syntastic'
-Plug 'mileszs/ack.vim'
 Plug 'ntpeters/vim-better-whitespace'
-Plug '29decibel/vim-stringify'
-Plug 'farmergreg/vim-lastplace'
 Plug 'AndrewRadev/splitjoin.vim'
+Plug 'tommcdo/vim-lion'
+Plug 'mileszs/ack.vim'
+Plug 'farmergreg/vim-lastplace'
 Plug 'itchyny/lightline.vim'
 
 " =============================================================================
@@ -45,7 +45,7 @@ Plug 'vim-ruby/vim-ruby', { 'tag': 'stable-20190106' }
 Plug 'tpope/vim-rbenv'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-bundler'
-Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-endwise'
 
 " Go
 Plug 'fatih/vim-go', { 'tag': 'v1.18', 'do': ':GoInstallBinaries' }
@@ -60,8 +60,8 @@ Plug 'elixir-editors/vim-elixir'
 
 " JavaScript
 Plug 'pangloss/vim-javascript'
-Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'kchmck/vim-coffee-script'
+Plug 'othree/javascript-libraries-syntax.vim'
 
 " SCSS
 Plug 'cakebaker/scss-syntax.vim'
@@ -69,9 +69,6 @@ Plug 'cakebaker/scss-syntax.vim'
 " Templates
 Plug 'tpope/vim-haml'
 Plug 'slim-template/vim-slim'
-
-" Text aligning around a selected character.
-Plug 'tommcdo/vim-lion'
 
 " All Plugins must be added before the following this line.
 " =============================================================================
@@ -235,7 +232,6 @@ augroup END
 " Keybindings - General
 
 nnoremap ci( %ci(
-vnoremap = :call Stringify()<CR>
 
 " Leader
 let mapleader=" "
@@ -329,11 +325,15 @@ let g:wildfire_objects = [
       \ "a'", 'a"', "a)", "a]", "a}", "ap", "at"
       \ ]
 
+" Ack
 if executable('rg')
   let g:ackprg = 'rg --vimgrep'
 elseif executable('ag')
   let g:ackprg = 'ag --vimgrep --smart-case'
 endif
+
+" javascript-libraries-syntax
+let g:used_javascript_libs = 'jquery'
 
 " Ruby
 function! RubocopAutocorrect()
