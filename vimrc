@@ -17,7 +17,6 @@ Plug 'gcmt/wildfire.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tommcdo/vim-lion'
 Plug 'mileszs/ack.vim'
 Plug 'farmergreg/vim-lastplace'
@@ -35,7 +34,7 @@ Plug 'CyCoreSystems/vim-cisco-ios'
 
 " =============================================================================
 " Color scheme
-Plug 'altercation/vim-colors-solarized'
+Plug 'lifepillar/vim-solarized8'
 
 " =============================================================================
 " Plugins - Languages
@@ -48,7 +47,7 @@ Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-endwise'
 
 " Go
-Plug 'fatih/vim-go', { 'tag': 'v1.18', 'do': ':GoInstallBinaries' }
+Plug 'fatih/vim-go', { 'tag': 'v1.20', 'do': ':GoInstallBinaries' }
 
 " Erlang
 Plug 'vim-erlang/vim-erlang-runtime'
@@ -77,96 +76,81 @@ call plug#end()
 
 " Settings - General
 set nocompatible
-filetype off
-filetype plugin indent on
 
 set ttyfast
 set ttymouse=xterm2
 set ttyscroll=3
 
+set mouse=a                    " Enable mouse mode
+set noerrorbells               " No beeps
+set nomodeline                 " Don't parse modelines to avoid security issues
+
 set laststatus=2
 set encoding=utf-8             " Set default encoding to UTF-8
-set autoread                   " Automatically reread changed files without asking me anything
-set autoindent
-set backspace=indent,eol,start " Makes backspace key more powerful.
+set autoread                   " Reload unchanged files automatically
+set autowrite                  " Automatically save before :next, :make etc.
+set autoindent                 " Autoindent when starting new line, or using o or O
+set backspace=indent,eol,start " Allow backspace in insert mode
+set hidden                     " https://medium.com/usevim/vim-101-set-hidden-f78800142855
+set fileformats=unix,dos,mac   " Prefer Unix over Windows over OS 9 formats
+
 set incsearch                  " Shows the match while typing
 set hlsearch                   " Highlight found searches
-set mouse=a                    " Enable mouse mode
+set ignorecase                 " Ignore case when searching
+set smartcase                  " Don't ignore case when search has capital letter
 
-set noerrorbells               " No beeps
 set showcmd                    " Show me what I'm typing
 set noswapfile                 " Don't use swapfile
 set nobackup                   " Don't create annoying backup files
 set splitright                 " Split vertical windows right to the current windows
 set splitbelow                 " Split horizontal windows below to the current windows
-set autowrite                  " Automatically save before :next, :make etc.
-set hidden
-set fileformats=unix,dos,mac   " Prefer Unix over Windows over OS 9 formats
 set noshowmatch                " Do not show matching brackets by flickering
 set noshowmode                 " We show the mode with airline or lightline
-set ignorecase                 " Search case insensitive...
-set smartcase                  " ... but not it begins with upper case
+
 set completeopt=menu,menuone
-set nocursorcolumn             " speed up syntax highlighting
+set pumheight=10               " Completion window max size
+set nocursorcolumn             " Speed up syntax highlighting
 set nocursorline
 set updatetime=300
+set conceallevel=2             " Concealed text is completely hidden
 
-set pumheight=10               " Completion window max size
+set shortmess+=c               " Shut off completion messages
+set belloff+=ctrlg             " If Vim beeps during completion
 
 "http://stackoverflow.com/questions/20186975/vim-mac-how-to-copy-to-clipboard-without-pbcopy
 set clipboard^=unnamed
 set clipboard^=unnamedplus
 
-" ~/.viminfo needs to be writable and readable
-set viminfo='200
+" Increase max memory to show syntax highlighting for large files
+set maxmempattern=20000
 
-set lazyredraw          " Wait to redraw
+" ~/.viminfo needs to be writable and readable
+set viminfo=%,<800,'10,/50,:100,h,f0,n~/.vim/cache/.viminfo
+"           | |    |   |   |    | |  + viminfo file path
+"           | |    |   |   |    | + file marks 0-9,A-Z 0=NOT stored
+"           | |    |   |   |    + disable 'hlsearch' loading viminfo
+"           | |    |   |   + command-line history saved
+"           | |    |   + search history saved
+"           | |    + files marks saved
+"           | + lines saved each register (old name for <, vi6.2)
+"           + save/restore buffer list
 
 if has('persistent_undo')
   set undofile
-  set undodir=~/.cache/vim
+  set undodir=~/.vim/cache
 endif
 
 set pastetoggle=<F2>
 set listchars=tab:▸\ ,nbsp:⎵,extends:…,trail:•
 
 " Ignored files.
-set wildignore+=*.o
-set wildignore+=*.a
-set wildignore+=*.so
-set wildignore+=*.pdf
-set wildignore+=*.gif
-set wildignore+=*.jpg
-set wildignore+=*.png
-set wildignore+=*.zip
-set wildignore+=*/.git/*
-set wildignore+=*/.bundle/*
-set wildignore+=*/log/*
-set wildignore+=*/tmp/*
-set wildignore+=*/deps/*
-set wildignore+=*/_build/*
-set wildignore+=*/priv/static/*
-set wildignore+=*.beam
-set wildignore+=*/pkg/*
-set wildignore+=*/vendor/pkg/*
+set wildignore+=*.o,*.a,*.so,*.out,*.obj,.git,.svn,*.gem,tags
+set wildignore+=*.zip,*.rar,*.tgz,*.gz,*.bz2,*.xz
+set wildignore+=*.gif,*.jpg,*.png,*.pdf
 set wildignore+=*/node_modules/*
-set wildignore+=tags
-set wildignore+=gems.tags
-
-" Solarized theme settings.
-" For iterm2:
-" 1. Preferences > Text -> Uncheck "Draw bold text in bright colors"
-" 2. Preferences > Terminal > Terminal Emulation -> Set "Report Terminal Type" to "xterm-256color"
-set t_Co=256
-syntax enable
-let g:solarized_termtrans  = 1
-let g:solarized_termcolors = 256
-set background=dark
-colorscheme solarized
-
-" Open help vertically.
-command! -nargs=* -complete=help Help vertical belowright help <args>
-autocmd FileType help wincmd L
+set wildignore+=*/pkg/*,*/vendor/pkg/*
+set wildignore+=*/deps/*,*/_build/*,*/priv/static/*
+set wildignore+=*/tmp/*,*/log/*,*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
 
 if has("gui_running")
   " Tabs navigation.
@@ -215,17 +199,45 @@ if has("gui_running")
   endif
 endif
 
+" Configure colorscheme
+set background=dark
+colorscheme solarized8
+
+" Time out on key codes but not mappings.
+" Basically this makes terminal Vim work sanely.
+if !has('gui_running')
+  set notimeout
+  set ttimeout
+  set ttimeoutlen=10
+  augroup FastEscape
+    autocmd!
+    au InsertEnter * set timeoutlen=0
+    au InsertLeave * set timeoutlen=1000
+  augroup END
+endif
 
 " =============================================================================
-" Filetypes
-augroup reload_vimrc
-  autocmd!
-  autocmd BufWritePost vimrc source %
-augroup END
-
 augroup filetypedetect
+  command! -nargs=* -complete=help Help vertical belowright help <args>
+  autocmd FileType help wincmd L
+
   autocmd BufNewFile,BufRead .env.* setf sh
+  autocmd BufNewFile,BufRead .tmux.conf*,tmux.conf* setf tmux
   autocmd BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
+  autocmd BufNewFile,BufRead *.hcl setf conf
+  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+
+  autocmd BufNewFile,BufRead *.txt setlocal noet ts=4 sw=4
+  autocmd BufNewFile,BufRead *.md setlocal noet ts=4 sw=4
+  autocmd BufNewFile,BufRead *.html setlocal noet ts=4 sw=4
+  autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
+  autocmd BufNewFile,BufRead *.hcl setlocal expandtab shiftwidth=2 tabstop=2
+  autocmd BufNewFile,BufRead *.proto setlocal expandtab shiftwidth=2 tabstop=2
+  autocmd BufNewFile,BufRead *.sh setlocal expandtab shiftwidth=2 tabstop=2
+
+  autocmd FileType yaml setlocal expandtab shiftwidth=2 tabstop=2
+  autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
+  autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
 augroup END
 
 " =============================================================================
@@ -241,6 +253,7 @@ nnoremap <leader>s :vsplit<space>
 nnoremap <leader>x :split<space>
 nnoremap <leader>a :Ack<space>
 nnoremap <leader><leader> :CtrlP<CR>
+nnoremap <leader>cpt :CtrlPBufTag<CR>
 
 nnoremap <silent><Tab> <C-w>w
 
@@ -256,6 +269,10 @@ nnoremap <silent> <leader>n :nohl<CR>
 " Strip whitespaces.
 nnoremap <silent> <leader>sp :StripWhitespace<CR>
 
+" Search navigation next/previous.
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
 " Window movements.
 nnoremap <leader>h <C-w>h
 nnoremap <leader>j <C-w>j
@@ -268,6 +285,8 @@ noremap <Down> <nop>
 noremap <Left> <nop>
 noremap <Right> <nop>
 
+nnoremap <silent> <F5> :source $MYVIMRC<CR>
+nnoremap <F6> :setlocal spell! spell?<CR>
 
 " =============================================================================
 " Settings - Plugins
@@ -275,6 +294,8 @@ noremap <Right> <nop>
 " Fugitive
 vnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gb :Gblame<CR>
+vnoremap <leader>gw :Gwrite<CR>
+nnoremap <leader>gw :Gwrite<CR>
 
 " Lightline
 let g:lightline = {
@@ -313,11 +334,22 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_switch_buffer = 'et' " Jump to a file if it's open already.
 let g:ctrlp_mruf_max=450         " Number of recently opened files.
 let g:ctrlp_max_files=0          " Do not limit the number of searchable files.
-let g:ctrlp_use_caching = 1
-let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 let g:ctrlp_match_window = 'bottom,order:ttb,max:10,results:10'
-let g:ctrlp_buftag_types = {'go' : '--language-force=go --golang-types=ftv'}
+let g:ctrlp_buftag_types = {
+  \ 'go'         : '--language-force=go --golang-types=ft',
+  \ }
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll|pdf|jpg|png)$',
+  \ }
+let g:ctrlp_user_command = {
+  \ 'types': {
+    \1: ['.git', 'cd %s && git ls-files'],
+    \2: ['.hg', 'hg --cwd %s locate -I .'],
+    \ },
+  \ 'fallback': 'find %s -type f'
+  \ }
 
 " Wildfire
 let g:wildfire_objects = [
@@ -326,10 +358,8 @@ let g:wildfire_objects = [
       \ ]
 
 " Ack
-if executable('rg')
-  let g:ackprg = 'rg --vimgrep'
-elseif executable('ag')
-  let g:ackprg = 'ag --vimgrep --smart-case'
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
 endif
 
 " javascript-libraries-syntax
@@ -370,8 +400,11 @@ augroup erlang
 augroup END
 
 " Elixir
-autocmd BufWritePost *.exs silent :!mix format %
-autocmd BufWritePost *.ex silent :!mix format %
+augroup elixir
+  autocmd!
+  autocmd BufWritePost *.exs silent :!mix format %
+  autocmd BufWritePost *.ex silent :!mix format %
+augroup END
 
 " Go
 let g:go_version_warning = 0
@@ -386,10 +419,8 @@ let g:go_gocode_unimported_packages = 1
 
 let g:go_autodetect_gopath = 1
 let g:go_info_mode = "guru"
+let g:go_metalinter_command='golangci-lint'
 
-" let g:go_metalinter_autosave = 1
-" let g:go_metalinter_autosave_enabled = ['vet', 'golint']
-let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
 
 let g:go_highlight_space_tab_error = 0
 let g:go_highlight_array_whitespace_error = 0
