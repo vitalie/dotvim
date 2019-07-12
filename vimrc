@@ -135,10 +135,10 @@ set viminfo=%,<800,'10,/50,:100,h,f0,n~/.vim/cache/.viminfo
 "           | + lines saved each register (old name for <, vi6.2)
 "           + save/restore buffer list
 
-if has('persistent_undo')
-  set undofile
-  set undodir=~/.vim/cache
-endif
+" if has('persistent_undo')
+"   set undofile
+"   set undodir=~/.vim/cache
+" endif
 
 set pastetoggle=<F2>
 set listchars=tab:▸\ ,nbsp:⎵,extends:…,trail:•
