@@ -114,8 +114,10 @@ set nocursorline
 set updatetime=300
 set conceallevel=2             " Concealed text is completely hidden
 
-set shortmess+=c               " Shut off completion messages
-set belloff+=ctrlg             " If Vim beeps during completion
+if v:version > 800
+  set shortmess+=c   " Shut off completion messages
+  set belloff+=ctrlg " If Vim beeps during completion
+endif
 
 "http://stackoverflow.com/questions/20186975/vim-mac-how-to-copy-to-clipboard-without-pbcopy
 set clipboard^=unnamed
