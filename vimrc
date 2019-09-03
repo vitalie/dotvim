@@ -56,6 +56,7 @@ Plug 'vim-erlang/vim-erlang-tags'
 
 " Elixir
 Plug 'elixir-editors/vim-elixir'
+Plug 'mhinz/vim-mix-format'
 
 " JavaScript
 Plug 'pangloss/vim-javascript'
