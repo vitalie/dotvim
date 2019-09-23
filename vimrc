@@ -203,6 +203,9 @@ if has("gui_running")
 endif
 
 " Configure colorscheme
+if $TERM == 'screen'
+  set t_Co=256
+endif
 set background=dark
 colorscheme solarized8
 
