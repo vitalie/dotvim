@@ -1,1 +1,1 @@
-setlocal nofoldenable
+setlocal nofoldenable commentstring=!\ %s
