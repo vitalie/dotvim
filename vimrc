@@ -31,6 +31,7 @@ Plug 'Absolight/vim-bind'
 Plug 'tpope/vim-markdown'
 Plug 'RobbieClarken/vim-haproxy'
 Plug 'CyCoreSystems/vim-cisco-ios'
+Plug 'zsiciarz/caddy.vim'
 
 " =============================================================================
 " Color scheme
