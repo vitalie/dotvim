@@ -79,7 +79,12 @@ endfunction
 " go#complete#GoInfo returns the description of the identifier under the
 " cursor.
 function! go#complete#GetInfo() abort
-  return s:sync_info(0)
+  let l:mode = go#config#InfoMode()
+  if l:mode == 'gopls' && go#util#has_job()
+    return go#lsp#GetInfo()
+  else
+    return s:sync_info(0)
+  endif
 endfunction
 
 function! go#complete#Info(showstatus) abort
@@ -240,30 +245,37 @@ function! go#complete#GocodeComplete(findstart, base) abort
   else
     let s = getline(".")[col('.') - 1]
     if s =~ '[(){}\{\}]'
-      return map(copy(s:completions[1]), 's:trim_bracket(v:val)')
+      return map(copy(s:completions), 's:trim_bracket(v:val)')
     endif
-
-    return s:completions[1]
+    return s:completions
   endif
 endfunction
 
 function! go#complete#Complete(findstart, base) abort
-  let l:state = {'done': 0, 'matches': []}
+  if !go#config#GoplsEnabled()
+    return -3
+  endif
 
-  function! s:handler(state, matches) abort dict
+  let l:state = {'done': 0, 'matches': [], 'start': -1}
+
+  function! s:handler(state, start, matches) abort dict
+    let a:state.start = a:start
     let a:state.matches = a:matches
     let a:state.done = 1
   endfunction
 
   "findstart = 1 when we need to get the start of the match
   if a:findstart == 1
-    call go#lsp#Completion(expand('%:p'), line('.'), col('.'), funcref('s:handler', [l:state]))
+    let [l:line, l:col] = getpos('.')[1:2]
+    let [l:line, l:col] = go#lsp#lsp#Position(l:line, l:col)
+    let l:completion = go#lsp#Completion(expand('%:p'), l:line, l:col, funcref('s:handler', [l:state]))
+    if l:completion
+      return -3
+    endif
 
     while !l:state.done
       sleep 10m
     endwhile
-
-    let s:completions = l:state.matches
 
     if len(l:state.matches) == 0
       " no matches. cancel and leave completion mode.
@@ -271,7 +283,10 @@ function! go#complete#Complete(findstart, base) abort
       return -3
     endif
 
-    return col('.')
+    let s:completions = l:state.matches
+
+    return go#lsp#lsp#PositionOf(getline(l:line+1), l:state.start-1)
+
   else "findstart = 0 when we need to return the list of completions
     return s:completions
   endif
@@ -281,11 +296,11 @@ function! go#complete#ToggleAutoTypeInfo() abort
   if go#config#AutoTypeInfo()
     call go#config#SetAutoTypeInfo(0)
     call go#util#EchoProgress("auto type info disabled")
-    return
-  end
-
-  call go#config#SetAutoTypeInfo(1)
-  call go#util#EchoProgress("auto type info enabled")
+  else
+    call go#config#SetAutoTypeInfo(1)
+    call go#util#EchoProgress("auto type info enabled")
+  endif
+  call go#auto#update_autocmd()
 endfunction
 
 " restore Vi compatibility settings

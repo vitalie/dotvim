@@ -1,10 +1,13 @@
+"
+" https://github.com/fatih/vim-go-tutorial
+"
+
 let g:go_fmt_command = "goimports"
 let g:go_def_mode = 'guru'
 let g:go_info_mode = 'guru'
-let g:go_metalinter_command = 'golangci-lint'
 
-"let g:go_auto_sameids = 1
-"let g:go_auto_type_info = 1
+let g:go_auto_sameids   = 0 " highlight matching identifiers (GoSameIds)
+let g:go_auto_type_info = 0 " display type info, mapped to <Leader>+i
 
 let g:go_gocode_propose_source = 0
 

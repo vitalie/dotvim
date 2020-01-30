@@ -48,7 +48,9 @@ Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-endwise'
 
 " Go
-Plug 'fatih/vim-go', { 'tag': 'v1.20', 'do': ':GoUpdateBinaries' }
+if v:version > 800
+  Plug 'fatih/vim-go', { 'tag': 'v1.22', 'do': ':GoUpdateBinaries' }
+endif
 
 " Erlang
 Plug 'vim-erlang/vim-erlang-runtime'
