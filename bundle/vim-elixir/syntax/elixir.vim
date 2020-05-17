@@ -18,7 +18,7 @@ syn keyword elixirTodo FIXME NOTE TODO OPTIMIZE XXX HACK contained
 
 syn match elixirId '\<[_a-zA-Z]\w*[!?]\?\>' contains=elixirUnusedVariable
 
-syn match elixirKeyword '\(\.\)\@<!\<\(for\|case\|when\|with\|cond\|if\|unless\|try\|receive\|after\|rescue\|catch\|else\|quote\|unquote\|super\|unquote_splicing\)\>:\@!'
+syn match elixirKeyword '\(\.\)\@<!\<\(for\|case\|when\|with\|cond\|if\|unless\|try\|receive\|after\|raise\|rescue\|catch\|else\|quote\|unquote\|super\|unquote_splicing\)\>:\@!'
 
 syn keyword elixirInclude import require alias use
 
@@ -38,10 +38,11 @@ syn match   elixirOperator '|||\|||\||>\||'
 syn match   elixirOperator '\.\.\|\.'
 syn match   elixirOperator "\^\^\^\|\^"
 syn match   elixirOperator '\\\\\|::\|\*\|/\|\~\~\~\|@'
+syn match   elixirOperator '\~>\|\~>>\|<\~\|<<\~\|<\~>'
 
 syn match   elixirAlias '\([a-z]\)\@<![A-Z]\w*\%(\.[A-Z]\w*\)*'
 
-syn match   elixirAtom '\(:\)\@<!:\%([a-zA-Z_]\w*\%([?!]\|=[>=]\@!\)\?\|<>\|===\?\|>=\?\|<=\?\)'
+syn match   elixirAtom '\(:\)\@<!:\%([a-zA-Z_*]\w*\%([?!]\|=[>=]\@!\)\?\|<>\|===\?\|>=\?\|<=\?\)'
 syn match   elixirAtom '\(:\)\@<!:\%(<=>\|&&\?\|%\(()\|\[\]\|{}\)\|++\?\|--\?\|||\?\|!\|//\|[%&`/|]\)'
 syn match   elixirAtom "\%([a-zA-Z_]\w*[?!]\?\):\(:\)\@!"
 
@@ -110,7 +111,9 @@ syn region elixirSigil matchgroup=elixirSigilDelimiter start=+\~\a\z('''\)+ end=
 syntax include @HTML syntax/html.vim
 unlet b:current_syntax
 syntax region elixirLiveViewSigil matchgroup=elixirSigilDelimiter keepend start=+\~L\z("""\)+ end=+^\s*\z1+ skip=+\\"+ contains=@HTML fold
-
+syntax region elixirSurfaceSigil matchgroup=elixirSigilDelimiter keepend start=+\~H\z("""\)+ end=+^\s*\z1+ skip=+\\"+ contains=@HTML fold
+syntax region elixirPhoenixESigil matchgroup=elixirSigilDelimiter keepend start=+\~E\z("""\)+ end=+^\s*\z1+ skip=+\\"+ contains=@HTML fold
+syntax region elixirPhoenixeSigil matchgroup=elixirSigilDelimiter keepend start=+\~e\z("""\)+ end=+^\s*\z1+ skip=+\\"+ contains=@HTML fold
 
 " Documentation
 if exists('g:elixir_use_markdown_for_docs') && g:elixir_use_markdown_for_docs
