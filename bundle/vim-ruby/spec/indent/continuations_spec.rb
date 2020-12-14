@@ -15,6 +15,20 @@ describe "Indenting" do
         .method_two
         .method_three
     EOF
+
+    assert_correct_indenting <<~EOF
+      some_object&.
+        method_one&.
+        method_two&.
+        method_three
+    EOF
+
+    assert_correct_indenting <<~EOF
+      some_object
+        &.method_one
+        &.method_two
+        &.method_three
+    EOF
   end
 
   specify "arrays" do
@@ -298,6 +312,15 @@ describe "Indenting" do
         puts string
         puts string
       end
+    EOF
+  end
+
+  specify "wrong continuation within regex character class" do
+    # See https://github.com/vim-ruby/vim-ruby/issues/405 for details
+
+    assert_correct_indenting <<~EOF
+      extname = file.extname(url).split(/[?#]/).first
+      target_file = tempfile.new()
     EOF
   end
 end

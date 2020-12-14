@@ -1,6 +1,6 @@
 hi def link rubyEntity                      rubyMacro
 hi def link rubyEntities                    rubyMacro
-hi def link rubyExceptionHandler            rubyMacro
+hi def link rubyExceptionMacro              rubyMacro
 hi def link rubyValidation                  rubyMacro
 hi def link rubyCallback                    rubyMacro
 hi def link rubyRakeMacro                   rubyMacro
@@ -17,6 +17,7 @@ hi def link rubyUserAssertion               rubyAssertion
 hi def link rubyAssertion                   rubyException
 hi def link rubyTestAction                  rubyControl
 hi def link rubyHelper                      Function
+hi def link rubyDebug                       Debug
 
 let s:has_app = exists('*RailsDetect') && RailsDetect()
 let s:path = tr(expand('%:p'), '\', '/')
@@ -37,7 +38,7 @@ elseif s:path =~# '/app/models/.*\.rb$'
   syn keyword rubyCallback before_create before_destroy before_save before_update
   syn keyword rubyCallback  after_create  after_destroy  after_save  after_update
   syn keyword rubyCallback around_create around_destroy around_save around_update
-  syn keyword rubyCallback after_commit after_create_commit after_update_commit after_destroy_commit after_rollback
+  syn keyword rubyCallback after_commit after_create_commit after_update_commit after_save_commit after_destroy_commit after_rollback
   syn keyword rubyCallback after_find after_initialize after_touch
   syn keyword rubyValidation validates validates_acceptance_of validates_associated validates_confirmation_of validates_each validates_exclusion_of validates_format_of validates_inclusion_of validates_length_of validates_numericality_of validates_presence_of validates_absence_of validates_size_of validates_with
   syn keyword rubyValidation validates_associated validates_uniqueness_of
@@ -46,13 +47,13 @@ endif
 
 if s:path =~# '/app/jobs/.*\.rb$'
   syn keyword rubyMacro queue_as
-  syn keyword rubyExceptionHandler rescue_from retry_on discard_on
+  syn keyword rubyExceptionMacro rescue_from retry_on discard_on
   syn keyword rubyCallback before_enqueue around_enqueue after_enqueue before_perform around_perform after_perform
 endif
 
 if s:path =~# '/app/helpers/.*_helper\.rb$\|/app/views/'
   syn keyword rubyViewHelper
-        \ action_name asset_pack_path asset_path asset_url atom_feed audio_path audio_tag audio_url auto_discovery_link_tag
+        \ action_cable_meta_tag action_name asset_pack_path asset_path asset_url atom_feed audio_path audio_tag audio_url auto_discovery_link_tag
         \ button_tag button_to
         \ cache cache_fragment_name cache_if cache_unless capture cdata_section check_box check_box_tag collection_check_boxes collection_radio_buttons collection_select color_field color_field_tag compute_asset_extname compute_asset_host compute_asset_path concat content_tag content_tag_for controller controller_name controller_path convert_to_model cookies csp_meta_tag csrf_meta_tag csrf_meta_tags current_cycle cycle
         \ date_field date_field_tag date_select datetime_field datetime_field_tag datetime_local_field datetime_local_field_tag datetime_select debug distance_of_time_in_words distance_of_time_in_words_to_now div_for dom_class dom_id
@@ -89,11 +90,12 @@ if s:path =~# '/app/controllers/.*\.rb$'
   syn keyword rubyResponse render head redirect_to redirect_back respond_with send_data send_file
 endif
 
+let b:rails_path = s:path
 if s:path =~# '/app/controllers/.*\.rb$\|/app/mailers/.*\.rb$\|/app/models/.*_mailer\.rb$'
   syn keyword rubyHelper render_to_string
   syn keyword rubyCallback before_action append_before_action prepend_before_action after_action append_after_action prepend_after_action around_action append_around_action prepend_around_action skip_before_action skip_after_action skip_action
   syn keyword rubyMacro helper helper_attr helper_method layout
-  syn keyword rubyExceptionHandler rescue_from
+  syn keyword rubyExceptionMacro rescue_from
 endif
 
 if s:path =~# '/app/mailers/.*\.rb$\|/app/models/.*_mailer\.rb$'
@@ -116,6 +118,7 @@ endif
 
 if s:path =~# '/db/migrate/.*\.rb$\|/db/schema\.rb$'
   syn keyword rubySchema create_table change_table drop_table rename_table create_join_table drop_join_table
+  syn keyword rubySchema create_schema drop_schema
   syn keyword rubySchema add_column rename_column change_column change_column_default change_column_null remove_column remove_columns
   syn keyword rubySchema add_foreign_key remove_foreign_key
   syn keyword rubySchema add_timestamps remove_timestamps
@@ -155,6 +158,8 @@ if s:path =~# '/spec/.*_spec\.rb$'
   syn keyword rubyTestMacro before after around background setup teardown
   syn keyword rubyTestMacro context describe feature shared_context shared_examples shared_examples_for containedin=rubyKeywordAsMethod
   syn keyword rubyTestMacro it example specify scenario include_examples include_context it_should_behave_like it_behaves_like
+  syn keyword rubyDebug fcontext fdescribe containedin=rubyKeywordAsMethod
+  syn keyword rubyDebug fit fexample fspecify
   syn keyword rubyComment xcontext xdescribe xfeature containedin=rubyKeywordAsMethod
   syn keyword rubyComment xit xexample xspecify xscenario
 endif
@@ -178,7 +183,7 @@ if rails#buffer().type_name('test')
   syn keyword rubyAssertion assert_difference assert_no_difference
   syn keyword rubyAssertion assert_changes    assert_no_changes
   syn keyword rubyAssertion assert_emails assert_enqueued_emails assert_no_emails assert_no_enqueued_emails
-  syn keyword rubyTestAction travel travel_to travel_back
+  syn keyword rubyTestAction travel travel_to travel_back freeze_time unfreeze_time
 endif
 if rails#buffer().type_name('test-controller', 'test-integration', 'test-system')
   syn keyword rubyAssertion assert_response assert_redirected_to assert_template assert_recognizes assert_generates assert_routing
@@ -236,22 +241,18 @@ syn keyword rubyAttribute thread_cattr_accessor thread_cattr_reader thread_cattr
 syn keyword rubyMacro alias_attribute concern concerning delegate delegate_missing_to with_options
 
 let s:special = {
-      \ '[': '\>\[\@=',
-      \ ']': '\>[[.]\@!',
-      \ '{': '\>\%(\s*{\|\s*do\>\)\@=',
-      \ '}': '\>\%(\s*{\|\s*do\>\)\@!'}
+      \ '[': '\[\@=',
+      \ ']': '[[.]\@!',
+      \ '{': '\%(\s*{\|\s\+do\>\)\@=',
+      \ '}': '\%(\s*{\|\s\+do\>\)\@!'}
 function! s:highlight(group, ...) abort
   let value = rails#buffer().projected(a:0 ? a:1 : a:group)
   let words = split(join(filter(value, 'type(v:val) == type("")'), ' '))
-  let special = filter(copy(words), 'type(v:val) == type("") && v:val =~# ''^\h\k*[][{}?!]$''')
-  let regular = filter(copy(words), 'type(v:val) == type("") && v:val =~# ''^\h\k*$''')
-  if !empty(special)
+  call filter(words, 'type(v:val) == type("") && v:val =~# ''^\h\k*[!?]\=[][{}]\=$''')
+  if !empty(words)
     exe 'syn match' a:group substitute(
-          \ '"\<\%('.join(special, '\|').'\)"',
+          \ '"\<\%('.join(words, '\|').'\)\%(\k\@<!\|\k\@!:\@!\)"',
           \ '[][{}]', '\=get(s:special, submatch(0), submatch(0))', 'g')
-  endif
-  if !empty(regular)
-    exe 'syn keyword' a:group join(regular, ' ')
   endif
 endfunction
 

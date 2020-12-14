@@ -1,5 +1,5 @@
 function! RubocopAutocorrect()
-  execute "!rubocop -a " . bufname("%")
+  execute "!bundle exec rubocop -a " . bufname("%")
   call SyntasticCheck()
 endfunction
 

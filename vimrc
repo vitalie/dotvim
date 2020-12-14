@@ -41,7 +41,7 @@ Plug 'lifepillar/vim-solarized8'
 " Plugins - Languages
 
 " Ruby
-Plug 'vim-ruby/vim-ruby', { 'tag': 'stable-20190106' }
+Plug 'vim-ruby/vim-ruby', { 'tag': 'vim8.2' }
 Plug 'tpope/vim-rbenv'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-bundler'
